@@ -11,30 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Récupération du code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configuration de Java 17
-      # Android moderne nécessite souvent Java 17 (pour AGP 8+)
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle' # Active le cache Gradle pour accélérer les builds
+          cache: 'gradle'
 
-      # 3. Permission d'exécution pour Gradle Wrapper
-      # Indispensable sur Linux/Mac pour utiliser ./gradlew
+      # CORRECTION ICI : On précise le dossier de travail
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        working-directory: ./app  # Indispensable car gradlew est dans le dossier 'app'
 
-      # 4. Compilation de l'APK (Debug)
-      # Vérifie que le code compile correctement sans erreur
       - name: Build with Gradle
         run: ./gradlew assembleDebug
+        working-directory: ./app  # Idem ici
 
-      # 5. Lancement des Tests Unitaires
-      # Lance les tests situés dans app/src/test/java (ExampleUnitTest.java)
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
+        working-directory: ./app  # Et ici
