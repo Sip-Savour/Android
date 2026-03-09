@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige_light">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/gradient_header">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/back"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="serif"
+            android:text="@string/choix_saveurs"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_match"
+        android:layout_below="@id/header"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Première catégorie avec chips horizontaux -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_category_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="serif"
+                        android:text="Catégorie"
+                        android:textColor="@color/burgundy_dark"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_arrow_up"
+                        android:contentDescription="@string/expand" />
+
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll_category_header"
+                    android:layout_marginTop="12dp"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group_flavors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="false">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_1"
+                            style="@style/CustomChipStyle"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:checkable="true"
+                            app:chipIcon="@drawable/leaf_icon"
+                            app:chipIconSize="48dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_2"
+                            style="@style/CustomChipStyle"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:checkable="true"
+                            app:chipIcon="@drawable/leaf_icon"
+                            app:chipIconSize="48dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_3"
+                            style="@style/CustomChipStyle"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:checkable="true"
+                            app:chipIcon="@drawable/leaf_icon"
+                            app:chipIconSize="48dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_4"
+                            style="@style/CustomChipStyle"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:checkable="true"
+                            app:chipIcon="@drawable/cross_icon"
+                            app:chipIconSize="48dp" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </HorizontalScrollView>
+
+            </RelativeLayout>
+
+            <!-- RecyclerView pour les catégories -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bouton Match -->
+    <Button
+        android:id="@+id/btn_match"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="serif"
+        android:text="@string/match"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:elevation="8dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradient_bottom_nav"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:menu="@menu/bottom_nav_menu" />
+
+</RelativeLayout>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige_light">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/gradient_header">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/back"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="serif"
+            android:text="@string/connexion"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:gravity="center_horizontal">
+
+            <!-- Icône utilisateur -->
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="48dp"
+                android:src="@drawable/ic_user_circle"
+                android:contentDescription="@string/user_icon" />
+
+            <!-- Champ Email -->
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/input_field_background"
+                android:fontFamily="serif"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:textColor="@color/white"
+                android:textColorHint="#CCF5DEB3"
+                android:textSize="24sp" />
+
+            <!-- Champ Mot de passe -->
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/input_field_background"
+                android:fontFamily="serif"
+                android:hint="@string/mot_de_passe"
+                android:inputType="textPassword"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:textColor="@color/white"
+                android:textColorHint="#CCF5DEB3"
+                android:textSize="24sp" />
+
+            <!-- Bouton Se connecter -->
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_gradient"
+                android:fontFamily="serif"
+                android:text="@string/se_connecter"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:elevation="8dp" />
+
+            <!-- Mot de passe oublié -->
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="serif"
+                android:text="@string/mot_passe_oublie"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="200dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/burgundy_dark" />
+
+            <!-- Pas de compte -->
+            <TextView
+                android:id="@+id/tv_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:text="@string/pas_compte_inscris_toi"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

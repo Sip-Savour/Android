@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:orientation="horizontal">
+
+    <!-- Image du vin -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_wine_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
+
+        <ImageView
+            android:id="@+id/iv_wine_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/wine_glass_image"
+            android:contentDescription="@string/wine_image" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Bouton Vin -->
+    <Button
+        android:id="@+id/btn_wine_name"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_toEndOf="@id/cv_wine_image"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="serif"
+        android:text="@string/vin"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:elevation="6dp" />
+
+</RelativeLayout>

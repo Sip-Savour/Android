@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="Theme.SipSavour" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/burgundy</item>
+        <item name="colorPrimaryVariant">@color/burgundy_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/pink</item>
+        <item name="colorSecondaryVariant">@color/burgundy_light</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@color/burgundy_dark</item>
+    </style>
+
+    <!-- Custom Chip Style -->
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+        <item name="chipStrokeColor">@color/burgundy</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="chipCornerRadius">12dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Filter Chip Style Modern -->
+    <style name="FilterChipStyleModern" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/filter_chip_background</item>
+        <item name="chipStrokeColor">@color/burgundy</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="chipCornerRadius">24dp</item>
+        <item name="android:textColor">@color/filter_chip_text</item>
+        <item name="chipIconTint">@color/filter_chip_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="chipMinHeight">40dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+</resources>

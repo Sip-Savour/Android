@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sip&amp;Savour</string>
+    <string name="app_name_styled">Sip&amp;Savour</string>
+    <string name="app_icon">App Icon</string>
+
+    <!-- Navigation -->
+    <string name="home">Accueil</string>
+    <string name="search">Recherche</string>
+    <string name="wine">Vin</string>
+    <string name="favorites">Favoris</string>
+    <string name="profile">Profil</string>
+    <string name="back">Retour</string>
+    <string name="expand">Expand</string>
+
+    <!-- Pages -->
+    <string name="selection_hebdomadaire">Sélection hebdomadaire</string>
+    <string name="choose_flavors_text">Choisissez vos saveurs\n&amp;\nRecevez vos vins\nrecommandés</string>
+    <string name="choix_semaine">Choix de la semaine</string>
+    <string name="choix_saveurs">Choix des saveurs</string>
+    <string name="suggestion">Suggestion</string>
+    <string name="informations">Informations</string>
+    <string name="match">Match</string>
+    <string name="recherche_avancee">Recherche Avancée</string>
+    <string name="filtrer">Filtrer</string>
+    <string name="favoris">Favoris</string>
+    <string name="connexion">Connexion</string>
+    <string name="inscription">Inscription</string>
+    <string name="compte">Compte</string>
+
+    <!-- Formulaires -->
+    <string name="email">E-Mail</string>
+    <string name="mot_de_passe">Mot de passe</string>
+    <string name="se_connecter">Se connecter</string>
+    <string name="mot_passe_oublie">Mot de passe oublié ?</string>
+    <string name="pas_compte_inscris_toi">Pas de compte ? Inscris-toi !</string>
+    <string name="prenom">Prénom</string>
+    <string name="date_naissance">Date de Naissance</string>
+    <string name="deja_compte">Déjà un compte ? Connectez-vous</string>
+
+    <!-- Profil -->
+    <string name="preferences">Préférences</string>
+    <string name="historique">Historique</string>
+    <string name="user_icon">User Icon</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="edit">Edit</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
+    <!-- Vins -->
+    <string name="wine_icon">Wine Icon</string>
+    <string name="dish_icon">Dish Icon</string>
+    <string name="wine_bottle">Wine Bottle</string>
+    <string name="weekly_selection">Weekly Selection</string>
+    <string name="wine_image">Wine Image</string>
+    <string name="vin">Vin</string>
+    <string name="categorie">Catégorie</string>
+    <string name="favorite">Favorite</string>
+
+    <!-- Wine List -->
+    <string name="nos_vins">Nos Vins</string>
+    <string name="rechercher_un_vin">Rechercher un vin…</string>
+    <string name="filtrer_par_type">Filtrer par type</string>
+    <string name="tous">Tous</string>
+    <string name="rouge">Rouge</string>
+    <string name="blanc">Blanc</string>
+    <string name="rose">Rosé</string>
+    <string name="toggle_view">Toggle View</string>
+    <string name="result_count">%d vins trouvés</string>
+    <string name="aucun_vin_trouve">Aucun vin trouvé</string>
+    <string name="essayez_autre_recherche">Essayez une autre recherche</string>
+    <string name="no_results">No Results</string>
+    <string name="rating">Rating</string>
+    <string name="filter">Filter</string>
+</resources>
