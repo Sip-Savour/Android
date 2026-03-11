@@ -1,126 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
+    android:background="@color/background"
+    android:fitsSystemWindows="false">
 
-    <!-- Header avec forme arrondie -->
-    <View
-        android:id="@+id/header_curve"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@drawable/curve_top" />
-
-    <ScrollView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        android:fillViewport="true">
+        android:layout_marginBottom="56dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Carte Sélection hebdomadaire -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_weekly_selection"
-                android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/iv_weekly_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/weekly_selection_bg"
-                        android:contentDescription="@string/weekly_selection" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/gradient_overlay" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginBottom="24dp"
-                        android:fontFamily="serif"
-                        android:text="@string/selection_hebdomadaire"
-                        android:textColor="@color/white"
-                        android:textSize="32sp"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Carte Choisissez vos saveurs -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_choose_flavors"
-                android:layout_width="match_parent"
-                android:layout_height="380dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient_pink_beige">
-
-                    <ImageView
-                        android:id="@+id/iv_wine_bottle"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="32dp"
-                        android:src="@drawable/wine_bottle_question"
-                        android:contentDescription="@string/wine_bottle" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="40dp"
-                        android:fontFamily="serif"
-                        android:gravity="center"
-                        android:lineSpacingExtra="4dp"
-                        android:text="@string/choose_flavors_text"
-                        android:textColor="@color/burgundy_dark"
-                        android:textSize="28sp"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/gradient_bottom_nav"
-        app:itemIconTint="@color/bottom_nav_color"
-        app:itemTextColor="@color/bottom_nav_color"
-        app:menu="@menu/bottom_nav_menu" />
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_bottom_nav_gradient"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/bottom_nav_icon_color"
+        app:itemTextColor="@color/bottom_nav_icon_color"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconSize="26dp"
+        app:elevation="0dp"
+        app:itemRippleColor="#22FFFFFF" />
 
-</RelativeLayout>
+</FrameLayout>

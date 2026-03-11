@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <!-- === SPLASH === -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.sipandsavour.ui.home.SplashFragment"
+        android:label=""
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_splash_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+
+        <action
+            android:id="@+id/action_splash_to_auth"
+            app:destination="@id/nav_auth"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- === AUTH (nested) === -->
+    <include app:graph="@navigation/nav_auth" />
+
+    <!-- === HOME (Tab 1) === -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.sipandsavour.ui.home.HomeFragment"
+        android:label=""
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_flavor"
+            app:destination="@id/flavorSelectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+
+        <action
+            android:id="@+id/action_home_to_weekly"
+            app:destination="@id/weeklyChoiceFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <!-- === ADVANCED SEARCH (Tab 2) === -->
+    <fragment
+        android:id="@+id/advancedSearchFragment"
+        android:name="com.sipandsavour.ui.selection.FlavorFragment"
+        android:label=""
+        tools:layout="@layout/fragment_flavor">
+
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="search" />
+
+        <action
+            android:id="@+id/action_search_to_loading"
+            app:destination="@id/loadingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- === WEEKLY CHOICE (Tab 3) === -->
+    <fragment
+        android:id="@+id/weeklyChoiceFragment"
+        android:name="com.sipandsavour.ui.result.WeeklyChoiceFragment"
+        android:label=""
+        tools:layout="@layout/fragment_weekly_choice" />
+
+    <!-- === FAVORITES (Tab 4) === -->
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.sipandsavour.ui.favorites.FavoritesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_favorites">
+
+        <action
+            android:id="@+id/action_favorites_to_wineResult"
+            app:destination="@id/wineResultFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <!-- === PROFILE (Tab 5) === -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.sipandsavour.ui.profile.ProfileFragment"
+        android:label=""
+        tools:layout="@layout/fragment_profile" />
+
+    <!-- === FLAVOR SELECTION (from Home CTA) === -->
+    <fragment
+        android:id="@+id/flavorSelectionFragment"
+        android:name="com.sipandsavour.ui.selection.FlavorFragment"
+        android:label=""
+        tools:layout="@layout/fragment_flavor">
+
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="match" />
+
+        <action
+            android:id="@+id/action_flavor_to_loading"
+            app:destination="@id/loadingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- === LOADING === -->
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.sipandsavour.ui.result.ResultFragment"
+        android:label=""
+        tools:layout="@layout/fragment_result">
+
+        <action
+            android:id="@+id/action_loading_to_suggestion"
+            app:destination="@id/suggestionListFragment"
+            app:popUpTo="@id/loadingFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- === SUGGESTION LIST === -->
+    <fragment
+        android:id="@+id/suggestionListFragment"
+        android:name="com.sipandsavour.ui.result.SuggestionListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_suggestion_list">
+
+        <action
+            android:id="@+id/action_suggestion_to_wineResult"
+            app:destination="@id/wineResultFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- === WINE RESULT DETAIL === -->
+    <fragment
+        android:id="@+id/wineResultFragment"
+        android:name="com.sipandsavour.ui.result.ResultFragment"
+        android:label=""
+        tools:layout="@layout/fragment_result" />
+
+</navigation>

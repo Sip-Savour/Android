@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- === PRIMARY === -->
+    <color name="primary">#D4A0A8</color>
+    <color name="primary_dark">#1A1210</color>
+    <color name="primary_light">#E8C4CA</color>
+    <color name="primary_container">#5C2830</color>
+    <color name="on_primary">#4A1C23</color>
+    <color name="on_primary_container">#F5D5D9</color>
+
+    <!-- === SECONDARY === -->
+    <color name="secondary">#D4BF8A</color>
+    <color name="secondary_dark">#3D3520</color>
+    <color name="secondary_container">#5C4A20</color>
+    <color name="on_secondary">#3D3520</color>
+    <color name="on_secondary_container">#F5E6C8</color>
+
+    <!-- === TERTIARY === -->
+    <color name="tertiary">#A8D5B4</color>
+    <color name="tertiary_container">#1A3322</color>
+    <color name="on_tertiary">#1A3322</color>
+    <color name="on_tertiary_container">#B8DFC4</color>
+
+    <!-- === BACKGROUND & SURFACE === -->
+    <color name="background">#1A1210</color>
+    <color name="on_background">#F0E6DC</color>
+    <color name="surface">#231A18</color>
+    <color name="on_surface">#F0E6DC</color>
+    <color name="surface_variant">#4A3F3C</color>
+    <color name="on_surface_variant">#D4C8BE</color>
+    <color name="surface_container">#2C2220</color>
+    <color name="surface_container_high">#362C2A</color>
+
+    <!-- === ERROR === -->
+    <color name="error">#FFB4AB</color>
+    <color name="on_error">#690005</color>
+    <color name="error_container">#93000A</color>
+    <color name="on_error_container">#FFDAD6</color>
+
+    <!-- === OUTLINE === -->
+    <color name="outline">#9C8E85</color>
+    <color name="outline_variant">#4A3F3C</color>
+
+    <!-- === UTILITAIRES === -->
+    <color name="ripple">#33D4A0A8</color>
+    <color name="divider">#1AF0E6DC</color>
+    <color name="shadow">#40000000</color>
+    <color name="scrim">#80000000</color>
+    <color name="shimmer_base">#2C2220</color>
+    <color name="shimmer_highlight">#362C2A</color>
+
+</resources>

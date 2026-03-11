@@ -1,0 +1,9 @@
+// Top-level build file
+plugins {
+    id 'com.android.application' version '8.7.3' apply false
+    id 'com.google.dagger.hilt.android' version '2.51' apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.layout.buildDirectory
+}

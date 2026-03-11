@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:fillViewport="true"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium"
+            android:paddingTop="@dimen/margin_medium">
+
+            <!-- === Sélection hebdomadaire === -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardWeekly"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_card_height"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="@dimen/elevation_high"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:transitionName="card_weekly">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_home_weekly_ripple"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/ivWeeklyImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:alpha="0.35"
+                        android:contentDescription="@null" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_large">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_weekly_title"
+                            android:fontFamily="@font/playfair_display"
+                            android:textSize="@dimen/text_headline_medium"
+                            android:textColor="@color/header_text"
+                            android:textStyle="bold|italic"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="6" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- === Choisissez vos saveurs === -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSearch"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_card_search_height"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="@dimen/elevation_high"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:transitionName="card_search">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_home_search_ripple"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center_horizontal|top"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:src="@drawable/ic_question_bottle"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@null" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/padding_large">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_search_title"
+                            android:fontFamily="@font/playfair_display"
+                            android:textSize="@dimen/text_title_large"
+                            android:textColor="@color/primary"
+                            android:textStyle="bold"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:text="@string/home_search_subtitle"
+                            android:fontFamily="@font/playfair_display"
+                            android:textSize="@dimen/text_title_medium"
+                            android:textColor="@color/primary"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- === Shimmer placeholder (visible pendant chargement) === -->
+            <LinearLayout
+                android:id="@+id/shimmerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/home_card_height"
+                    android:background="@drawable/bg_shimmer_rounded" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/home_card_search_height"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@drawable/bg_shimmer_rounded" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_medium" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

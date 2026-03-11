@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Feuille -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M12,2 C6,6 4,12 6,18 C8,22 12,22 12,22 C12,22 16,22 18,18 C20,12 18,6 12,2 Z" />
+
+    <!-- Nervure centrale -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1.2"
+        android:pathData="M12,6 L12,19" />
+
+    <!-- Nervures latérales -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="0.8"
+        android:pathData="M12,10 L8,8 M12,13 L9,11 M12,16 L10,15" />
+
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="0.8"
+        android:pathData="M12,10 L16,8 M12,13 L15,11 M12,16 L14,15" />
+
+</vector>

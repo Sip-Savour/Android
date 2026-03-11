@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <include layout="@layout/layout_header_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingStart="@dimen/padding_xlarge"
+            android:paddingEnd="@dimen/padding_xlarge"
+            android:paddingTop="@dimen/padding_large"
+            android:paddingBottom="@dimen/padding_xlarge">
+
+            <!-- Person icon -->
+            <FrameLayout
+                android:layout_width="@dimen/person_icon_size"
+                android:layout_height="@dimen/person_icon_size"
+                android:layout_marginTop="@dimen/margin_large">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_person_circle" />
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_person"
+                    android:tint="@color/primary"
+                    android:contentDescription="@null" />
+
+            </FrameLayout>
+
+            <!-- Email pill input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xlarge"
+                android:hint="@string/login_email_hint"
+                style="@style/Widget.SipSavour.PillInput">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="yes"
+                    android:autofillHints="emailAddress"
+                    style="@style/Widget.SipSavour.PillInput.EditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Password pill input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:hint="@string/login_password_hint"
+                app:endIconMode="password_toggle"
+                style="@style/Widget.SipSavour.PillInput">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:inputType="textPassword"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="yes"
+                    android:autofillHints="password"
+                    style="@style/Widget.SipSavour.PillInput.EditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Error -->
+            <TextView
+                android:id="@+id/tvError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="@color/error"
+                android:textSize="@dimen/text_caption"
+                android:fontFamily="@font/lato"
+                android:visibility="gone"
+                android:gravity="center" />
+
+            <!-- Login gradient button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/login_button"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_title_medium"
+                android:textColor="@color/btn_gradient_text"
+                android:textStyle="italic"
+                app:backgroundTint="@null"
+                android:background="@drawable/bg_button_gradient_selector"
+                app:rippleColor="#33FFFFFF"
+                app:cornerRadius="28dp"
+                app:elevation="@dimen/elevation_medium"
+                android:stateListAnimator="@null" />
+
+            <!-- Loading -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="@color/primary"
+                app:trackColor="@color/surface_variant"
+                app:trackCornerRadius="2dp" />
+
+            <!-- Forgot password -->
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/login_forgot_password"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_body"
+                android:textColor="@color/on_background"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground" />
+
+            <!-- Divider -->
+            <View
+                android:layout_width="200dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/primary" />
+
+            <!-- Register link -->
+            <TextView
+                android:id="@+id/btnGoToRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/login_no_account"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_body"
+                android:textColor="@color/on_background"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

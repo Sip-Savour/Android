@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Pièce de viande -->
+    <path
+        android:fillColor="#8B4513"
+        android:pathData="M12,5 C7.58,5 4,8.13 4,12 C4,15.87 7.58,19 12,19 C16.42,19 20,15.87 20,12 C20,8.13 16.42,5 12,5 Z" />
+
+    <!-- Marbrage -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#D2B48C"
+        android:strokeWidth="0.8"
+        android:pathData="M8,9 Q12,11 10,15" />
+
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#D2B48C"
+        android:strokeWidth="0.6"
+        android:pathData="M14,8 Q13,12 16,14" />
+
+</vector>

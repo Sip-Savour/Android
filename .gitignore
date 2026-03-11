@@ -1,17 +1,88 @@
+# ========================
+# ANDROID / GRADLE
+# ========================
 *.iml
-.gradle
+.gradle/
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
 .DS_Store
-/build
+/build/
 /captures
-.externalNativeBuild
-.cxx
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# ========================
+# GRADLE WRAPPER (garder le wrapper, ignorer le cache)
+# ========================
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# ========================
+# IDE
+# ========================
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/gradle.xml
+/.idea/assetWizardSettings.xml
+/.idea/dictionaries
+/.idea/libraries
+/.idea/caches
+/.idea/modules.xml
+/.idea/navEditor.xml
+/.idea/deploymentTargetSelector.xml
+*.swp
+*~
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ========================
+# SIGNING / SECRETS
+# ========================
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+google-services.json
 local.properties
-.idead/*
-/.idea/*
+secrets.properties
+*.env
+
+# ========================
+# LOGS / CRASH
+# ========================
+*.log
+crash-reports/
+
+# ========================
+# BUILD OUTPUTS
+# ========================
+/app/build/
+/app/release/
+/build/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ========================
+# TESTS / COVERAGE
+# ========================
+/app/coverage/
+*.exec
+jacoco.exec

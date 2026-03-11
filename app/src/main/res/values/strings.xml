@@ -1,75 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sip&amp;Savour</string>
-    <string name="app_name_styled">Sip&amp;Savour</string>
-    <string name="app_icon">App Icon</string>
 
-    <!-- Navigation -->
-    <string name="home">Accueil</string>
-    <string name="search">Recherche</string>
-    <string name="wine">Vin</string>
-    <string name="favorites">Favoris</string>
-    <string name="profile">Profil</string>
-    <string name="back">Retour</string>
-    <string name="expand">Expand</string>
+    <!-- === GLOBAL === -->
+    <string name="app_name">Sip &amp; Savour</string>
+    <string name="app_name_stylized">Sip&amp;Savour</string>
+    <string name="app_tagline">Le vin parfait pour chaque plat</string>
 
-    <!-- Pages -->
-    <string name="selection_hebdomadaire">Sélection hebdomadaire</string>
-    <string name="choose_flavors_text">Choisissez vos saveurs\n&amp;\nRecevez vos vins\nrecommandés</string>
-    <string name="choix_semaine">Choix de la semaine</string>
-    <string name="choix_saveurs">Choix des saveurs</string>
-    <string name="suggestion">Suggestion</string>
-    <string name="informations">Informations</string>
-    <string name="match">Match</string>
-    <string name="recherche_avancee">Recherche Avancée</string>
-    <string name="filtrer">Filtrer</string>
-    <string name="favoris">Favoris</string>
-    <string name="connexion">Connexion</string>
-    <string name="inscription">Inscription</string>
-    <string name="compte">Compte</string>
+    <!-- === BOTTOM NAV === -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_search">Rechercher</string>
+    <string name="nav_favorites">Favoris</string>
+    <string name="nav_profile">Profil</string>
 
-    <!-- Formulaires -->
-    <string name="email">E-Mail</string>
-    <string name="mot_de_passe">Mot de passe</string>
-    <string name="se_connecter">Se connecter</string>
-    <string name="mot_passe_oublie">Mot de passe oublié ?</string>
-    <string name="pas_compte_inscris_toi">Pas de compte ? Inscris-toi !</string>
-    <string name="prenom">Prénom</string>
-    <string name="date_naissance">Date de Naissance</string>
-    <string name="deja_compte">Déjà un compte ? Connectez-vous</string>
+    <!-- === SPLASH === -->
+    <string name="splash_loading">Chargement…</string>
 
-    <!-- Profil -->
-    <string name="preferences">Préférences</string>
-    <string name="historique">Historique</string>
-    <string name="user_icon">User Icon</string>
-    <string name="profile_picture">Profile Picture</string>
-    <string name="edit">Edit</string>
-    <string name="settings">Settings</string>
-    <string name="logout">Logout</string>
+    <!-- === AUTH — LOGIN === -->
+    <string name="login_title">Connexion</string>
+    <string name="login_subtitle">Bienvenue sur Sip &amp; Savour</string>
+    <string name="login_email_hint">E-Mail</string>
+    <string name="login_password_hint">Mot de passe</string>
+    <string name="login_button">Se connecter</string>
+    <string name="login_no_account">Pas de compte ?</string>
+    <string name="login_register_link">Inscris-toi !</string>
+    <string name="login_forgot_password">Mot de passe oublié ?</string>
 
-    <!-- Vins -->
-    <string name="wine_icon">Wine Icon</string>
-    <string name="dish_icon">Dish Icon</string>
-    <string name="wine_bottle">Wine Bottle</string>
-    <string name="weekly_selection">Weekly Selection</string>
-    <string name="wine_image">Wine Image</string>
-    <string name="vin">Vin</string>
-    <string name="categorie">Catégorie</string>
-    <string name="favorite">Favorite</string>
+    <!-- === AUTH — REGISTER === -->
+    <string name="register_title">Inscription</string>
+    <string name="register_subtitle">Créez votre compte</string>
+    <string name="register_name_hint">Prénom</string>
+    <string name="register_email_hint">E-Mail</string>
+    <string name="register_password_hint">Mot de passe</string>
+    <string name="register_confirm_password_hint">Confirmer le mot de passe</string>
+    <string name="register_button">S\'inscrire</string>
+    <string name="register_has_account">Déjà un compte ?</string>
+    <string name="register_login_link">Connecte-toi !</string>
 
-    <!-- Wine List -->
-    <string name="nos_vins">Nos Vins</string>
-    <string name="rechercher_un_vin">Rechercher un vin…</string>
-    <string name="filtrer_par_type">Filtrer par type</string>
-    <string name="tous">Tous</string>
-    <string name="rouge">Rouge</string>
-    <string name="blanc">Blanc</string>
-    <string name="rose">Rosé</string>
-    <string name="toggle_view">Toggle View</string>
-    <string name="result_count">%d vins trouvés</string>
-    <string name="aucun_vin_trouve">Aucun vin trouvé</string>
-    <string name="essayez_autre_recherche">Essayez une autre recherche</string>
-    <string name="no_results">No Results</string>
-    <string name="rating">Rating</string>
-    <string name="filter">Filter</string>
+    <!-- === HOME === -->
+    <string name="home_greeting">Bonjour %1$s 🍷</string>
+    <string name="home_greeting_default">Bonjour 🍷</string>
+    <string name="home_daily_title">Suggestion du jour</string>
+    <string name="home_daily_subtitle">Notre sélection pour vous</string>
+    <string name="home_discover_button">Découvrir</string>
+    <string name="home_start_search">Trouver mon vin</string>
+
+    <!-- === SÉLECTION — CATÉGORIE === -->
+    <string name="category_title">Que mangez-vous ?</string>
+    <string name="category_subtitle">Choisissez votre catégorie de plat</string>
+    <string name="category_meat">Viande</string>
+    <string name="category_fish">Poisson</string>
+    <string name="category_veggie">Végétarien</string>
+    <string name="category_cheese">Fromage</string>
+
+    <!-- === SÉLECTION — SOUS-CATÉGORIES === -->
+    <string name="subcategory_title">Précisez votre plat</string>
+    <string name="subcategory_beef">Bœuf</string>
+    <string name="subcategory_lamb">Agneau</string>
+    <string name="subcategory_pork">Porc</string>
+    <string name="subcategory_poultry">Volaille</string>
+    <string name="subcategory_game">Gibier</string>
+    <string name="subcategory_white_fish">Poisson blanc</string>
+    <string name="subcategory_oily_fish">Poisson gras</string>
+    <string name="subcategory_seafood">Fruits de mer</string>
+    <string name="subcategory_shellfish">Crustacés</string>
+    <string name="subcategory_grilled_veggies">Légumes grillés</string>
+    <string name="subcategory_salad">Salade</string>
+    <string name="subcategory_pasta">Pâtes</string>
+    <string name="subcategory_risotto">Risotto</string>
+    <string name="subcategory_soft_cheese">Fromage doux</string>
+    <string name="subcategory_aged_cheese">Fromage affiné</string>
+    <string name="subcategory_blue_cheese">Fromage bleu</string>
+    <string name="subcategory_goat_cheese">Chèvre</string>
+
+    <!-- === SÉLECTION — SAVEURS === -->
+    <string name="flavor_title">Décrivez les saveurs</string>
+    <string name="flavor_subtitle">Sélectionnez les saveurs de votre plat</string>
+    <string name="flavor_grilled">Grillé</string>
+    <string name="flavor_smoked">Fumé</string>
+    <string name="flavor_spicy">Épicé</string>
+    <string name="flavor_creamy">Crémeux</string>
+    <string name="flavor_herbal">Herbacé</string>
+    <string name="flavor_acidic">Acide</string>
+    <string name="flavor_sweet">Sucré</string>
+    <string name="flavor_rich">Riche</string>
+    <string name="flavor_light">Léger</string>
+    <string name="flavor_buttery">Beurré</string>
+    <string name="flavor_roasted">Rôti</string>
+    <string name="flavor_braised">Mijoté</string>
+    <string name="flavor_caramelized">Caramélisé</string>
+    <string name="flavor_peppery">Poivré</string>
+    <string name="flavor_next_button">Suivant</string>
+
+    <!-- === SÉLECTION — COULEUR VIN === -->
+    <string name="color_title">Préférence de vin</string>
+    <string name="color_subtitle">Quel type de vin préférez-vous ?</string>
+    <string name="color_red">Rouge</string>
+    <string name="color_white">Blanc</string>
+    <string name="color_rose">Rosé</string>
+    <string name="color_no_preference">Pas de préférence</string>
+    <string name="color_search_button">Trouver mon vin</string>
+
+    <!-- === CHARGEMENT === -->
+    <string name="loading_title">Recherche en cours…</string>
+    <string name="loading_subtitle">Nous cherchons le vin parfait pour vous</string>
+
+    <!-- === RÉSULTAT === -->
+    <string name="result_title">Votre vin</string>
+    <string name="result_type_label">Type :</string>
+    <string name="result_keywords_label">Mots clefs :</string>
+    <string name="result_description_label">Description</string>
+    <string name="result_winery_label">Domaine :</string>
+    <string name="result_region_label">Région :</string>
+    <string name="result_country_label">Pays :</string>
+    <string name="result_add_favorite">Ajouter aux favoris</string>
+    <string name="result_remove_favorite">Retirer des favoris</string>
+    <string name="result_added_snackbar">Vin ajouté aux favoris ❤️</string>
+    <string name="result_removed_snackbar">Vin retiré des favoris</string>
+    <string name="result_search_again">Nouvelle recherche</string>
+
+    <!-- === FAVORIS === -->
+    <string name="favorites_title">Mes favoris</string>
+    <string name="favorites_empty_title">Aucun favori</string>
+    <string name="favorites_empty_subtitle">Vos vins favoris apparaîtront ici</string>
+    <string name="favorites_removed_snackbar">Vin retiré des favoris</string>
+    <string name="favorites_undo">Annuler</string>
+    <string name="favorites_swipe_hint">Glissez pour supprimer</string>
+
+    <!-- === PROFIL === -->
+    <string name="profile_title">Mon profil</string>
+    <string name="profile_logout">Se déconnecter</string>
+    <string name="profile_logout_confirm_title">Déconnexion</string>
+    <string name="profile_logout_confirm_message">Voulez-vous vraiment vous déconnecter ?</string>
+    <string name="profile_edit">Modifier le profil</string>
+
+    <!-- === ERREURS === -->
+    <string name="error_title">Oups !</string>
+    <string name="error_network">Vérifiez votre connexion internet</string>
+    <string name="error_server">Erreur serveur, réessayez plus tard</string>
+    <string name="error_unknown">Une erreur inattendue est survenue</string>
+    <string name="error_retry">Réessayer</string>
+    <string name="error_ok">OK</string>
+    <string name="error_cancel">Annuler</string>
+
+    <!-- === VALIDATION === -->
+    <string name="validation_email_invalid">Adresse e-mail invalide</string>
+    <string name="validation_email_required">L\'e-mail est requis</string>
+    <string name="validation_password_short">Le mot de passe doit contenir au moins 6 caractères</string>
+    <string name="validation_password_required">Le mot de passe est requis</string>
+    <string name="validation_name_required">Le prénom est requis</string>
+    <string name="validation_passwords_mismatch">Les mots de passe ne correspondent pas</string>
+
+    <!-- === NOTIFICATION === -->
+    <string name="notification_channel_name">Suggestion du jour</string>
+    <string name="notification_channel_description">Recevez une suggestion de vin chaque jour</string>
+    <string name="notification_daily_title">🍷 Suggestion du jour</string>
+    <string name="notification_daily_text">Découvrez le vin idéal pour aujourd\'hui</string>
+
+    <!-- === ACCESSIBILITÉ === -->
+    <string name="cd_logo">Logo Sip and Savour</string>
+    <string name="cd_wine_image">Image du vin recommandé</string>
+    <string name="cd_category_icon">Icône catégorie %1$s</string>
+    <string name="cd_favorite_button">Bouton favori</string>
+    <string name="cd_back_button">Retour</string>
+    <string name="cd_wine_color">Couleur du vin %1$s</string>
+
+    <!-- === BOTTOM NAV === -->
+    <string name="nav_bottle">Bouteille</string>
+    
+    <!-- === HOME === -->
+    <string name="home_weekly_title">Sélection hebdomadaire</string>
+    <string name="home_search_title">Choisissez vos saveurs</string>
+    <string name="home_search_subtitle">&amp;\nRecevez vos vins recommandés</string>
+    
+    <!-- === WEEKLY CHOICE === -->
+    <string name="weekly_title">Choix de la semaine</string>
+    <string name="weekly_meal_label">Plat:</string>
+    <string name="weekly_ingredient_label">Ingrédients:</string>
+    
+    <!-- === SUGGESTION === -->
+    <string name="suggestion_title">Suggestion</string>
+    
+    <!-- === INFORMATIONS (Wine Detail) === -->
+    <string name="info_title">Informations</string>
+    <string name="info_cepage_label">Cépage:</string>
+    <string name="info_description_label">Description:</string>
+    <string name="info_type_label">Type:</string>
+    <string name="info_keywords_label">Mots-clefs:</string>
+    
+    <!-- === SEARCH === -->
+    <string name="search_title">Recherche Avancée</string>
+    <string name="search_filter_button">Filtrer</string>
+    <string name="search_match_button">Match</string>
+    
+    <!-- === FLAVOR SELECTION === -->
+    <string name="flavor_selection_title">Choix des saveurs</string>
+
+    <!-- Flavor selection -->
+    <string name="flavor_title_match">Choix des saveurs</string>
+    <string name="flavor_title_search">Recherche Avancée</string>
+    <string name="loading">Chargement…</string>
+
+    <!-- Categories -->
+    <string name="category_fruits">Fruits</string>
+    <string name="category_structure">Structure &amp; Corps</string>
+    <string name="category_wood">Bois, Fumée &amp; Épices</string>
+    <string name="category_vegetal">Végétal &amp; Floral</string>
+    <string name="category_terroir">Terroir &amp; Complexité</string>
+    
+    <!-- === PROFIL === -->
+    <string name="profile_account_title">Compte</string>
+    <string name="profile_preferences">Préférences</string>
+    <string name="profile_history">Historique</string>
+    <string name="profile_dob">Date de naissance</string>
+    <string name="profile_dob_hint">Date de Naissance</string>
+    
+    <!-- === REGISTER (ajout) === -->
+    <string name="register_dob_hint">Date de Naissance</string>
+    <string name="register_already_account">Déjà un compte ? Connectez-vous</string>
 </resources>

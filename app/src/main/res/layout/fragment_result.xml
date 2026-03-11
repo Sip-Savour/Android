@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <include layout="@layout/layout_header_bar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_gradient_rose"
+                android:padding="@dimen/padding_large"
+                android:transitionName="wine_detail_card">
+
+                <!-- Wine fork icon -->
+                <ImageView
+                    android:layout_width="@dimen/wine_fork_icon_size"
+                    android:layout_height="@dimen/wine_fork_icon_size"
+                    android:layout_gravity="top|end"
+                    android:src="@drawable/ic_wine_fork"
+                    android:contentDescription="@null" />
+
+                <!-- Heart favorite -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    app:srcCompat="@drawable/ic_heart_outline"
+                    app:tint="@color/header_text"
+                    app:fabSize="mini"
+                    app:backgroundTint="@color/primary"
+                    app:elevation="@dimen/elevation_medium"
+                    android:contentDescription="@string/cd_favorite_button" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="64dp"
+                    android:layout_marginBottom="48dp">
+
+                    <!-- Cépage -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_cepage_label"
+                            style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                        <TextView
+                            android:id="@+id/tvCepage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_small"
+                            style="@style/TextAppearance.SipSavour.WineValue" />
+
+                    </LinearLayout>
+
+                    <!-- Description -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/info_description_label"
+                        style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                    <TextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        style="@style/TextAppearance.SipSavour.WineBody" />
+
+                    <!-- Type -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_type_label"
+                            style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                        <TextView
+                            android:id="@+id/tvType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_small"
+                            style="@style/TextAppearance.SipSavour.WineValue" />
+
+                    </LinearLayout>
+
+                    <!-- Mots-clefs -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/info_keywords_label"
+                        style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupKeywords"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        app:chipSpacingHorizontal="@dimen/margin_small"
+                        app:chipSpacingVertical="@dimen/margin_tiny" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_xlarge" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

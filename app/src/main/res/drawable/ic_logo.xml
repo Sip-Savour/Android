@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Liquide vin -->
+    <path
+        android:fillColor="#722F37"
+        android:pathData="M15,14 L11,24 C11,27 16,29 24,29 C32,29 37,27 37,24 L33,14 Z" />
+
+    <!-- Verre contour -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#C9A961"
+        android:strokeWidth="1.8"
+        android:pathData="M15,6 L11,24 C11,27 16,29 24,29 C32,29 37,27 37,24 L33,6 Z" />
+
+    <!-- Pied -->
+    <path
+        android:fillColor="#C9A961"
+        android:pathData="M23,29 L23,40 L25,40 L25,29 Z" />
+
+    <!-- Base -->
+    <path
+        android:fillColor="#C9A961"
+        android:pathData="M18,40 L18,42 L30,42 L30,40 Z" />
+
+</vector>
