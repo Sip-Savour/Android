@@ -9,6 +9,7 @@
     <!-- === BOTTOM NAV === -->
     <string name="nav_home">Accueil</string>
     <string name="nav_search">Rechercher</string>
+    <string name="nav_bottle">Bouteille</string>
     <string name="nav_favorites">Favoris</string>
     <string name="nav_profile">Profil</string>
 
@@ -32,17 +33,32 @@
     <string name="register_email_hint">E-Mail</string>
     <string name="register_password_hint">Mot de passe</string>
     <string name="register_confirm_password_hint">Confirmer le mot de passe</string>
-    <string name="register_button">S\'inscrire</string>
+    <!--
+        Corrigé : bouton = "Inscription" pour correspondre à la maquette
+        (était "S'inscrire")
+    -->
+    <string name="register_button">Inscription</string>
     <string name="register_has_account">Déjà un compte ?</string>
     <string name="register_login_link">Connecte-toi !</string>
+    <string name="register_dob_hint">Date de Naissance</string>
+    <string name="register_already_account">Déjà un compte ? Connectez-vous</string>
 
     <!-- === HOME === -->
-    <string name="home_greeting">Bonjour %1$s 🍷</string>
-    <string name="home_greeting_default">Bonjour 🍷</string>
+    <!--
+        Emoji retiré de la string → à gérer programmatiquement
+        ou via un TextView séparé pour éviter les problèmes
+        sur anciens devices
+    -->
+    <string name="home_greeting">Bonjour %1$s</string>
+    <string name="home_greeting_default">Bonjour</string>
+    <string name="home_greeting_emoji">&#127863;</string>
     <string name="home_daily_title">Suggestion du jour</string>
     <string name="home_daily_subtitle">Notre sélection pour vous</string>
     <string name="home_discover_button">Découvrir</string>
     <string name="home_start_search">Trouver mon vin</string>
+    <string name="home_weekly_title">Sélection hebdomadaire</string>
+    <string name="home_search_title">Choisissez vos saveurs</string>
+    <string name="home_search_subtitle">&amp;\nRecevez vos vins recommandés</string>
 
     <!-- === SÉLECTION — CATÉGORIE === -->
     <string name="category_title">Que mangez-vous ?</string>
@@ -51,6 +67,11 @@
     <string name="category_fish">Poisson</string>
     <string name="category_veggie">Végétarien</string>
     <string name="category_cheese">Fromage</string>
+    <string name="category_fruits">Fruits</string>
+    <string name="category_structure">Structure &amp; Corps</string>
+    <string name="category_wood">Bois, Fumée &amp; Épices</string>
+    <string name="category_vegetal">Végétal &amp; Floral</string>
+    <string name="category_terroir">Terroir &amp; Complexité</string>
 
     <!-- === SÉLECTION — SOUS-CATÉGORIES === -->
     <string name="subcategory_title">Précisez votre plat</string>
@@ -73,7 +94,13 @@
     <string name="subcategory_goat_cheese">Chèvre</string>
 
     <!-- === SÉLECTION — SAVEURS === -->
-    <string name="flavor_title">Décrivez les saveurs</string>
+    <!--
+        Unifié : flavor_title est la référence unique
+        flavor_title_match et flavor_selection_title
+        sont supprimés (doublons)
+    -->
+    <string name="flavor_title">Choix des saveurs</string>
+    <string name="flavor_title_search">Recherche Avancée</string>
     <string name="flavor_subtitle">Sélectionnez les saveurs de votre plat</string>
     <string name="flavor_grilled">Grillé</string>
     <string name="flavor_smoked">Fumé</string>
@@ -101,6 +128,7 @@
     <string name="color_search_button">Trouver mon vin</string>
 
     <!-- === CHARGEMENT === -->
+    <string name="loading">Chargement…</string>
     <string name="loading_title">Recherche en cours…</string>
     <string name="loading_subtitle">Nous cherchons le vin parfait pour vous</string>
 
@@ -114,9 +142,29 @@
     <string name="result_country_label">Pays :</string>
     <string name="result_add_favorite">Ajouter aux favoris</string>
     <string name="result_remove_favorite">Retirer des favoris</string>
-    <string name="result_added_snackbar">Vin ajouté aux favoris ❤️</string>
+    <string name="result_added_snackbar">Vin ajouté aux favoris</string>
     <string name="result_removed_snackbar">Vin retiré des favoris</string>
     <string name="result_search_again">Nouvelle recherche</string>
+
+    <!-- === WEEKLY CHOICE === -->
+    <string name="weekly_title">Choix de la semaine</string>
+    <string name="weekly_meal_label">Plat :</string>
+    <string name="weekly_ingredient_label">Ingrédients :</string>
+
+    <!-- === SUGGESTION === -->
+    <string name="suggestion_title">Suggestion</string>
+
+    <!-- === INFORMATIONS (Wine Detail) === -->
+    <string name="info_title">Informations</string>
+    <string name="info_cepage_label">Cépage :</string>
+    <string name="info_description_label">Description :</string>
+    <string name="info_type_label">Type :</string>
+    <string name="info_keywords_label">Mots-clefs :</string>
+
+    <!-- === SEARCH === -->
+    <string name="search_title">Recherche Avancée</string>
+    <string name="search_filter_button">Filtrer</string>
+    <string name="search_match_button">Match</string>
 
     <!-- === FAVORIS === -->
     <string name="favorites_title">Mes favoris</string>
@@ -128,6 +176,11 @@
 
     <!-- === PROFIL === -->
     <string name="profile_title">Mon profil</string>
+    <string name="profile_account_title">Compte</string>
+    <string name="profile_preferences">Préférences</string>
+    <string name="profile_history">Historique</string>
+    <string name="profile_dob">Date de naissance</string>
+    <string name="profile_dob_hint">Date de Naissance</string>
     <string name="profile_logout">Se déconnecter</string>
     <string name="profile_logout_confirm_title">Déconnexion</string>
     <string name="profile_logout_confirm_message">Voulez-vous vraiment vous déconnecter ?</string>
@@ -150,10 +203,10 @@
     <string name="validation_name_required">Le prénom est requis</string>
     <string name="validation_passwords_mismatch">Les mots de passe ne correspondent pas</string>
 
-    <!-- === NOTIFICATION === -->
+    <!-- === NOTIFICATIONS === -->
     <string name="notification_channel_name">Suggestion du jour</string>
     <string name="notification_channel_description">Recevez une suggestion de vin chaque jour</string>
-    <string name="notification_daily_title">🍷 Suggestion du jour</string>
+    <string name="notification_daily_title">Suggestion du jour</string>
     <string name="notification_daily_text">Découvrez le vin idéal pour aujourd\'hui</string>
 
     <!-- === ACCESSIBILITÉ === -->
@@ -164,57 +217,4 @@
     <string name="cd_back_button">Retour</string>
     <string name="cd_wine_color">Couleur du vin %1$s</string>
 
-    <!-- === BOTTOM NAV === -->
-    <string name="nav_bottle">Bouteille</string>
-    
-    <!-- === HOME === -->
-    <string name="home_weekly_title">Sélection hebdomadaire</string>
-    <string name="home_search_title">Choisissez vos saveurs</string>
-    <string name="home_search_subtitle">&amp;\nRecevez vos vins recommandés</string>
-    
-    <!-- === WEEKLY CHOICE === -->
-    <string name="weekly_title">Choix de la semaine</string>
-    <string name="weekly_meal_label">Plat:</string>
-    <string name="weekly_ingredient_label">Ingrédients:</string>
-    
-    <!-- === SUGGESTION === -->
-    <string name="suggestion_title">Suggestion</string>
-    
-    <!-- === INFORMATIONS (Wine Detail) === -->
-    <string name="info_title">Informations</string>
-    <string name="info_cepage_label">Cépage:</string>
-    <string name="info_description_label">Description:</string>
-    <string name="info_type_label">Type:</string>
-    <string name="info_keywords_label">Mots-clefs:</string>
-    
-    <!-- === SEARCH === -->
-    <string name="search_title">Recherche Avancée</string>
-    <string name="search_filter_button">Filtrer</string>
-    <string name="search_match_button">Match</string>
-    
-    <!-- === FLAVOR SELECTION === -->
-    <string name="flavor_selection_title">Choix des saveurs</string>
-
-    <!-- Flavor selection -->
-    <string name="flavor_title_match">Choix des saveurs</string>
-    <string name="flavor_title_search">Recherche Avancée</string>
-    <string name="loading">Chargement…</string>
-
-    <!-- Categories -->
-    <string name="category_fruits">Fruits</string>
-    <string name="category_structure">Structure &amp; Corps</string>
-    <string name="category_wood">Bois, Fumée &amp; Épices</string>
-    <string name="category_vegetal">Végétal &amp; Floral</string>
-    <string name="category_terroir">Terroir &amp; Complexité</string>
-    
-    <!-- === PROFIL === -->
-    <string name="profile_account_title">Compte</string>
-    <string name="profile_preferences">Préférences</string>
-    <string name="profile_history">Historique</string>
-    <string name="profile_dob">Date de naissance</string>
-    <string name="profile_dob_hint">Date de Naissance</string>
-    
-    <!-- === REGISTER (ajout) === -->
-    <string name="register_dob_hint">Date de Naissance</string>
-    <string name="register_already_account">Déjà un compte ? Connectez-vous</string>
 </resources>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme -->
+    <!-- ============================================== -->
+    <!--  THEME PRINCIPAL                               -->
+    <!-- ============================================== -->
     <style name="Theme.SipSavour" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
         <!-- Primary colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -26,15 +29,15 @@
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/on_error</item>
 
-        <!-- Status bar -->
-        <item name="android:statusBarColor">@color/primary</item>
-        <item name="android:navigationBarColor">@color/primary</item>
+        <!-- Status & Navigation bar -->
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
 
         <!-- Window -->
         <item name="android:windowBackground">@color/background</item>
-        <item name="android:windowLightStatusBar">false</item>
 
-        <!-- Widget styles -->
+        <!-- Widget styles globaux -->
         <item name="materialButtonStyle">@style/Widget.SipSavour.Button</item>
         <item name="textInputStyle">@style/Widget.SipSavour.TextInput</item>
         <item name="chipStyle">@style/Widget.SipSavour.Chip</item>
@@ -45,12 +48,39 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SipSavour.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SipSavour.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SipSavour.LargeComponent</item>
+
     </style>
 
-    <!-- Splash screen theme -->
+    <!-- ============================================== -->
+    <!--  THEME SPLASH                                  -->
+    <!-- ============================================== -->
     <style name="Theme.SipSavour.Splash" parent="Theme.SipSavour">
         <item name="android:windowBackground">@drawable/bg_splash_gradient</item>
         <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primary</item>
+    </style>
+
+    <!-- ============================================== -->
+    <!--  THEME AUTH (Login / Register)                 -->
+    <!--  Pas de BottomNavigationView sur ces écrans    -->
+    <!-- ============================================== -->
+    <style name="Theme.SipSavour.Auth" parent="Theme.SipSavour">
+        <!--
+            Surcharge le style BottomNav avec @null
+            pour éviter tout rendu parasite sur les
+            fragments Login et Register
+        -->
+        <item name="bottomNavigationStyle">@null</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+    </style>
+
+    <!-- ============================================== -->
+    <!--  THEME NO ACTION BAR (alias pratique)          -->
+    <!-- ============================================== -->
+    <style name="Theme.SipSavour.NoActionBar" parent="Theme.SipSavour">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

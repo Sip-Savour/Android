@@ -10,7 +10,12 @@
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_button</item>
         <item name="android:textColor">@color/btn_gradient_text</item>
-        <item name="android:textStyle">italic</item>
+        <!--
+            italic retiré ici : Playfair Display Bold n'a pas
+            de variante bold+italic embarquée → risque de faux italique
+            système. Gérer l'italique via une variante de font si besoin.
+        -->
+        <item name="android:textStyle">normal</item>
         <item name="cornerRadius">@dimen/radius_xlarge</item>
         <item name="backgroundTint">@null</item>
         <item name="android:background">@drawable/bg_button_gradient_selector</item>
@@ -37,9 +42,12 @@
     </style>
 
     <!-- === TEXT INPUT === -->
-    <style name="Widget.SipSavour.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <!--
+        Corrigé : parent → FilledBox pour être cohérent
+        avec boxBackgroundMode="filled"
+    -->
+    <style name="Widget.SipSavour.TextInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@color/input_pill_bg</item>
-        <item name="boxBackgroundMode">filled</item>
         <item name="boxCornerRadiusTopStart">@dimen/radius_xlarge</item>
         <item name="boxCornerRadiusTopEnd">@dimen/radius_xlarge</item>
         <item name="boxCornerRadiusBottomStart">@dimen/radius_xlarge</item>
@@ -48,12 +56,15 @@
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="hintTextColor">@color/input_pill_hint</item>
         <item name="android:textColorHint">@color/input_pill_hint_inactive</item>
+        <!-- États ajoutés -->
+        <item name="boxBackgroundColorFocused">@color/input_pill_bg_focused</item>
     </style>
 
-    <style name="Widget.SipSavour.TextInput.EditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+    <style name="Widget.SipSavour.TextInput.EditText" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">@dimen/text_body</item>
         <item name="android:textColor">@color/input_pill_text</item>
+        <item name="android:textColorHint">@color/input_pill_hint_inactive</item>
         <item name="android:paddingStart">@dimen/padding_large</item>
         <item name="android:paddingEnd">@dimen/padding_large</item>
     </style>
@@ -85,6 +96,8 @@
         <item name="chipStrokeWidth">@dimen/chip_stroke_width</item>
         <item name="chipCornerRadius">@dimen/chip_corner_radius</item>
         <item name="chipMinHeight">@dimen/chip_height</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="rippleColor">@color/ripple</item>
     </style>
 
     <!-- === CARD === -->
@@ -196,6 +209,13 @@
         <item name="android:textStyle">bold|italic</item>
     </style>
 
+    <!-- === TOOLBAR === -->
+    <style name="TextAppearance.SipSavour.Toolbar" parent="TextAppearance.SipSavour.TitleLarge">
+        <item name="android:textColor">@color/header_text</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="fontFamily">@font/playfair_display</item>
+    </style>
+
     <!-- ============================================== -->
     <!--  SHAPE APPEARANCES                             -->
     <!-- ============================================== -->
@@ -218,13 +238,6 @@
     <style name="ShapeAppearance.SipSavour.Pill" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
-    </style>
-
-    <!-- === TOOLBAR === -->
-    <style name="TextAppearance.SipSavour.Toolbar" parent="TextAppearance.SipSavour.TitleLarge">
-        <item name="android:textColor">@color/header_text</item>
-        <item name="android:textStyle">bold|italic</item>
-        <item name="fontFamily">@font/playfair_display</item>
     </style>
 
 </resources>

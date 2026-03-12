@@ -43,7 +43,8 @@
     <color name="outline_variant">#D4C8BE</color>
 
     <!-- === COULEURS VIN === -->
-    <color name="wine_red">#722F37</color>
+    <!-- wine_red référence primary pour éviter la redondance -->
+    <color name="wine_red">@color/primary</color>
     <color name="wine_white">#F5E6A8</color>
     <color name="wine_rose">#E8A0B5</color>
 
@@ -61,24 +62,27 @@
     <color name="shimmer_base">#F0E6D8</color>
     <color name="shimmer_highlight">#FFFAF4</color>
 
-    <!-- Input pills -->
+    <!-- === INPUT PILLS === -->
     <color name="input_pill_bg">#B87878</color>
+    <color name="input_pill_bg_focused">#A86868</color>
+    <color name="input_pill_bg_disabled">#D4A0A0</color>
     <color name="input_pill_text">#FDF6EC</color>
+    <color name="input_pill_text_disabled">#99FDF6EC</color>
     <color name="input_pill_hint">#FDF6EC</color>
     <color name="input_pill_hint_inactive">#CCFDF6EC</color>
     <color name="input_pill_stroke">#FDF6EC</color>
 
-    <!-- Gradient button text -->
+    <!-- === BOUTONS === -->
     <color name="btn_gradient_text">#FDF6EC</color>
 
-    <!-- Header bar -->
+    <!-- === HEADER BAR === -->
     <color name="header_text">#FDF6EC</color>
     <color name="header_text_alpha">#CCFDF6EC</color>
 
-    <!-- Wine card -->
+    <!-- === WINE CARD === -->
     <color name="wine_card_text">#2C1810</color>
 
-    <!-- Bottom nav -->
+    <!-- === BOTTOM NAV === -->
     <color name="bottom_nav_active">#FDF6EC</color>
     <color name="bottom_nav_inactive">#99FDF6EC</color>
 

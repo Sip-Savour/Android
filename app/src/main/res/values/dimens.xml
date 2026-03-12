@@ -48,22 +48,43 @@
     <dimen name="logo_size_splash">120dp</dimen>
     <dimen name="logo_size_auth">80dp</dimen>
     <dimen name="wine_card_image_height">180dp</dimen>
-    <dimen name="favorite_item_height">100dp</dimen>
-    <dimen name="favorite_image_width">70dp</dimen>
-    <dimen name="color_card_size">90dp</dimen>
-    <dimen name="profile_avatar_size">100dp</dimen>
 
-    <!-- === HEADER GRADIENT === -->
+    <!-- === FAVORIS === -->
+    <!--
+        favorite_item_height  : hauteur totale de la ligne
+        favorite_image_size   : taille de la vignette image (carré)
+        Suppression de favorite_image_width (redondant avec favorite_image_size)
+    -->
+    <dimen name="favorite_item_height">100dp</dimen>
+    <dimen name="favorite_image_size">110dp</dimen>
+
+    <!-- === COULEURS VIN (sélecteur) === -->
+    <dimen name="color_card_size">90dp</dimen>
+
+    <!-- === PROFIL === -->
+    <!--
+        profile_avatar_size unifie person_icon_size (même valeur 100dp)
+        person_icon_size_small conservé pour les écrans auth
+    -->
+    <dimen name="profile_avatar_size">100dp</dimen>
+    <dimen name="person_icon_size_small">80dp</dimen>
+
+    <!-- === HEADER === -->
+    <!--
+        header_height        : hauteur de la vague décorative seule
+        header_bar_height    : hauteur totale de la barre (vague + titre)
+        Renommage de header_height_small → header_bar_height pour clarté
+    -->
     <dimen name="header_height">100dp</dimen>
-    <dimen name="header_height_small">160dp</dimen>
     <dimen name="header_bar_height">120dp</dimen>
     <dimen name="header_title_size">22sp</dimen>
+
+    <!-- === HOME CARDS === -->
     <dimen name="home_card_height">280dp</dimen>
     <dimen name="home_card_search_height">260dp</dimen>
+
+    <!-- === ICÔNES === -->
     <dimen name="category_icon_scroll_size">80dp</dimen>
-    <dimen name="favorite_image_size">110dp</dimen>
-    <dimen name="person_icon_size">100dp</dimen>
-    <dimen name="person_icon_size_small">80dp</dimen>
     <dimen name="wine_fork_icon_size">56dp</dimen>
 
     <!-- === CHIPS === -->

@@ -2,35 +2,35 @@
 <resources>
 
     <!-- === PRIMARY === -->
-    <color name="primary">#D4A0A8</color>
-    <color name="primary_dark">#1A1210</color>
-    <color name="primary_light">#E8C4CA</color>
-    <color name="primary_container">#5C2830</color>
-    <color name="on_primary">#4A1C23</color>
-    <color name="on_primary_container">#F5D5D9</color>
+    <color name="primary">#E8909A</color>
+    <color name="primary_dark">#C2606B</color>
+    <color name="primary_light">#F5BDC4</color>
+    <color name="primary_container">#5C2028</color>
+    <color name="on_primary">#3A0D12</color>
+    <color name="on_primary_container">#F5BDC4</color>
 
     <!-- === SECONDARY === -->
-    <color name="secondary">#D4BF8A</color>
-    <color name="secondary_dark">#3D3520</color>
-    <color name="secondary_container">#5C4A20</color>
-    <color name="on_secondary">#3D3520</color>
-    <color name="on_secondary_container">#F5E6C8</color>
+    <color name="secondary">#E8C98A</color>
+    <color name="secondary_dark">#9C7A30</color>
+    <color name="secondary_container">#4A3810</color>
+    <color name="on_secondary">#3A2A00</color>
+    <color name="on_secondary_container">#E8C98A</color>
 
     <!-- === TERTIARY === -->
-    <color name="tertiary">#A8D5B4</color>
-    <color name="tertiary_container">#1A3322</color>
-    <color name="on_tertiary">#1A3322</color>
-    <color name="on_tertiary_container">#B8DFC4</color>
+    <color name="tertiary">#7DC49A</color>
+    <color name="tertiary_container">#1E3D28</color>
+    <color name="on_tertiary">#0A2014</color>
+    <color name="on_tertiary_container">#7DC49A</color>
 
     <!-- === BACKGROUND & SURFACE === -->
-    <color name="background">#1A1210</color>
-    <color name="on_background">#F0E6DC</color>
-    <color name="surface">#231A18</color>
-    <color name="on_surface">#F0E6DC</color>
-    <color name="surface_variant">#4A3F3C</color>
-    <color name="on_surface_variant">#D4C8BE</color>
-    <color name="surface_container">#2C2220</color>
-    <color name="surface_container_high">#362C2A</color>
+    <color name="background">#1A0F0A</color>
+    <color name="on_background">#F0E0D8</color>
+    <color name="surface">#241510</color>
+    <color name="on_surface">#F0E0D8</color>
+    <color name="surface_variant">#3A2820</color>
+    <color name="on_surface_variant">#C0A89A</color>
+    <color name="surface_container">#2E1C14</color>
+    <color name="surface_container_high">#382218</color>
 
     <!-- === ERROR === -->
     <color name="error">#FFB4AB</color>
@@ -39,15 +39,50 @@
     <color name="on_error_container">#FFDAD6</color>
 
     <!-- === OUTLINE === -->
-    <color name="outline">#9C8E85</color>
-    <color name="outline_variant">#4A3F3C</color>
+    <color name="outline">#8A7068</color>
+    <color name="outline_variant">#4A3830</color>
+
+    <!-- === COULEURS VIN === -->
+    <color name="wine_red">@color/primary</color>
+    <color name="wine_white">#F0D878</color>
+    <color name="wine_rose">#D4788A</color>
+
+    <!-- === COULEURS CATÉGORIES === -->
+    <color name="category_meat">#C47840</color>
+    <color name="category_fish">#6AB8D0</color>
+    <color name="category_veggie">#6DC870</color>
+    <color name="category_cheese">#FFD54F</color>
 
     <!-- === UTILITAIRES === -->
-    <color name="ripple">#33D4A0A8</color>
-    <color name="divider">#1AF0E6DC</color>
+    <color name="ripple">#33E8909A</color>
+    <color name="divider">#1AF0E0D8</color>
     <color name="shadow">#40000000</color>
-    <color name="scrim">#80000000</color>
-    <color name="shimmer_base">#2C2220</color>
-    <color name="shimmer_highlight">#362C2A</color>
+    <color name="scrim">#99000000</color>
+    <color name="shimmer_base">#3A2820</color>
+    <color name="shimmer_highlight">#4A3830</color>
+
+    <!-- === INPUT PILLS === -->
+    <color name="input_pill_bg">#6B3840</color>
+    <color name="input_pill_bg_focused">#7D4450</color>
+    <color name="input_pill_bg_disabled">#4A2830</color>
+    <color name="input_pill_text">#F0E0D8</color>
+    <color name="input_pill_text_disabled">#99F0E0D8</color>
+    <color name="input_pill_hint">#F0E0D8</color>
+    <color name="input_pill_hint_inactive">#CCF0E0D8</color>
+    <color name="input_pill_stroke">#F0E0D8</color>
+
+    <!-- === BOUTONS === -->
+    <color name="btn_gradient_text">#F0E0D8</color>
+
+    <!-- === HEADER BAR === -->
+    <color name="header_text">#F0E0D8</color>
+    <color name="header_text_alpha">#CCF0E0D8</color>
+
+    <!-- === WINE CARD === -->
+    <color name="wine_card_text">#F0E0D8</color>
+
+    <!-- === BOTTOM NAV === -->
+    <color name="bottom_nav_active">#F0E0D8</color>
+    <color name="bottom_nav_inactive">#99F0E0D8</color>
 
 </resources>
