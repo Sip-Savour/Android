@@ -153,6 +153,8 @@
 
     <!-- === SUGGESTION === -->
     <string name="suggestion_title">Suggestion</string>
+    <string name="suggestion_no_result">Aucun vin trouvé</string>
+    <string name="suggestion_no_result_subtitle">Essayez avec d\'autres saveurs</string>
 
     <!-- === INFORMATIONS (Wine Detail) === -->
     <string name="info_title">Informations</string>
@@ -216,5 +218,6 @@
     <string name="cd_favorite_button">Bouton favori</string>
     <string name="cd_back_button">Retour</string>
     <string name="cd_wine_color">Couleur du vin %1$s</string>
+    <string name="profile_settings">Paramètres</string>
 
 </resources>

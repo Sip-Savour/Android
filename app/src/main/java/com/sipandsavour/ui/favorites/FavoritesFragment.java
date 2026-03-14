@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,26 +22,17 @@ import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.ui.result.ResultViewModel;
 
-import java.util.List;
-
-/**
- * Fragment affichant la liste des vins favoris.
- */
 public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFavoriteClickListener {
 
     private FavoritesViewModel viewModel;
     private ResultViewModel resultViewModel;
     private NavController navController;
 
-    // Views
-    private ImageButton btnBack;
-    private TextView tvHeaderTitle;
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerView rvFavorites;
     private LinearLayout layoutEmpty;
     private LinearLayout shimmerFavorites;
 
-    // Adapter
     private FavoritesAdapter adapter;
 
     @Nullable
@@ -63,7 +52,6 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
         resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
 
         bindViews(view);
-        setupHeader();
         setupRecyclerView();
         setupSwipeRefresh();
         setupSwipeToDelete();
@@ -73,32 +61,15 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
     }
 
     private void bindViews(View view) {
-        View headerLayout = view.findViewById(R.id.appBarLayout);
-        if (headerLayout != null) {
-            btnBack = headerLayout.findViewById(R.id.btnBack);
-            tvHeaderTitle = headerLayout.findViewById(R.id.tvHeaderTitle);
-        }
-
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
         rvFavorites = view.findViewById(R.id.rvFavorites);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
         shimmerFavorites = view.findViewById(R.id.shimmerFavorites);
     }
 
-    private void setupHeader() {
-        if (tvHeaderTitle != null) {
-            tvHeaderTitle.setText(R.string.favorites_title);
-        }
-
-        if (btnBack != null) {
-            btnBack.setVisibility(View.GONE);
-        }
-    }
-
     private void setupRecyclerView() {
         adapter = new FavoritesAdapter();
         adapter.setOnFavoriteClickListener(this);
-
         rvFavorites.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvFavorites.setAdapter(adapter);
     }
@@ -121,14 +92,13 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
+                int position = viewHolder.getBindingAdapterPosition();
                 viewModel.removeFavorite(position);
                 showUndoSnackbar();
             }
         };
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
-        itemTouchHelper.attachToRecyclerView(rvFavorites);
+        new ItemTouchHelper(swipeCallback).attachToRecyclerView(rvFavorites);
     }
 
     private void observeViewModel() {
@@ -142,25 +112,21 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
             rvFavorites.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
         });
 
-        viewModel.getFavorites().observe(getViewLifecycleOwner(), favorites -> {
-            adapter.submitList(favorites);
-        });
+        viewModel.getFavorites().observe(getViewLifecycleOwner(),
+                favorites -> adapter.submitList(favorites));
     }
 
     private void showUndoSnackbar() {
         if (getView() == null) return;
-
         Snackbar.make(getView(), R.string.favorites_removed_snackbar, Snackbar.LENGTH_LONG)
                 .setAction(R.string.favorites_undo, v -> viewModel.undoRemove())
                 .setActionTextColor(getResources().getColor(R.color.secondary, null))
                 .show();
     }
 
-    // === CLICK LISTENER ===
-
     @Override
     public void onFavoriteClick(WineDto wine, int position) {
         resultViewModel.setCurrentWine(wine);
-        navController.navigate(R.id.action_favorites_to_wineResult);
+        navController.navigate(R.id.action_favorites_to_wineDetail);
     }
 }

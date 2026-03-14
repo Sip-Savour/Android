@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,17 +24,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-/**
- * Fragment d'inscription.
- */
 public class RegisterFragment extends Fragment {
 
     private AuthViewModel viewModel;
     private NavController navController;
 
     // Views
-    private ImageButton btnBack;
-    private TextView tvHeaderTitle;
     private TextInputLayout tilName;
     private TextInputEditText etName;
     private TextInputLayout tilEmail;
@@ -69,18 +63,11 @@ public class RegisterFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
 
         bindViews(view);
-        setupHeader();
         setupListeners();
         observeViewModel();
     }
 
     private void bindViews(View view) {
-        View headerLayout = view.findViewById(R.id.appBarLayout);
-        if (headerLayout != null) {
-            btnBack = headerLayout.findViewById(R.id.btnBack);
-            tvHeaderTitle = headerLayout.findViewById(R.id.tvHeaderTitle);
-        }
-
         tilName = view.findViewById(R.id.tilName);
         etName = view.findViewById(R.id.etName);
         tilEmail = view.findViewById(R.id.tilEmail);
@@ -93,17 +80,6 @@ public class RegisterFragment extends Fragment {
         btnRegister = view.findViewById(R.id.btnRegister);
         progressRegister = view.findViewById(R.id.progressRegister);
         btnGoToLogin = view.findViewById(R.id.btnGoToLogin);
-    }
-
-    private void setupHeader() {
-        if (tvHeaderTitle != null) {
-            tvHeaderTitle.setText(R.string.register_title);
-        }
-
-        if (btnBack != null) {
-            btnBack.setVisibility(View.VISIBLE);
-            btnBack.setOnClickListener(v -> navController.navigateUp());
-        }
     }
 
     private void setupListeners() {
@@ -149,7 +125,6 @@ public class RegisterFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
 
-        // Limiter à 18 ans minimum
         Calendar maxDate = Calendar.getInstance();
         maxDate.add(Calendar.YEAR, -18);
         picker.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
@@ -163,7 +138,6 @@ public class RegisterFragment extends Fragment {
         String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
         String dob = etDob.getText() != null ? etDob.getText().toString().trim() : "";
 
-        // Validation
         boolean isValid = true;
 
         if (name.isEmpty()) {

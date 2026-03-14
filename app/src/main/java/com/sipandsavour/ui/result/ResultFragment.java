@@ -16,29 +16,23 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
 
 import java.util.List;
 
-/**
- * Fragment affichant le détail d'un vin recommandé.
- */
 public class ResultFragment extends Fragment {
 
     private ResultViewModel viewModel;
     private NavController navController;
 
     // Views
-    private ImageButton btnBack;
-    private TextView tvHeaderTitle;
     private TextView tvCepage;
     private TextView tvDescription;
     private TextView tvType;
     private ChipGroup chipGroupKeywords;
-    private FloatingActionButton fabFavorite;
+    private ImageButton fabFavorite;
 
     @Nullable
     @Override
@@ -56,20 +50,11 @@ public class ResultFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
 
         bindViews(view);
-        setupHeader();
         setupFavoriteButton();
         observeViewModel();
-
-        // TODO: Récupérer le vin depuis les arguments ou SelectionViewModel
     }
 
     private void bindViews(View view) {
-        View headerLayout = view.findViewById(R.id.appBarLayout);
-        if (headerLayout != null) {
-            btnBack = headerLayout.findViewById(R.id.btnBack);
-            tvHeaderTitle = headerLayout.findViewById(R.id.tvHeaderTitle);
-        }
-
         tvCepage = view.findViewById(R.id.tvCepage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvType = view.findViewById(R.id.tvType);
@@ -77,30 +62,16 @@ public class ResultFragment extends Fragment {
         fabFavorite = view.findViewById(R.id.fabFavorite);
     }
 
-    private void setupHeader() {
-        if (tvHeaderTitle != null) {
-            tvHeaderTitle.setText(R.string.info_title);
-        }
-
-        if (btnBack != null) {
-            btnBack.setVisibility(View.VISIBLE);
-            btnBack.setOnClickListener(v -> navController.navigateUp());
-        }
-    }
-
     private void setupFavoriteButton() {
-        fabFavorite.setOnClickListener(v -> {
-            viewModel.toggleFavorite();
-        });
+        if (fabFavorite != null) {
+            fabFavorite.setOnClickListener(v -> viewModel.toggleFavorite());
+        }
     }
 
     private void observeViewModel() {
         viewModel.getCurrentWine().observe(getViewLifecycleOwner(), this::displayWine);
 
-        viewModel.getIsFavorite().observe(getViewLifecycleOwner(), isFavorite -> {
-            updateFavoriteIcon(isFavorite);
-            // TODO: Afficher snackbar selon l'action
-        });
+        viewModel.getIsFavorite().observe(getViewLifecycleOwner(), this::updateFavoriteIcon);
     }
 
     private void displayWine(WineDto wine) {
@@ -131,9 +102,11 @@ public class ResultFragment extends Fragment {
     }
 
     private void updateFavoriteIcon(boolean isFavorite) {
-        fabFavorite.setImageResource(
-                isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
-        );
+        if (fabFavorite != null) {
+            fabFavorite.setImageResource(
+                    isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
+            );
+        }
     }
 
     private void showSnackbar(String message) {

@@ -1,9 +1,9 @@
 // Top-level build file
 plugins {
-    id 'com.android.application' version '8.7.3' apply false
-    id 'com.google.dagger.hilt.android' version '2.51' apply false
+    id 'com.android.application' version '9.1.0' apply false
+    id 'com.google.dagger.hilt.android' version '2.59.2' apply false
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.layout.buildDirectory
 }

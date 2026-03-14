@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base gradient bordeaux → doré -->
+    <!-- Gradient rose/bordeaux doux -->
     <item>
         <shape>
             <gradient
-                android:type="linear"
-                android:angle="180"
-                android:startColor="@color/primary"
-                android:centerColor="@color/primary_light"
-                android:endColor="@color/secondary" />
+                android:type="radial"
+                android:gradientRadius="800dp"
+                android:centerX="0.5"
+                android:centerY="0.4"
+                android:startColor="#9B5070"
+                android:centerColor="#8B4060"
+                android:endColor="#7A3050" />
         </shape>
     </item>
 
@@ -19,8 +21,8 @@
             <gradient
                 android:type="linear"
                 android:angle="270"
-                android:startColor="#00FDF6EC"
-                android:endColor="#40FDF6EC" />
+                android:startColor="#00F5EBE0"
+                android:endColor="#40F5EBE0" />
         </shape>
     </item>
 

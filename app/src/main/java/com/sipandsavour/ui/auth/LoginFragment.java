@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,17 +19,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sipandsavour.R;
 
-/**
- * Fragment de connexion.
- */
 public class LoginFragment extends Fragment {
 
     private AuthViewModel viewModel;
     private NavController navController;
 
     // Views
-    private ImageButton btnBack;
-    private TextView tvHeaderTitle;
     private TextInputLayout tilEmail;
     private TextInputEditText etEmail;
     private TextInputLayout tilPassword;
@@ -57,17 +51,12 @@ public class LoginFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
 
         bindViews(view);
-        setupHeader();
         setupListeners();
         observeViewModel();
     }
 
     private void bindViews(View view) {
-        View headerLayout = view.findViewById(R.id.appBarLayout);
-        if (headerLayout != null) {
-            btnBack = headerLayout.findViewById(R.id.btnBack);
-            tvHeaderTitle = headerLayout.findViewById(R.id.tvHeaderTitle);
-        }
+        // Header title is already set in XML, no need to bind
 
         tilEmail = view.findViewById(R.id.tilEmail);
         etEmail = view.findViewById(R.id.etEmail);
@@ -80,16 +69,6 @@ public class LoginFragment extends Fragment {
         btnGoToRegister = view.findViewById(R.id.btnGoToRegister);
     }
 
-    private void setupHeader() {
-        if (tvHeaderTitle != null) {
-            tvHeaderTitle.setText(R.string.login_title);
-        }
-
-        if (btnBack != null) {
-            btnBack.setVisibility(View.GONE);
-        }
-    }
-
     private void setupListeners() {
         btnLogin.setOnClickListener(v -> onLoginClicked());
 
@@ -97,9 +76,7 @@ public class LoginFragment extends Fragment {
             // TODO: Naviguer vers l'écran de mot de passe oublié
         });
 
-        btnGoToRegister.setOnClickListener(v -> {
-            navController.navigate(R.id.action_login_to_register);
-        });
+        btnGoToRegister.setOnClickListener(v -> navController.navigate(R.id.action_login_to_register));
     }
 
     private void observeViewModel() {
@@ -128,7 +105,6 @@ public class LoginFragment extends Fragment {
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
         String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
 
-        // Validation basique
         if (email.isEmpty()) {
             tilEmail.setError(getString(R.string.validation_email_required));
             return;

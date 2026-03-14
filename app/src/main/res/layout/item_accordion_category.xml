@@ -11,21 +11,20 @@
     <LinearLayout
         android:id="@+id/layoutCategoryHeader"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/accordion_header_height"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:paddingStart="@dimen/padding_medium"
         android:paddingEnd="@dimen/padding_medium"
         android:background="@drawable/bg_accordion_header_ripple"
         android:clickable="true"
         android:focusable="true">
 
-        <!-- Title -->
+        <!-- Title (centré) -->
         <TextView
             android:id="@+id/tvCategoryTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:fontFamily="@font/playfair_display"
             android:textSize="@dimen/text_title_medium"
             android:textColor="@color/primary"
@@ -34,8 +33,9 @@
         <!-- Expand icon -->
         <ImageView
             android:id="@+id/ivExpandIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/accordion_icon_size"
+            android:layout_height="@dimen/accordion_icon_size"
+            android:layout_marginStart="@dimen/margin_small"
             android:src="@drawable/ic_chevron_down"
             android:contentDescription="@null" />
 

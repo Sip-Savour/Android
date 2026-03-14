@@ -2,6 +2,7 @@ package com.sipandsavour;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,29 +17,22 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Activity principale (Single Activity Architecture).
- * Gère la navigation et la BottomNavigationView.
- */
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
     private BottomNavigationView bottomNav;
+    private View navHostFragmentView;
 
-    // Destinations où la bottom nav doit être visible
-    private static final Set<Integer> BOTTOM_NAV_DESTINATIONS = new HashSet<>(Arrays.asList(
-            R.id.homeFragment,
-            R.id.advancedSearchFragment,
-            R.id.weeklyChoiceFragment,
-            R.id.favoritesFragment,
-            R.id.profileFragment
+    // Destinations où la bottom nav doit être CACHÉE
+    private static final Set<Integer> HIDE_BOTTOM_NAV = new HashSet<>(Arrays.asList(
+            R.id.splashFragment,
+            R.id.loginFragment,
+            R.id.registerFragment
     ));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Changer le thème après le splash (avant super.onCreate)
         setTheme(R.style.Theme_SipSavour);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -46,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupNavigation() {
-        // Récupérer le NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navHostFragment);
 
@@ -56,17 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
         navController = navHostFragment.getNavController();
         bottomNav = findViewById(R.id.bottomNav);
+        navHostFragmentView = findViewById(R.id.navHostFragment);
 
-        // Lier la BottomNav au NavController
         NavigationUI.setupWithNavController(bottomNav, navController);
 
-        // Observer les changements de destination pour afficher/masquer la bottom nav
         navController.addOnDestinationChangedListener(this::onDestinationChanged);
     }
 
-    /**
-     * Gère l'affichage de la BottomNav selon la destination
-     */
     private void onDestinationChanged(
             @NonNull NavController controller,
             @NonNull NavDestination destination,
@@ -74,14 +63,20 @@ public class MainActivity extends AppCompatActivity {
 
         int destId = destination.getId();
 
-        if (BOTTOM_NAV_DESTINATIONS.contains(destId)) {
-            showBottomNav();
-        } else {
+        if (HIDE_BOTTOM_NAV.contains(destId)) {
             hideBottomNav();
+        } else {
+            showBottomNav();
         }
     }
 
     private void showBottomNav() {
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)
+                navHostFragmentView.getLayoutParams();
+        params.bottomMargin = getResources()
+                .getDimensionPixelSize(R.dimen.bottom_nav_height);
+        navHostFragmentView.setLayoutParams(params);
+
         if (bottomNav.getVisibility() != View.VISIBLE) {
             bottomNav.setVisibility(View.VISIBLE);
             bottomNav.animate()
@@ -93,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void hideBottomNav() {
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)
+                navHostFragmentView.getLayoutParams();
+        params.bottomMargin = 0;
+        navHostFragmentView.setLayoutParams(params);
+
         if (bottomNav.getVisibility() == View.VISIBLE) {
             bottomNav.animate()
                     .translationY(bottomNav.getHeight())

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 
-/**
- * Fragment de sélection des saveurs avec accordéon.
- */
 public class FlavorFragment extends Fragment implements
         CategoryAdapter.OnFlavorSelectionListener,
         CategoryAdapter.OnCategoryClickListener {
@@ -30,16 +26,11 @@ public class FlavorFragment extends Fragment implements
     private SelectionViewModel viewModel;
     private NavController navController;
 
-    // Views
-    private ImageButton btnBack;
     private TextView tvHeaderTitle;
     private RecyclerView rvAccordion;
     private MaterialButton btnMatch;
 
-    // Adapter
     private CategoryAdapter categoryAdapter;
-
-    // Mode
     private String mode = "match";
 
     @Override
@@ -74,12 +65,7 @@ public class FlavorFragment extends Fragment implements
     }
 
     private void bindViews(View view) {
-        View headerLayout = view.findViewById(R.id.appBarLayout);
-        if (headerLayout != null) {
-            btnBack = headerLayout.findViewById(R.id.btnBack);
-            tvHeaderTitle = headerLayout.findViewById(R.id.tvHeaderTitle);
-        }
-
+        tvHeaderTitle = view.findViewById(R.id.tvHeaderTitle);
         rvAccordion = view.findViewById(R.id.rvAccordion);
         btnMatch = view.findViewById(R.id.btnMatch);
     }
@@ -87,13 +73,8 @@ public class FlavorFragment extends Fragment implements
     private void setupHeader() {
         if (tvHeaderTitle != null) {
             tvHeaderTitle.setText(mode.equals("match")
-                    ? R.string.flavor_title_match
+                    ? R.string.flavor_title
                     : R.string.flavor_title_search);
-        }
-
-        if (btnBack != null) {
-            btnBack.setVisibility(View.VISIBLE);
-            btnBack.setOnClickListener(v -> navController.navigateUp());
         }
     }
 
@@ -116,9 +97,8 @@ public class FlavorFragment extends Fragment implements
     }
 
     private void observeViewModel() {
-        viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
-            categoryAdapter.setCategories(categories);
-        });
+        viewModel.getCategories().observe(getViewLifecycleOwner(),
+                categories -> categoryAdapter.setCategories(categories));
 
         viewModel.getSelectedFlavors().observe(getViewLifecycleOwner(), selectedFlavors -> {
             boolean hasSelection = !selectedFlavors.isEmpty();
@@ -133,14 +113,17 @@ public class FlavorFragment extends Fragment implements
             return;
         }
 
-        // TODO: Appeler viewModel.predict()
-        // TODO: Observer le résultat et naviguer vers les résultats
+        // Naviguer vers la liste de suggestions
+        // L'action dépend de la destination actuelle dans le nav_graph
+        int currentDestId = navController.getCurrentDestination() != null
+                ? navController.getCurrentDestination().getId() : 0;
 
-        // Navigation temporaire
-        if (mode.equals("match")) {
-            navController.navigate(R.id.action_flavor_to_loading);
-        } else {
-            navController.navigate(R.id.action_search_to_loading);
+        if (currentDestId == R.id.advancedSearchFragment) {
+            navController.navigate(R.id.action_search_to_suggestions);
+        } else if (currentDestId == R.id.flavorFromMealFragment) {
+            navController.navigate(R.id.action_flavorMeal_to_suggestions);
+        } else if (currentDestId == R.id.flavorSelectionFragment) {
+            navController.navigate(R.id.action_flavor_to_suggestions);
         }
     }
 
@@ -149,8 +132,6 @@ public class FlavorFragment extends Fragment implements
             Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
         }
     }
-
-    // === CALLBACKS ===
 
     @Override
     public void onFlavorToggled(String flavorKey) {

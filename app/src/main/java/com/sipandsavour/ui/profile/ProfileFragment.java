@@ -16,28 +16,22 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sipandsavour.R;
 
-/**
- * Fragment affichant le profil utilisateur.
- */
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel viewModel;
     private NavController navController;
 
     // Views
-    private ImageButton btnBack;
-    private TextView tvHeaderTitle;
     private TextView tvProfileName;
     private TextView tvProfileEmail;
     private TextView tvProfileDob;
     private MaterialButton btnPreferences;
     private MaterialButton btnHistory;
-    private FloatingActionButton fabEdit;
-    private FloatingActionButton fabSettings;
-    private FloatingActionButton fabLogout;
+    private ImageButton fabEdit;
+    private ImageButton fabSettings;
+    private ImageButton fabLogout;
 
     @Nullable
     @Override
@@ -55,7 +49,6 @@ public class ProfileFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         bindViews(view);
-        setupHeader();
         setupListeners();
         observeViewModel();
 
@@ -63,12 +56,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void bindViews(View view) {
-        View headerLayout = view.findViewById(R.id.appBarLayout);
-        if (headerLayout != null) {
-            btnBack = headerLayout.findViewById(R.id.btnBack);
-            tvHeaderTitle = headerLayout.findViewById(R.id.tvHeaderTitle);
-        }
-
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
         tvProfileDob = view.findViewById(R.id.tvProfileDob);
@@ -77,16 +64,6 @@ public class ProfileFragment extends Fragment {
         fabEdit = view.findViewById(R.id.fabEdit);
         fabSettings = view.findViewById(R.id.fabSettings);
         fabLogout = view.findViewById(R.id.fabLogout);
-    }
-
-    private void setupHeader() {
-        if (tvHeaderTitle != null) {
-            tvHeaderTitle.setText(R.string.profile_account_title);
-        }
-
-        if (btnBack != null) {
-            btnBack.setVisibility(View.GONE);
-        }
     }
 
     private void setupListeners() {
@@ -98,17 +75,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void observeViewModel() {
-        viewModel.getUserName().observe(getViewLifecycleOwner(), name -> {
-            tvProfileName.setText(name != null ? name : "-");
-        });
+        viewModel.getUserName().observe(getViewLifecycleOwner(), name -> tvProfileName.setText(name != null ? name : "-"));
 
-        viewModel.getUserEmail().observe(getViewLifecycleOwner(), email -> {
-            tvProfileEmail.setText(email != null ? email : "-");
-        });
+        viewModel.getUserEmail().observe(getViewLifecycleOwner(), email -> tvProfileEmail.setText(email != null ? email : "-"));
 
-        viewModel.getUserDob().observe(getViewLifecycleOwner(), dob -> {
-            tvProfileDob.setText(dob != null ? dob : "-");
-        });
+        viewModel.getUserDob().observe(getViewLifecycleOwner(), dob -> tvProfileDob.setText(dob != null ? dob : "-"));
     }
 
     private void onEditClicked() {

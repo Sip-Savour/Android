@@ -12,7 +12,7 @@
         android:title="@string/nav_search" />
 
     <item
-        android:id="@+id/weeklyChoiceFragment"
+        android:id="@+id/mealFragment"
         android:icon="@drawable/ic_bottle"
         android:title="@string/nav_bottle" />
 

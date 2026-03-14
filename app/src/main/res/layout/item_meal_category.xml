@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardCategory"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    app:cardCornerRadius="@dimen/radius_medium"
+    app:cardElevation="@dimen/elevation_medium"
+    app:cardBackgroundColor="@color/surface"
+    app:strokeWidth="0dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/padding_large">
+
+        <!-- Indicateur de couleur -->
+        <View
+            android:id="@+id/colorIndicator"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_person_circle" />
+
+        <!-- Icône catégorie -->
+        <ImageView
+            android:id="@+id/ivCategoryIcon"
+            android:layout_width="@dimen/category_icon_size"
+            android:layout_height="@dimen/category_icon_size"
+            android:layout_marginTop="@dimen/margin_small"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null" />
+
+        <!-- Nom catégorie -->
+        <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:fontFamily="@font/playfair_display"
+            android:textSize="@dimen/text_body"
+            android:textColor="@color/on_surface"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

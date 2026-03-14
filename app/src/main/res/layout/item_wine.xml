@@ -16,7 +16,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="@dimen/favorite_image_size"
         android:layout_height="@dimen/favorite_image_size"
-        app:cardCornerRadius="12dp"
+        app:cardCornerRadius="@dimen/radius_small"
         app:cardElevation="@dimen/elevation_medium"
         app:strokeWidth="0dp">
 
@@ -52,6 +52,7 @@
         android:fontFamily="@font/playfair_display"
         android:textSize="@dimen/text_body"
         android:textColor="@color/header_text"
+        android:textStyle="italic"
         android:maxLines="1"
         android:ellipsize="end"
         android:clickable="true"

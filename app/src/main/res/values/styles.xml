@@ -10,11 +10,6 @@
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_button</item>
         <item name="android:textColor">@color/btn_gradient_text</item>
-        <!--
-            italic retiré ici : Playfair Display Bold n'a pas
-            de variante bold+italic embarquée → risque de faux italique
-            système. Gérer l'italique via une variante de font si besoin.
-        -->
         <item name="android:textStyle">normal</item>
         <item name="cornerRadius">@dimen/radius_xlarge</item>
         <item name="backgroundTint">@null</item>
@@ -42,10 +37,6 @@
     </style>
 
     <!-- === TEXT INPUT === -->
-    <!--
-        Corrigé : parent → FilledBox pour être cohérent
-        avec boxBackgroundMode="filled"
-    -->
     <style name="Widget.SipSavour.TextInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@color/input_pill_bg</item>
         <item name="boxCornerRadiusTopStart">@dimen/radius_xlarge</item>
@@ -56,8 +47,6 @@
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="hintTextColor">@color/input_pill_hint</item>
         <item name="android:textColorHint">@color/input_pill_hint_inactive</item>
-        <!-- États ajoutés -->
-        <item name="boxBackgroundColorFocused">@color/input_pill_bg_focused</item>
     </style>
 
     <style name="Widget.SipSavour.TextInput.EditText" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
@@ -69,7 +58,6 @@
         <item name="android:paddingEnd">@dimen/padding_large</item>
     </style>
 
-    <!-- Alias pour compatibilité avec les layouts existants -->
     <style name="Widget.SipSavour.PillInput" parent="Widget.SipSavour.TextInput" />
     <style name="Widget.SipSavour.PillInput.EditText" parent="Widget.SipSavour.TextInput.EditText" />
 
@@ -128,7 +116,6 @@
     <!--  TEXT APPEARANCES                              -->
     <!-- ============================================== -->
 
-    <!-- === HEADLINES === -->
     <style name="TextAppearance.SipSavour.HeadlineLarge" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_headline_large</item>
@@ -143,7 +130,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <!-- === TITLES === -->
     <style name="TextAppearance.SipSavour.TitleLarge" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_title_large</item>
@@ -157,7 +143,6 @@
         <item name="android:textColor">@color/on_background</item>
     </style>
 
-    <!-- === BODY === -->
     <style name="TextAppearance.SipSavour.Body" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">@dimen/text_body</item>
@@ -168,7 +153,6 @@
         <item name="android:textColor">@color/on_surface_variant</item>
     </style>
 
-    <!-- === CAPTIONS & LABELS === -->
     <style name="TextAppearance.SipSavour.Caption" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">@dimen/text_caption</item>
@@ -203,17 +187,10 @@
         <item name="android:lineSpacingMultiplier">1.3</item>
     </style>
 
-    <!-- === HEADER === -->
+    <!-- === HEADER DÉCORATIF === -->
     <style name="TextAppearance.SipSavour.Header" parent="TextAppearance.SipSavour.TitleLarge">
         <item name="android:textColor">@color/header_text</item>
         <item name="android:textStyle">bold|italic</item>
-    </style>
-
-    <!-- === TOOLBAR === -->
-    <style name="TextAppearance.SipSavour.Toolbar" parent="TextAppearance.SipSavour.TitleLarge">
-        <item name="android:textColor">@color/header_text</item>
-        <item name="android:textStyle">bold|italic</item>
-        <item name="fontFamily">@font/playfair_display</item>
     </style>
 
     <!-- ============================================== -->
