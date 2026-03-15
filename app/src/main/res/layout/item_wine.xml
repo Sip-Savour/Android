@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/padding_medium"
+    android:paddingEnd="@dimen/padding_medium"
+    android:paddingTop="@dimen/padding_small"
+    android:paddingBottom="@dimen/padding_small"
+    android:transitionName="favorite_item">
+
+    <!-- Wine image -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/favorite_image_size"
+        android:layout_height="@dimen/favorite_image_size"
+        app:cardCornerRadius="@dimen/radius_small"
+        app:cardElevation="@dimen/elevation_medium"
+        app:strokeWidth="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_favorite_image">
+
+            <ImageView
+                android:id="@+id/ivFavoriteWine"
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_wine_red"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/cd_wine_image" />
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Name pill -->
+    <TextView
+        android:id="@+id/tvFavoriteName"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:background="@drawable/bg_favorite_pill_ripple"
+        android:gravity="center"
+        android:paddingStart="@dimen/padding_large"
+        android:paddingEnd="@dimen/padding_large"
+        android:fontFamily="@font/playfair_display"
+        android:textSize="@dimen/text_body"
+        android:textColor="@color/header_text"
+        android:textStyle="italic"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>

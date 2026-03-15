@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="160dp"
+    android:viewportWidth="120"
+    android:viewportHeight="160">
+
+    <!-- Bottle body -->
+    <path
+        android:pathData="M45,50 L45,30 C45,25 50,20 60,20 C70,20 75,25 75,30 L75,50 C85,55 90,70 90,90 L90,140 C90,150 80,155 60,155 C40,155 30,150 30,140 L30,90 C30,70 35,55 45,50 Z"
+        android:fillColor="@color/primary_light"
+        android:strokeColor="@color/primary"
+        android:strokeWidth="2" />
+
+    <!-- Bottle neck -->
+    <path
+        android:pathData="M50,20 L50,10 C50,5 55,2 60,2 C65,2 70,5 70,10 L70,20"
+        android:fillColor="@color/primary_light"
+        android:strokeColor="@color/primary"
+        android:strokeWidth="2" />
+
+    <!-- Question mark curve -->
+    <path
+        android:pathData="M52,75 Q52,60 60,60 Q72,60 72,72 Q72,82 60,88 L60,95"
+        android:strokeColor="@color/primary"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Question mark dot (circle as path) -->
+    <path
+        android:pathData="M60,105 m-4,0 a4,4 0,1 1,8 0 a4,4 0,1 1,-8 0"
+        android:fillColor="@color/primary" />
+
+</vector>

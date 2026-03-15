@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:fillViewport="true"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- === Header décoratif (vague) === -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/header_height"
+                android:background="@drawable/bg_header_gradient"/>
+
+            <!-- === Sélection hebdomadaire === -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardWeekly"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_card_height"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginTop="-20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="@dimen/elevation_high"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:transitionName="card_weekly">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Background gradient -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_home_weekly_ripple" />
+
+                    <!-- Image plein fond -->
+                    <ImageView
+                        android:id="@+id/ivWeeklyImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@null" />
+
+                    <!-- Overlay sombre léger pour lisibilité texte -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#30000000" />
+
+                    <!-- Titre en bas à gauche -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:padding="@dimen/padding_large"
+                        android:text="@string/home_weekly_title"
+                        android:fontFamily="@font/playfair_display"
+                        android:textSize="@dimen/text_headline_medium"
+                        android:textColor="@color/header_text"
+                        android:textStyle="bold|italic"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowRadius="6" />
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Espacement -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_large" />
+
+            <!-- === Choisissez vos saveurs === -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSearch"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_card_search_height"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="@dimen/elevation_high"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:transitionName="card_search">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_home_search_card"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_large"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <!-- Image bouteille avec ? -->
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="140dp"
+                        android:src="@drawable/ic_question_bottle"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@null" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_medium" />
+
+                    <!-- Texte principal -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_search_title"
+                        android:fontFamily="@font/playfair_display"
+                        android:textSize="@dimen/text_title_large"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold|italic"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_tiny"
+                        android:text="@string/home_search_subtitle"
+                        android:fontFamily="@font/playfair_display"
+                        android:textSize="@dimen/text_title_medium"
+                        android:textColor="@color/primary"
+                        android:textStyle="italic"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- === Shimmer placeholder === -->
+            <LinearLayout
+                android:id="@+id/shimmerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_medium"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/home_card_height"
+                    android:background="@drawable/bg_shimmer_rounded" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/home_card_search_height"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@drawable/bg_shimmer_rounded" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_medium" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

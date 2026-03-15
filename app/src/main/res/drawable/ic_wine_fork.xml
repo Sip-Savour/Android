@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- === WINE GLASS (minimaliste) === -->
+
+    <!-- Glass bowl - forme épurée arrondie -->
+    <path
+        android:pathData="M11,5
+                          L10,16
+                          Q10,23 17,25
+                          L17,25
+                          L23,25
+                          Q30,23 30,16
+                          L29,5
+                          Z"
+        android:fillColor="#D4283E"
+        android:fillAlpha="0.15"
+        android:strokeColor="#D4283E"
+        android:strokeWidth="1.2"
+        android:strokeLineJoin="round" />
+
+    <!-- Wine liquid - subtle fill -->
+    <path
+        android:pathData="M12.5,14
+                          Q12,20 17,22.5
+                          L23,22.5
+                          Q28,20 27.5,14
+                          Z"
+        android:fillColor="#D4283E"
+        android:fillAlpha="0.85" />
+
+    <!-- Glass highlight arc -->
+    <path
+        android:pathData="M14,8 Q13,13 15,17"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.8"
+        android:strokeLineCap="round"
+        android:strokeAlpha="0.5"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Stem - ligne fine élégante -->
+    <path
+        android:pathData="M20,25 L20,37"
+        android:strokeColor="#D4283E"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Base - arc simple -->
+    <path
+        android:pathData="M14,37 Q14,41 20,41 Q26,41 26,37"
+        android:strokeColor="#D4283E"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- === FORK (minimaliste, lignes fines) === -->
+
+    <!-- Fork prong 1 -->
+    <path
+        android:pathData="M34,5 L34,17"
+        android:strokeColor="#8C7440"
+        android:strokeWidth="1.1"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Fork prong 2 -->
+    <path
+        android:pathData="M37,5 L37,17"
+        android:strokeColor="#8C7440"
+        android:strokeWidth="1.1"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Fork prong 3 -->
+    <path
+        android:pathData="M40,5 L40,17"
+        android:strokeColor="#8C7440"
+        android:strokeWidth="1.1"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Fork neck connector -->
+    <path
+        android:pathData="M34,17 Q34,20 37,20.5 Q40,20 40,17"
+        android:strokeColor="#8C7440"
+        android:strokeWidth="1.1"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Fork handle - ligne unique élégante -->
+    <path
+        android:pathData="M37,20.5 L37,41"
+        android:strokeColor="#8C7440"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Handle end detail - petit point -->
+    <path
+        android:pathData="M37,41
+                          A1.2,1.2 0 1,1 37.01,41"
+        android:fillColor="#8C7440" />
+
+</vector>
