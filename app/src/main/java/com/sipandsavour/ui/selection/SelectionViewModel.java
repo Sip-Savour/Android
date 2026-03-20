@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sipandsavour.data.Repository;
+import com.sipandsavour.data.dto.PredictResponse;
 import com.sipandsavour.logic.FlavorMapper;
+import com.sipandsavour.ui.common.UiState;
 
 import java.util.HashSet;
 import java.util.List;
@@ -112,9 +115,51 @@ public class SelectionViewModel extends ViewModel {
     //  PRÉDICTION
     // =======================================================
 
+    // =======================================================
+    //  PRÉDICTION (TEST STATIQUE)
+    // =======================================================
+
     public void predict() {
-        // TODO: Construire la chaîne de features avec FlavorMapper
-        // TODO: Appeler Repository.predict(features, color)
-        // TODO: Mettre à jour un LiveData<UiState<PredictResponse>>
+        android.util.Log.d("API_TEST", "Lancement de la requête de test vers l'API...");
+
+
+        StringBuilder sb = new StringBuilder();
+        for (String flavor : selectedFlavors) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(flavor);
+        }
+        String features = sb.toString();
+        // 1. DONNÉES STATIQUES DE TEST
+        String testColor = "White";
+
+        // 2. APPEL AU REPOSITORY
+        LiveData<UiState<PredictResponse>> repoResult = Repository.getInstance().predict(features, testColor);
+
+        // 3. OBSERVATION DU RÉSULTAT (Pour le test dans les logs)
+        repoResult.observeForever(new androidx.lifecycle.Observer<UiState<PredictResponse>>() {
+            @Override
+            public void onChanged(UiState<PredictResponse> state) {
+                if (state.isLoading()) {
+                    android.util.Log.d("API_TEST", "⏳ Chargement en cours...");
+                }
+                else if (state.isSuccess()) {
+                    android.util.Log.d("API_TEST", "✅ Succès ! L'API a répondu.");
+                    PredictResponse response = state.getData();
+
+                    if (response != null && response.getBottle() != null) {
+                        android.util.Log.d("API_TEST", "🍷 Nombre de vins trouvés : " + response.getBottle().size());
+                        if (!response.getBottle().isEmpty()) {
+                            android.util.Log.d("API_TEST", "🥇 Premier vin : " + response.getBottle().get(0).getTitle());
+                        }
+                    }
+                    repoResult.removeObserver(this);
+                }
+                else if (state.isError()) {
+                    android.util.Log.e("API_TEST", "❌ Erreur API : " + state.getMessage());
+                    // Nettoyage de l'observateur de test
+                    repoResult.removeObserver(this);
+                }
+            }
+        });
     }
 }

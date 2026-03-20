@@ -112,7 +112,7 @@ public class FlavorFragment extends Fragment implements
             showSnackbar(getString(R.string.error_unknown));
             return;
         }
-
+        viewModel.predict();
         // Naviguer vers la liste de suggestions
         // L'action dépend de la destination actuelle dans le nav_graph
         int currentDestId = navController.getCurrentDestination() != null
