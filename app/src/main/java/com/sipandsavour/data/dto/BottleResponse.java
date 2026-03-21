@@ -21,6 +21,7 @@ public class BottleResponse {
         this.color = color;
     }
 
+
     // === GETTERS ===
 
     public String getTitle() { return title; }
