@@ -31,15 +31,15 @@ public final class Repository {
 
     private static volatile Repository instance;
 
-    private final AuthApi authApi;
+    private static AuthApi authApi = null;
     private final WineApi wineApi;
-    private final SessionManager sessionManager;
+    private static SessionManager sessionManager = null;
 
     private Repository() {
         ApiClient apiClient = ApiClient.getInstance();
-        this.authApi = apiClient.getAuthApi();
+        authApi = apiClient.getAuthApi();
         this.wineApi = apiClient.getWineApi();
-        this.sessionManager = SessionManager.getInstance();
+        sessionManager = SessionManager.getInstance();
     }
 
     public static Repository getInstance() {
@@ -60,7 +60,7 @@ public final class Repository {
     /**
      * Connexion utilisateur
      */
-    public LiveData<UiState<AuthResponse>> login(String email, String password) {
+    public static LiveData<UiState<AuthResponse>> login(String email, String password) {
         MutableLiveData<UiState<AuthResponse>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
 
@@ -118,7 +118,7 @@ public final class Repository {
     /**
      * Déconnexion
      */
-    public void logout() {
+    public static void logout() {
         sessionManager.logout();
     }
 

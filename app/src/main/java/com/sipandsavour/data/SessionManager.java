@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sipandsavour.data.api.ApiClient;
+import com.sipandsavour.ui.auth.AuthViewModel;
 import com.sipandsavour.util.Constants;
 
 /**
