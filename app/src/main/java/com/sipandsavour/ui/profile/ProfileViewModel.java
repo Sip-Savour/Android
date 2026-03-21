@@ -31,14 +31,11 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void loadUserData() {
-        // TODO: Charger les données depuis SessionManager
         userName.setValue(SessionManager.getInstance().getUsername());
         userEmail.setValue(SessionManager.getInstance().getEmail());
     }
 
     public void logout() {
-        // TODO: Appeler SessionManager.logout()
-        // TODO: Naviguer vers l'écran de connexion
         Repository.logout();
         AuthViewModel.logout();
 

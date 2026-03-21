@@ -40,7 +40,6 @@ public class AuthViewModel extends ViewModel {
 
     public void login(String email, String password) {
         // TODO: Valider les champs
-        // TODO: Appeler Repository.login(email, password)
         // TODO: Mettre à jour isLoading, errorMessage, loginSuccess
 
         isLoading.setValue(true);
