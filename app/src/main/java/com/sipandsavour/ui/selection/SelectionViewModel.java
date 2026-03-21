@@ -149,7 +149,7 @@ public class SelectionViewModel extends ViewModel {
                     if (response != null && response.getBottle() != null) {
                         android.util.Log.d("API_TEST", "🍷 Nombre de vins trouvés : " + response.getBottle().size());
                         if (!response.getBottle().isEmpty()) {
-                            android.util.Log.d("API_TEST", "🥇 Premier vin : " + response.getBottle().get(0).getTitle());
+                            android.util.Log.d("API_TEST", "🥇 Premier vin : " + response.getBottle().get(0).getTitle() +"  "+ response.getBottle().get(0).getDescription() +"  "+ response.getBottle().get(0).getVariety());
                         }
                     }
                     repoResult.removeObserver(this);
