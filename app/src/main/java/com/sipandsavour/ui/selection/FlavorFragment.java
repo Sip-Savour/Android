@@ -56,6 +56,7 @@ public class FlavorFragment extends Fragment implements
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(requireActivity()).get(SelectionViewModel.class);
         viewModel.setMode(mode);
+        viewModel.clearSelections();
 
         bindViews(view);
         setupHeader();
