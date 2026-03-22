@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * ViewModel pour gérer l'état de la sélection des saveurs.
+ * ViewModel pour gérer l'état de la sélection des saveurs et de la couleur.
  */
 public class SelectionViewModel extends ViewModel {
 
@@ -27,6 +27,9 @@ public class SelectionViewModel extends ViewModel {
 
     // Couleur de vin sélectionnée
     private final MutableLiveData<String> selectedColor = new MutableLiveData<>(null);
+
+    // Résultat de la prédiction API (NOUVEAU)
+    private final MutableLiveData<UiState<PredictResponse>> predictionResult = new MutableLiveData<>();
 
     // Mode de recherche
     private String mode = "match";
@@ -57,7 +60,7 @@ public class SelectionViewModel extends ViewModel {
     }
 
     // =======================================================
-    //  SAVEURS SÉLECTIONNÉES
+    //  SAVEURS SÉLECTIONNÉES & COULEUR (INTERCEPTION)
     // =======================================================
 
     public LiveData<Set<String>> getSelectedFlavors() {
@@ -65,6 +68,22 @@ public class SelectionViewModel extends ViewModel {
     }
 
     public void toggleFlavor(String flavorKey) {
+        // 1. INTERCEPTION DES COULEURS (On capte le Français et l'Anglais par sécurité)
+        if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
+                flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
+                flavorKey.equalsIgnoreCase("Rosé") || flavorKey.equalsIgnoreCase("rose")) {
+
+            if (flavorKey.equals(selectedColor.getValue())) {
+                selectedColor.setValue(null); // On décoche si c'était déjà sélectionné
+            } else {
+                selectedColor.setValue(flavorKey); // On applique la nouvelle couleur
+            }
+            // On notifie l'UI pour mettre à jour l'affichage
+            selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
+            return; // 🛑 On s'arrête ici pour ne pas l'ajouter aux saveurs
+        }
+
+        // 2. COMPORTEMENT NORMAL (Saveurs)
         if (selectedFlavors.contains(flavorKey)) {
             selectedFlavors.remove(flavorKey);
         } else {
@@ -74,6 +93,12 @@ public class SelectionViewModel extends ViewModel {
     }
 
     public boolean isFlavorSelected(String flavorKey) {
+        // L'adaptateur a besoin de savoir si le bouton couleur doit être coché
+        if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
+                flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
+                flavorKey.equalsIgnoreCase("Rosé") || flavorKey.equalsIgnoreCase("rose")) {
+            return flavorKey.equals(selectedColor.getValue());
+        }
         return selectedFlavors.contains(flavorKey);
     }
 
@@ -83,8 +108,8 @@ public class SelectionViewModel extends ViewModel {
 
     public void clearSelections() {
         selectedFlavors.clear();
-        selectedFlavorsLiveData.setValue(new HashSet<>());
         selectedColor.setValue(null);
+        selectedFlavorsLiveData.setValue(new HashSet<>());
     }
 
     // =======================================================
@@ -97,6 +122,16 @@ public class SelectionViewModel extends ViewModel {
 
     public void setSelectedColor(String color) {
         selectedColor.setValue(color);
+        // On notifie pour que l'UI se rafraîchisse si la couleur change via une autre méthode
+        selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
+    }
+
+    // =======================================================
+    //  RÉSULTAT DE PRÉDICTION (NOUVEAU)
+    // =======================================================
+
+    public LiveData<UiState<PredictResponse>> getPredictionResult() {
+        return predictionResult;
     }
 
     // =======================================================
@@ -112,33 +147,50 @@ public class SelectionViewModel extends ViewModel {
     }
 
     // =======================================================
-    //  PRÉDICTION
-    // =======================================================
-
-    // =======================================================
-    //  PRÉDICTION (TEST STATIQUE)
+    //  PRÉDICTION (API)
     // =======================================================
 
     public void predict() {
-        android.util.Log.d("API_TEST", "Lancement de la requête de test vers l'API...");
+        android.util.Log.d("API_TEST", "Lancement de la requête vers l'API...");
 
+        // On avertit l'interface que le chargement commence
+        predictionResult.setValue(UiState.loading());
 
         StringBuilder sb = new StringBuilder();
         for (String flavor : selectedFlavors) {
             if (sb.length() > 0) sb.append(" ");
-            sb.append(flavor);
+            // On s'assure de remplacer les underscores par des espaces pour l'IA
+            sb.append(flavor.replace("_", " "));
         }
         String features = sb.toString();
-        // 1. DONNÉES STATIQUES DE TEST
-        String testColor = "White";
 
-        // 2. APPEL AU REPOSITORY
-        LiveData<UiState<PredictResponse>> repoResult = Repository.getInstance().predict(features, testColor);
+        // --- TRADUCTION DE LA COULEUR POUR L'API ---
+        String rawColor = selectedColor.getValue();
+        String apiColor = null;
 
-        // 3. OBSERVATION DU RÉSULTAT (Pour le test dans les logs)
+        if (rawColor != null) {
+            String lowerColor = rawColor.toLowerCase();
+            if (lowerColor.equals("rouge") || lowerColor.equals("red")) {
+                apiColor = "Red"; // L'API attend "Red"
+            } else if (lowerColor.equals("blanc") || lowerColor.equals("white")) {
+                apiColor = "White"; // L'API attend "White"
+            } else if (lowerColor.equals("rosé") || lowerColor.equals("rose")) {
+                apiColor = "Rose"; // L'API attend "Rose"
+            }
+        }
+
+        android.util.Log.d("API_TEST", "Features envoyés : [" + features + "]");
+        android.util.Log.d("API_TEST", "Couleur envoyée : [" + apiColor + "]");
+
+        // On envoie la couleur traduite
+        LiveData<UiState<PredictResponse>> repoResult = Repository.getInstance().predict(features, apiColor);
+
         repoResult.observeForever(new androidx.lifecycle.Observer<UiState<PredictResponse>>() {
             @Override
             public void onChanged(UiState<PredictResponse> state) {
+                // On transmet l'état en direct à notre LiveData
+                predictionResult.setValue(state);
+
                 if (state.isLoading()) {
                     android.util.Log.d("API_TEST", "⏳ Chargement en cours...");
                 }
@@ -149,14 +201,17 @@ public class SelectionViewModel extends ViewModel {
                     if (response != null && response.getBottle() != null) {
                         android.util.Log.d("API_TEST", "🍷 Nombre de vins trouvés : " + response.getBottle().size());
                         if (!response.getBottle().isEmpty()) {
-                            android.util.Log.d("API_TEST", "🥇 Premier vin : " + response.getBottle().get(0).getTitle() +"  "+ response.getBottle().get(0).getDescription() +"  "+ response.getBottle().get(0).getVariety());
+                            // Affichage sécurisé en fonction des données récupérées
+                            android.util.Log.d("API_TEST", "🥇 Premier vin : " +
+                                    response.getBottle().get(0).getTitle() +" | "+
+                                    response.getBottle().get(0).getVariety() +" | "+
+                                    response.getBottle().get(0).getColor());
                         }
                     }
                     repoResult.removeObserver(this);
                 }
                 else if (state.isError()) {
                     android.util.Log.e("API_TEST", "❌ Erreur API : " + state.getMessage());
-                    // Nettoyage de l'observateur de test
                     repoResult.removeObserver(this);
                 }
             }

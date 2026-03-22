@@ -5,47 +5,55 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.sipandsavour.data.dto.WineDto;
+import java.util.List;
 
-/**
- * ViewModel pour l'écran de détail d'un vin.
- */
 public class ResultViewModel extends ViewModel {
 
     private final MutableLiveData<WineDto> currentWine = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isFavorite = new MutableLiveData<>(false);
 
-    // =======================================================
-    //  WINE DATA
-    // =======================================================
+    private List<WineDto> wineList;
+    private int currentIndex = -1;
 
     public LiveData<WineDto> getCurrentWine() {
         return currentWine;
     }
 
-    public void setCurrentWine(WineDto wine) {
-        currentWine.setValue(wine);
-        // TODO: Vérifier si le vin est déjà en favori via Repository
+    public void setWineList(List<WineDto> list) {
+        this.wineList = list;
     }
 
-    // =======================================================
-    //  FAVORITES
-    // =======================================================
+    public void setCurrentWine(WineDto wine) {
+        currentWine.setValue(wine);
+
+        if (wineList != null && wine != null) {
+            currentIndex = -1;
+            // DOUBLE SÉCURITÉ : Recherche par ID ou par Titre
+            for (int i = 0; i < wineList.size(); i++) {
+                if (wineList.get(i).getId() == wine.getId() ||
+                        (wineList.get(i).getTitle() != null && wineList.get(i).getTitle().equals(wine.getTitle()))) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
+    }
+
+    public boolean nextWine() {
+        if (wineList != null && currentIndex >= 0 && currentIndex < wineList.size() - 1) {
+            currentIndex++;
+            currentWine.setValue(wineList.get(currentIndex));
+            return true;
+        }
+        return false;
+    }
 
     public LiveData<Boolean> getIsFavorite() {
         return isFavorite;
     }
 
     public void toggleFavorite() {
-        WineDto wine = currentWine.getValue();
-        if (wine == null) return;
-
         Boolean current = isFavorite.getValue();
-        if (current == null) current = false;
-
-        // TODO: Appeler Repository.addFavorite() ou removeFavorite()
-        // TODO: Mettre à jour isFavorite selon le résultat
-
-        // Temporaire : toggle local
-        isFavorite.setValue(!current);
+        isFavorite.setValue(current != null ? !current : true);
     }
 }

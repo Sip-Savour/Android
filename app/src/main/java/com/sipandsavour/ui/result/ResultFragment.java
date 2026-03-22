@@ -1,7 +1,9 @@
 package com.sipandsavour.ui.result;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -14,13 +16,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
-
-import java.util.List;
 
 public class ResultFragment extends Fragment {
 
@@ -28,10 +26,10 @@ public class ResultFragment extends Fragment {
     private NavController navController;
 
     // Views
+    private TextView tvTitle;
     private TextView tvCepage;
     private TextView tvDescription;
     private TextView tvType;
-    private ChipGroup chipGroupKeywords;
     private ImageButton fabFavorite;
 
     @Nullable
@@ -47,18 +45,21 @@ public class ResultFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = NavHostFragment.findNavController(this);
-        viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
 
         bindViews(view);
         setupFavoriteButton();
         observeViewModel();
+
+        // On active le slide indestructible !
+        setupSwipeGesture(view);
     }
 
     private void bindViews(View view) {
+        tvTitle = view.findViewById(R.id.tvTitle);
         tvCepage = view.findViewById(R.id.tvCepage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvType = view.findViewById(R.id.tvType);
-        chipGroupKeywords = view.findViewById(R.id.chipGroupKeywords);
         fabFavorite = view.findViewById(R.id.fabFavorite);
     }
 
@@ -70,35 +71,24 @@ public class ResultFragment extends Fragment {
 
     private void observeViewModel() {
         viewModel.getCurrentWine().observe(getViewLifecycleOwner(), this::displayWine);
-
         viewModel.getIsFavorite().observe(getViewLifecycleOwner(), this::updateFavoriteIcon);
     }
 
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
+        // ANIMATION VISUELLE DU SLIDE
+        View card = getView() != null ? getView().findViewById(R.id.wineCard) : null;
+        if (card != null) {
+            card.setAlpha(0f);
+            card.setTranslationX(150f); // Démarre décalé vers la droite
+            card.animate().alpha(1f).translationX(0f).setDuration(250).start(); // Glisse vers le centre
+        }
+
+        if (tvTitle != null) tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : "Vin Inconnu");
         tvCepage.setText(wine.getVariety() != null ? wine.getVariety() : "-");
         tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : "-");
         tvType.setText(wine.getColorDisplayName());
-
-        displayKeywords(wine.getKeywords());
-    }
-
-    private void displayKeywords(List<String> keywords) {
-        chipGroupKeywords.removeAllViews();
-
-        if (keywords == null || keywords.isEmpty()) return;
-
-        for (String keyword : keywords) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(keyword);
-            chip.setClickable(false);
-            chip.setCheckable(false);
-            chip.setChipBackgroundColorResource(R.color.surface_variant);
-            chip.setTextColor(getResources().getColor(R.color.primary, null));
-
-            chipGroupKeywords.addView(chip);
-        }
     }
 
     private void updateFavoriteIcon(boolean isFavorite) {
@@ -113,5 +103,70 @@ public class ResultFragment extends Fragment {
         if (getView() != null) {
             Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    // =======================================================
+    //  GESTION DU SWIPE (MÉTHODE RAWX ABSOLUE)
+    // =======================================================
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupSwipeGesture(View view) {
+        View.OnTouchListener invincibleSwipeListener = new View.OnTouchListener() {
+            private float startX = 0;
+            private float startY = 0;
+            private boolean isSwiping = false;
+            private static final int SWIPE_THRESHOLD = 120; // Sensibilité du glissement
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getRawX();
+                        startY = event.getRawY();
+                        isSwiping = false;
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        float diffX = event.getRawX() - startX;
+                        float diffY = event.getRawY() - startY;
+
+                        // Si on bouge horizontalement de plus de 40 pixels
+                        if (!isSwiping && Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+                            isSwiping = true;
+                            // On hurle au ScrollView de ne pas toucher à ce geste !
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                        }
+
+                        // Si on est en train de swiper, on "avale" l'événement pour bloquer le défilement haut/bas
+                        if (isSwiping) return true;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        if (isSwiping) {
+                            float finalDiffX = event.getRawX() - startX;
+                            if (Math.abs(finalDiffX) > SWIPE_THRESHOLD) {
+                                if (finalDiffX > 0) {
+                                    // Slide vers la DROITE (→) : Retour en arrière
+                                    navController.popBackStack();
+                                } else {
+                                    // Slide vers la GAUCHE (←) : Vin Suivant
+                                    boolean hasNext = viewModel.nextWine();
+                                    if (!hasNext) {
+                                        showSnackbar("C'est le dernier vin de la liste !");
+                                    }
+                                }
+                            }
+                            isSwiping = false;
+                            return true; // Le swipe est terminé
+                        }
+                        break;
+                }
+                return false; // Laisse passer le clic normal et le scroll normal
+            }
+        };
+
+        // On attache le super-détecteur à la fois au ScrollView et au fond de l'écran
+        View scrollView = view.findViewById(R.id.scrollView);
+        if (scrollView != null) scrollView.setOnTouchListener(invincibleSwipeListener);
+        view.setOnTouchListener(invincibleSwipeListener);
     }
 }

@@ -101,7 +101,8 @@ public class FlavorFragment extends Fragment implements
                 categories -> categoryAdapter.setCategories(categories));
 
         viewModel.getSelectedFlavors().observe(getViewLifecycleOwner(), selectedFlavors -> {
-            boolean hasSelection = !selectedFlavors.isEmpty();
+            // Le bouton s'active si l'on a sélectionné au moins une saveur OU une couleur
+            boolean hasSelection = viewModel.hasSelection();
             btnMatch.setEnabled(hasSelection);
             categoryAdapter.updateSelectedFlavors(selectedFlavors);
         });
@@ -113,6 +114,7 @@ public class FlavorFragment extends Fragment implements
             return;
         }
         viewModel.predict();
+
         // Naviguer vers la liste de suggestions
         // L'action dépend de la destination actuelle dans le nav_graph
         int currentDestId = navController.getCurrentDestination() != null
