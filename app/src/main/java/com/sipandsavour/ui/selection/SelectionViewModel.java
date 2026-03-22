@@ -13,43 +13,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * ViewModel pour gérer l'état de la sélection des saveurs et de la couleur.
- */
 public class SelectionViewModel extends ViewModel {
 
-    // Catégories accordéon
     private final MutableLiveData<List<FlavorMapper.AccordionCategory>> categories = new MutableLiveData<>();
-
-    // Saveurs sélectionnées
     private final Set<String> selectedFlavors = new HashSet<>();
     private final MutableLiveData<Set<String>> selectedFlavorsLiveData = new MutableLiveData<>(new HashSet<>());
-
-    // Couleur de vin sélectionnée
     private final MutableLiveData<String> selectedColor = new MutableLiveData<>(null);
-
-    // Résultat de la prédiction API (NOUVEAU)
     private final MutableLiveData<UiState<PredictResponse>> predictionResult = new MutableLiveData<>();
-
-    // Mode de recherche
     private String mode = "match";
 
     public SelectionViewModel() {
         loadCategories();
     }
 
-    // =======================================================
-    //  CATÉGORIES
-    // =======================================================
-
     private void loadCategories() {
         List<FlavorMapper.AccordionCategory> cats = FlavorMapper.getAccordionCategories();
         categories.setValue(cats);
     }
 
-    public LiveData<List<FlavorMapper.AccordionCategory>> getCategories() {
-        return categories;
-    }
+    public LiveData<List<FlavorMapper.AccordionCategory>> getCategories() { return categories; }
 
     public void toggleCategory(int position) {
         List<FlavorMapper.AccordionCategory> cats = categories.getValue();
@@ -59,41 +41,29 @@ public class SelectionViewModel extends ViewModel {
         }
     }
 
-    // =======================================================
-    //  SAVEURS SÉLECTIONNÉES & COULEUR (INTERCEPTION)
-    // =======================================================
-
-    public LiveData<Set<String>> getSelectedFlavors() {
-        return selectedFlavorsLiveData;
+    public LiveData<Set<String>> getSelectedFlavors() { return selectedFlavorsLiveData; }
+    public boolean hasSelection() {
+        return !selectedFlavors.isEmpty();
     }
-
     public void toggleFlavor(String flavorKey) {
-        // 1. INTERCEPTION DES COULEURS (On capte le Français et l'Anglais par sécurité)
         if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
                 flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
                 flavorKey.equalsIgnoreCase("Rosé") || flavorKey.equalsIgnoreCase("rose")) {
 
-            if (flavorKey.equals(selectedColor.getValue())) {
-                selectedColor.setValue(null); // On décoche si c'était déjà sélectionné
-            } else {
-                selectedColor.setValue(flavorKey); // On applique la nouvelle couleur
-            }
-            // On notifie l'UI pour mettre à jour l'affichage
+            if (flavorKey.equals(selectedColor.getValue())) selectedColor.setValue(null);
+            else selectedColor.setValue(flavorKey);
+
             selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
-            return; // 🛑 On s'arrête ici pour ne pas l'ajouter aux saveurs
+            return;
         }
 
-        // 2. COMPORTEMENT NORMAL (Saveurs)
-        if (selectedFlavors.contains(flavorKey)) {
-            selectedFlavors.remove(flavorKey);
-        } else {
-            selectedFlavors.add(flavorKey);
-        }
+        if (selectedFlavors.contains(flavorKey)) selectedFlavors.remove(flavorKey);
+        else selectedFlavors.add(flavorKey);
+
         selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
     }
 
     public boolean isFlavorSelected(String flavorKey) {
-        // L'adaptateur a besoin de savoir si le bouton couleur doit être coché
         if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
                 flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
                 flavorKey.equalsIgnoreCase("Rosé") || flavorKey.equalsIgnoreCase("rose")) {
@@ -102,116 +72,143 @@ public class SelectionViewModel extends ViewModel {
         return selectedFlavors.contains(flavorKey);
     }
 
-    public boolean hasSelection() {
-        return !selectedFlavors.isEmpty();
-    }
-
     public void clearSelections() {
         selectedFlavors.clear();
         selectedColor.setValue(null);
         selectedFlavorsLiveData.setValue(new HashSet<>());
     }
 
-    // =======================================================
-    //  COULEUR
-    // =======================================================
-
-    public LiveData<String> getSelectedColor() {
-        return selectedColor;
-    }
+    public LiveData<String> getSelectedColor() { return selectedColor; }
 
     public void setSelectedColor(String color) {
         selectedColor.setValue(color);
-        // On notifie pour que l'UI se rafraîchisse si la couleur change via une autre méthode
         selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
     }
 
+    public LiveData<UiState<PredictResponse>> getPredictionResult() { return predictionResult; }
+    public void setMode(String mode) { this.mode = mode; }
+    public String getMode() { return mode; }
+
     // =======================================================
-    //  RÉSULTAT DE PRÉDICTION (NOUVEAU)
+    //  MAPPING INTELLIGENT AVEC GESTION DE LA COULEUR OPTIONNELLE
     // =======================================================
 
-    public LiveData<UiState<PredictResponse>> getPredictionResult() {
-        return predictionResult;
+    public void predictFromMeal(Set<String> mealTastes) {
+        clearSelections();
+
+        // 1. COULEUR MANUELLE (Optionnelle, envoyée uniquement si l'utilisateur la choisit)
+        if (mealTastes.contains("Vin Rouge")) {
+            selectedColor.setValue("red");
+        } else if (mealTastes.contains("Vin Blanc")) {
+            selectedColor.setValue("white");
+        } else if (mealTastes.contains("Vin Rosé")) {
+            selectedColor.setValue("rose");
+        } else {
+            selectedColor.setValue(null); // Si aucune couleur choisie, on laisse l'API gérer !
+        }
+
+        // 2. BASE DU PLAT (Génère uniquement des arômes, plus de couleur forcée)
+        if (mealTastes.contains("Viande Rouge")) {
+            selectedFlavors.add("tannin");
+            selectedFlavors.add("black fruit");
+            selectedFlavors.add("oak");
+        }
+        else if (mealTastes.contains("Viande Blanche") || mealTastes.contains("Volaille")) {
+            selectedFlavors.add("tree fruit");
+            selectedFlavors.add("light bodied");
+        }
+        else if (mealTastes.contains("Poisson") || mealTastes.contains("Fruits de mer")) {
+            selectedFlavors.add("citrus");
+            selectedFlavors.add("mineral");
+            selectedFlavors.add("high acidity");
+        }
+        else if (mealTastes.contains("Végétarien")) {
+            selectedFlavors.add("earthy");
+            selectedFlavors.add("herb");
+        }
+        else if (mealTastes.contains("Fromage")) {
+            selectedFlavors.add("oak");
+            selectedFlavors.add("aged");
+        }
+
+        // 3. PROFIL GUSTATIF
+        if (mealTastes.contains("Gras") || mealTastes.contains("Riche")) {
+            selectedFlavors.add("butter");
+            selectedFlavors.add("full body");
+        }
+        if (mealTastes.contains("Sec")) selectedFlavors.add("dry");
+        if (mealTastes.contains("Salé")) {
+            selectedFlavors.add("mineral");
+            selectedFlavors.add("crisp");
+        }
+        if (mealTastes.contains("Sucré")) {
+            selectedFlavors.add("sweet");
+            selectedFlavors.add("honey");
+            selectedFlavors.add("tropical fruit");
+        }
+        if (mealTastes.contains("Poivré") || mealTastes.contains("Épicé")) {
+            selectedFlavors.add("pepper");
+            selectedFlavors.add("spice");
+        }
+        if (mealTastes.contains("Acide")) {
+            selectedFlavors.add("high acidity");
+            selectedFlavors.add("citrus");
+        }
+
+        selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
+
+        // 4. On lance la prédiction
+        predict();
     }
-
-    // =======================================================
-    //  MODE
-    // =======================================================
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    // =======================================================
-    //  PRÉDICTION (API)
-    // =======================================================
 
     public void predict() {
-        android.util.Log.d("API_TEST", "Lancement de la requête vers l'API...");
-
-        // On avertit l'interface que le chargement commence
+        android.util.Log.d("API_TEST", "Lancement de la préparation de la requête...");
         predictionResult.setValue(UiState.loading());
 
         StringBuilder sb = new StringBuilder();
+
+        // On s'assure de ne prendre QUE ce qui est actuellement dans le Set
+        // Si vous venez de l'écran avancé, selectedFlavors contient vos clics.
         for (String flavor : selectedFlavors) {
             if (sb.length() > 0) sb.append(" ");
-            // On s'assure de remplacer les underscores par des espaces pour l'IA
             sb.append(flavor.replace("_", " "));
         }
         String features = sb.toString();
 
-        // --- TRADUCTION DE LA COULEUR POUR L'API ---
         String rawColor = selectedColor.getValue();
         String apiColor = null;
 
         if (rawColor != null) {
             String lowerColor = rawColor.toLowerCase();
-            if (lowerColor.equals("rouge") || lowerColor.equals("red")) {
-                apiColor = "Red"; // L'API attend "Red"
-            } else if (lowerColor.equals("blanc") || lowerColor.equals("white")) {
-                apiColor = "White"; // L'API attend "White"
-            } else if (lowerColor.equals("rosé") || lowerColor.equals("rose")) {
-                apiColor = "Rose"; // L'API attend "Rose"
-            }
+            if (lowerColor.equals("rouge") || lowerColor.equals("red")) apiColor = "Red";
+            else if (lowerColor.equals("blanc") || lowerColor.equals("white")) apiColor = "White";
+            else if (lowerColor.equals("rosé") || lowerColor.equals("rose")) apiColor = "Rose";
         }
 
-        android.util.Log.d("API_TEST", "Features envoyés : [" + features + "]");
-        android.util.Log.d("API_TEST", "Couleur envoyée : [" + apiColor + "]");
+        // ==========================================================
+        //  LOGGERS POUR LE LOGCAT
+        // ==========================================================
+        android.util.Log.d("API_TEST", "=======================================");
+        android.util.Log.d("API_TEST", "🚀 ENVOI À L'API :");
+        android.util.Log.d("API_TEST", "👉 Features : [" + features + "]");
+        android.util.Log.d("API_TEST", "👉 Couleur  : [" + apiColor + "]");
+        android.util.Log.d("API_TEST", "=======================================");
 
-        // On envoie la couleur traduite
         LiveData<UiState<PredictResponse>> repoResult = Repository.getInstance().predict(features, apiColor);
-
-        repoResult.observeForever(new androidx.lifecycle.Observer<UiState<PredictResponse>>() {
+        repoResult.observeForever(new androidx.lifecycle.Observer<>() {
             @Override
             public void onChanged(UiState<PredictResponse> state) {
-                // On transmet l'état en direct à notre LiveData
                 predictionResult.setValue(state);
 
                 if (state.isLoading()) {
-                    android.util.Log.d("API_TEST", "⏳ Chargement en cours...");
+                    android.util.Log.d("API_TEST", "⏳ Requête en cours, on attend la réponse...");
                 }
                 else if (state.isSuccess()) {
-                    android.util.Log.d("API_TEST", "✅ Succès ! L'API a répondu.");
-                    PredictResponse response = state.getData();
-
-                    if (response != null && response.getBottle() != null) {
-                        android.util.Log.d("API_TEST", "🍷 Nombre de vins trouvés : " + response.getBottle().size());
-                        if (!response.getBottle().isEmpty()) {
-                            // Affichage sécurisé en fonction des données récupérées
-                            android.util.Log.d("API_TEST", "🥇 Premier vin : " +
-                                    response.getBottle().get(0).getTitle() +" | "+
-                                    response.getBottle().get(0).getVariety() +" | "+
-                                    response.getBottle().get(0).getColor());
-                        }
-                    }
+                    android.util.Log.d("API_TEST", "✅ SUCCÈS : L'API a répondu correctement !");
                     repoResult.removeObserver(this);
                 }
                 else if (state.isError()) {
-                    android.util.Log.e("API_TEST", "❌ Erreur API : " + state.getMessage());
+                    android.util.Log.e("API_TEST", "❌ ERREUR API : " + state.getMessage());
                     repoResult.removeObserver(this);
                 }
             }
