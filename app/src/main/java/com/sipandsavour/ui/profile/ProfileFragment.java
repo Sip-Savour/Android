@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sipandsavour.R;
+import com.sipandsavour.ui.auth.AuthViewModel;
 
 public class ProfileFragment extends Fragment {
 
@@ -104,7 +105,7 @@ public class ProfileFragment extends Fragment {
                 .setMessage(R.string.profile_logout_confirm_message)
                 .setPositiveButton(R.string.profile_logout, (dialog, which) -> {
                     viewModel.logout();
-                    // TODO: Naviguer vers l'écran de connexion
+                    navController.navigate(R.id.action_profile_to_auth);
                 })
                 .setNegativeButton(R.string.error_cancel, null)
                 .show();

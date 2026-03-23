@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sipandsavour.R;
+import com.sipandsavour.data.Repository;
+import com.sipandsavour.data.SessionManager;
+import com.sipandsavour.ui.auth.AuthViewModel;
+
 /**
  * ViewModel pour l'écran de profil.
  */
@@ -26,13 +31,13 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void loadUserData() {
-        // TODO: Charger les données depuis SessionManager
-        // userName.setValue(SessionManager.getInstance().getUsername());
-        // userEmail.setValue(SessionManager.getInstance().getEmail());
+        userName.setValue(SessionManager.getInstance().getUsername());
+        userEmail.setValue(SessionManager.getInstance().getEmail());
     }
 
     public void logout() {
-        // TODO: Appeler SessionManager.logout()
-        // TODO: Naviguer vers l'écran de connexion
+        Repository.logout();
+        AuthViewModel.logout();
+
     }
 }

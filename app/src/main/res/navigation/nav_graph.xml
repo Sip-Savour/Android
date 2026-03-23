@@ -113,7 +113,11 @@
         android:id="@+id/profileFragment"
         android:name="com.sipandsavour.ui.profile.ProfileFragment"
         android:label=""
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_auth"
+            app:destination="@id/nav_auth" />
+    </fragment>
 
     <fragment
         android:id="@+id/flavorSelectionFragment"

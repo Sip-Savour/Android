@@ -18,7 +18,7 @@ public interface AuthApi {
      * Connexion utilisateur
      * POST /auth/login
      */
-    @POST("auth/login")
+    @POST("/login")
     Call<AuthResponse> login(@Body LoginRequest request);
 
     /**
