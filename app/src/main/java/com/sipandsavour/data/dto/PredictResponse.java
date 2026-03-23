@@ -1,29 +1,29 @@
 package com.sipandsavour.data.dto;
 
+import java.util.List;
+
 /**
  * Réponse de prédiction de vin.
  */
 public class PredictResponse {
 
-    private String cepage;
-    private BottleResponse bottle;
+    // On utilise une List car l'API renvoie plusieurs bouteilles
+    private List<BottleResponse> bottle;
 
     // === CONSTRUCTORS ===
-
     public PredictResponse() {}
 
-    public PredictResponse(String cepage, BottleResponse bottle) {
-        this.cepage = cepage;
+    public PredictResponse(List<BottleResponse> bottle) {
         this.bottle = bottle;
     }
 
     // === GETTERS ===
-
-    public String getCepage() { return cepage; }
-    public BottleResponse getBottle() { return bottle; }
+    public List<BottleResponse> getBottle() {
+        return bottle;
+    }
 
     // === SETTERS ===
-
-    public void setCepage(String cepage) { this.cepage = cepage; }
-    public void setBottle(BottleResponse bottle) { this.bottle = bottle; }
+    public void setBottle(List<BottleResponse> bottle) {
+        this.bottle = bottle;
+    }
 }

@@ -107,11 +107,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 animateExpand(!category.isExpanded());
             });
 
-            if (chipGroup.getChildCount() == 0) {
-                createChips(category);
-            } else {
-                updateChipsState();
-            }
+            createChips(category);
         }
 
         private void createChips(FlavorMapper.AccordionCategory category) {
