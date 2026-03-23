@@ -7,8 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sipandsavour.data.api.ApiClient;
-import com.sipandsavour.ui.auth.AuthViewModel;
 import com.sipandsavour.util.Constants;
+
+import java.util.Set;
 
 /**
  * Gestionnaire de session utilisateur.
@@ -119,6 +120,90 @@ public final class SessionManager {
 
     public boolean isDarkMode() {
         return prefs.getBoolean(Constants.KEY_DARK_MODE, false);
+    }
+
+    /**
+     * Sauvegarde la couleur de vin préférée de l'utilisateur (ex: "Red", "White", "Rose", ou null)
+     */
+    public void setPreferredColor(@Nullable String color) {
+        if (color == null) {
+            prefs.edit().remove(Constants.KEY_PREF_COLOR).apply();
+        } else {
+            prefs.edit().putString(Constants.KEY_PREF_COLOR, color).apply();
+        }
+    }
+
+    /**
+     * Retourne la couleur préférée, ou null si l'utilisateur n'a rien choisi
+     */
+    @Nullable
+    public String getPreferredColor() {
+        return prefs.getString(Constants.KEY_PREF_COLOR, null);
+    }
+
+    /**
+     * Sauvegarde les features (arômes/caractéristiques) favorites
+     */
+    public void setPreferredFeatures(@Nullable Set<String> features) {
+        if (features == null || features.isEmpty()) {
+            prefs.edit().remove(Constants.KEY_PREF_FEATURES).apply();
+        } else {
+            prefs.edit().putStringSet(Constants.KEY_PREF_FEATURES, features).apply();
+        }
+    }
+
+    /**
+     * Retourne les features favorites, ou null
+     */
+    @Nullable
+    public Set<String> getPreferredFeatures() {
+        return prefs.getStringSet(Constants.KEY_PREF_FEATURES, null);
+    }
+
+    // =======================================================
+    //  HISTORIQUE
+    // =======================================================
+
+    /**
+     * Ajoute un ID de vin à l'historique (max 50, le plus récent en premier)
+     */
+    public void addWineToHistory(int wineId) {
+        String historyStr = prefs.getString(Constants.KEY_HISTORY, "");
+        String newId = String.valueOf(wineId);
+
+        java.util.List<String> ids = new java.util.ArrayList<>();
+        if (!historyStr.isEmpty()) {
+            ids.addAll(java.util.Arrays.asList(historyStr.split(",")));
+        }
+
+        // SÉCURITÉ ABSOLUE : On supprime TOUTES les anciennes occurrences de ce vin
+        ids.removeAll(java.util.Collections.singleton(newId));
+
+        // On l'ajoute tout en haut de la liste (index 0)
+        ids.add(0, newId);
+
+        // On limite la taille de l'historique à 50
+        if (ids.size() > 50) {
+            ids = ids.subList(0, 50);
+        }
+
+        // On sauvegarde la nouvelle chaîne propre
+        String newHistory = android.text.TextUtils.join(",", ids);
+        prefs.edit().putString(Constants.KEY_HISTORY, newHistory).apply();
+    }
+
+    /**
+     * Récupère la liste des IDs de l'historique
+     */
+    public java.util.List<Integer> getHistoryIds() {
+        String historyStr = prefs.getString(Constants.KEY_HISTORY, "");
+        java.util.List<Integer> ids = new java.util.ArrayList<>();
+        if (!historyStr.isEmpty()) {
+            for (String id : historyStr.split(",")) {
+                ids.add(Integer.parseInt(id));
+            }
+        }
+        return ids;
     }
 
     // =======================================================

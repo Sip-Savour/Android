@@ -18,6 +18,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sipandsavour.R;
 import com.sipandsavour.ui.auth.AuthViewModel;
+import com.sipandsavour.util.HapticUtil;
 
 public class ProfileFragment extends Fragment {
 
@@ -68,11 +69,26 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupListeners() {
-        fabEdit.setOnClickListener(v -> onEditClicked());
-        fabSettings.setOnClickListener(v -> onSettingsClicked());
-        fabLogout.setOnClickListener(v -> onLogoutClicked());
-        btnPreferences.setOnClickListener(v -> onPreferencesClicked());
-        btnHistory.setOnClickListener(v -> onHistoryClicked());
+        fabEdit.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onEditClicked();
+        });
+        fabSettings.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onSettingsClicked();
+        });
+        fabLogout.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onLogoutClicked();
+        });
+        btnPreferences.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onPreferencesClicked();
+        });
+        btnHistory.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onHistoryClicked();
+        });
     }
 
     private void observeViewModel() {
@@ -92,11 +108,15 @@ public class ProfileFragment extends Fragment {
     }
 
     private void onPreferencesClicked() {
-        // TODO: Naviguer vers les préférences de vins
+        if (navController != null) {
+            navController.navigate(R.id.action_profile_to_preferences);
+        }
     }
 
     private void onHistoryClicked() {
-        // TODO: Naviguer vers l'historique des recherches
+        if (navController != null) {
+            navController.navigate(R.id.action_profile_to_history);
+        }
     }
 
     private void onLogoutClicked() {

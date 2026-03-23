@@ -117,6 +117,35 @@
         <action
             android:id="@+id/action_profile_to_auth"
             app:destination="@id/nav_auth" />
+
+        <action
+            android:id="@+id/action_profile_to_preferences"
+            app:destination="@id/preferencesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_profile_to_history"
+            app:destination="@id/historyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.sipandsavour.ui.profile.HistoryFragment"
+        android:label=""
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_history_to_wineDetail"
+            app:destination="@id/wineDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -136,7 +165,11 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
     </fragment>
-
+    <fragment
+        android:id="@+id/preferencesFragment"
+        android:name="com.sipandsavour.ui.profile.PreferencesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_preferences" />
     <fragment
         android:id="@+id/flavorFromMealFragment"
         android:name="com.sipandsavour.ui.selection.FlavorFragment"

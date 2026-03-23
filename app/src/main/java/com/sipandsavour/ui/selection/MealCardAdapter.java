@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -104,6 +105,7 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
             }
 
             cardItem.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (isSingleSelection) {
                     // Si on clique sur l'élément déjà sélectionné, on le désélectionne (ça permet de retirer la couleur)
                     if (selectedItems.contains(item)) {

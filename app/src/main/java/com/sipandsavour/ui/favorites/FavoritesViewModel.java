@@ -2,9 +2,12 @@ package com.sipandsavour.ui.favorites;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.ui.common.UiState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +25,36 @@ public class FavoritesViewModel extends ViewModel {
     private WineDto lastRemovedWine;
     private int lastRemovedPosition;
 
+    public LiveData<List<WineDto>> getFavorites() { return favorites; }
+    public LiveData<Boolean> getIsLoading() { return isLoading; }
+    public LiveData<Boolean> getIsEmpty() { return isEmpty; }
+
     // =======================================================
-    //  LOAD FAVORITES
+    //  LOAD FAVORITES (VRAI APPEL API)
     // =======================================================
-
-    public LiveData<List<WineDto>> getFavorites() {
-        return favorites;
-    }
-
-    public LiveData<Boolean> getIsLoading() {
-        return isLoading;
-    }
-
-    public LiveData<Boolean> getIsEmpty() {
-        return isEmpty;
-    }
 
     public void loadFavorites() {
         isLoading.setValue(true);
 
-        // TODO: Appeler Repository.getFavorites()
-        // TODO: Mettre à jour favorites, isLoading, isEmpty selon le résultat
+        LiveData<UiState<List<WineDto>>> source = Repository.getInstance().getFavorites();
+        source.observeForever(new Observer<UiState<List<WineDto>>>() {
+            @Override
+            public void onChanged(UiState<List<WineDto>> state) {
+                if (!state.isLoading()) {
+                    source.removeObserver(this); // On arrête d'écouter
+                    isLoading.setValue(false);
 
-        // Temporaire : simuler un chargement
-        isLoading.setValue(false);
-        isEmpty.setValue(true);
+                    if (state.isSuccess() && state.getData() != null) {
+                        favorites.setValue(state.getData());
+                        isEmpty.setValue(state.getData().isEmpty());
+                    } else {
+                        // En cas d'erreur ou de liste vide
+                        isEmpty.setValue(true);
+                        favorites.setValue(new ArrayList<>());
+                    }
+                }
+            }
+        });
     }
 
     public void refresh() {
@@ -54,7 +62,7 @@ public class FavoritesViewModel extends ViewModel {
     }
 
     // =======================================================
-    //  REMOVE FAVORITE
+    //  REMOVE FAVORITE (AVEC APPEL API)
     // =======================================================
 
     public void removeFavorite(int position) {
@@ -67,32 +75,32 @@ public class FavoritesViewModel extends ViewModel {
         lastRemovedWine = wine;
         lastRemovedPosition = position;
 
-        // Supprimer localement
+        // 1. Supprimer localement (Mise à jour UI)
         List<WineDto> updatedList = new ArrayList<>(currentList);
         updatedList.remove(position);
         favorites.setValue(updatedList);
         isEmpty.setValue(updatedList.isEmpty());
 
-        // TODO: Appeler Repository.removeFavorite(wine.getId())
+        // 2. Envoyer la suppression à l'API
+        Repository.getInstance().removeFavorite(wine.getId());
     }
 
     public void undoRemove() {
         if (lastRemovedWine == null) return;
 
         List<WineDto> currentList = favorites.getValue();
-        if (currentList == null) {
-            currentList = new ArrayList<>();
-        } else {
-            currentList = new ArrayList<>(currentList);
-        }
+        if (currentList == null) currentList = new ArrayList<>();
 
-        int insertPosition = Math.min(lastRemovedPosition, currentList.size());
-        currentList.add(insertPosition, lastRemovedWine);
+        List<WineDto> updatedList = new ArrayList<>(currentList);
+        int insertPosition = Math.min(lastRemovedPosition, updatedList.size());
+        updatedList.add(insertPosition, lastRemovedWine);
 
-        favorites.setValue(currentList);
+        // 1. Remettre localement (Mise à jour UI)
+        favorites.setValue(updatedList);
         isEmpty.setValue(false);
 
-        // TODO: Appeler Repository.addFavorite(lastRemovedWine.getId())
+        // 2. Renvoyer l'ajout à l'API
+        Repository.getInstance().addFavorite(lastRemovedWine.getId());
 
         lastRemovedWine = null;
     }

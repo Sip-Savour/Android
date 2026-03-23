@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.util.HapticUtil;
 
 public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.SuggestionViewHolder> {
 
@@ -85,6 +86,7 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
             tvType.setText(wine.getColorDisplayName());
 
             itemView.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (listener != null) {
                     listener.onSuggestionClick(wine);
                 }

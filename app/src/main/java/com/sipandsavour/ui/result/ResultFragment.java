@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.util.HapticUtil;
 
 public class ResultFragment extends Fragment {
 
@@ -65,7 +66,10 @@ public class ResultFragment extends Fragment {
 
     private void setupFavoriteButton() {
         if (fabFavorite != null) {
-            fabFavorite.setOnClickListener(v -> viewModel.toggleFavorite());
+            fabFavorite.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
+                viewModel.toggleFavorite();
+            });
         }
     }
 
@@ -93,9 +97,19 @@ public class ResultFragment extends Fragment {
 
     private void updateFavoriteIcon(boolean isFavorite) {
         if (fabFavorite != null) {
+            // 1. On change la forme de l'icône (Plein ou Vide)
             fabFavorite.setImageResource(
                     isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
             );
+
+            // 2. On force la couleur de l'icône !
+            if (isFavorite) {
+                // Si c'est un favori, on applique un beau rouge vif
+                fabFavorite.setColorFilter(android.graphics.Color.parseColor("#E53935"));
+            } else {
+                // Sinon, on remet l'icône en blanc (ou la couleur par défaut de votre thème)
+                fabFavorite.setColorFilter(android.graphics.Color.parseColor("#FFFFFF"));
+            }
         }
     }
 

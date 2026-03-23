@@ -31,7 +31,7 @@ public interface WineApi {
      * Récupère la suggestion hebdomadaire
      * GET /weekly
      */
-    @GET("weekly")
+    @GET("wines/weekly")
     Call<DailySuggestionResponse> getWeeklySuggestion();
 
     /**

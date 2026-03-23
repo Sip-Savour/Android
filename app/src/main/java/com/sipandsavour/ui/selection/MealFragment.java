@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -102,6 +103,7 @@ public class MealFragment extends Fragment {
 
     private void setupButton() {
         btnFindWine.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
             // On rassemble TOUS les choix
             Set<String> allChoices = new HashSet<>();
             allChoices.addAll(baseAdapter.getSelectedItems());

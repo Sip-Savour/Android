@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.card.MaterialCardView;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 /**
  * Fragment d'accueil avec les deux cartes principales.
@@ -56,8 +57,14 @@ public class HomeFragment extends Fragment {
         swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary);
         swipeRefresh.setOnRefreshListener(this::onRefresh);
 
-        cardWeekly.setOnClickListener(v -> navigateToWeeklyChoice());
-        cardSearch.setOnClickListener(v -> navigateToFlavorSelection());
+        cardWeekly.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            navigateToWeeklyChoice();
+        });
+        cardSearch.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            navigateToFlavorSelection();
+        });
     }
 
     private void onRefresh() {

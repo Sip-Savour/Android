@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 import java.util.List;
 
@@ -95,6 +96,7 @@ public class MealCategoryAdapter extends RecyclerView.Adapter<MealCategoryAdapte
             }
 
             itemView.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (listener != null) {
                     listener.onCategorySelected(category.key);
                 }
