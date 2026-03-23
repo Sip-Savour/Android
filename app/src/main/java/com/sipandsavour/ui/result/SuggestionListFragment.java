@@ -16,6 +16,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.data.dto.BottleResponse; // Vérifiez que cet import correspond bien à votre classe
@@ -86,6 +91,7 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
                 List<BottleResponse> apiBottles = state.getData().getBottle();
                 List<WineDto> suggestions = mapApiToWineDto(apiBottles);
                 displaySuggestions(suggestions);
+                triggerSuccessVibration();
             }
             else if (state.isError()) {
                 // Erreur : On affiche l'écran vide et un message
@@ -100,22 +106,22 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         List<WineDto> list = new ArrayList<>();
         if (apiBottles == null) return list;
 
-        int idCounter = 1; // WineDto a besoin d'un ID
         for (BottleResponse bottle : apiBottles) {
-
-            // --- C'EST ICI QUE L'ON INVERSE LES DEUX PARAMÈTRES ---
+            // --- CORRECTION : ON UTILISE L'ID ET LA COULEUR DE L'API ---
             WineDto wine = new WineDto(
-                    idCounter++,
-                    bottle.getTitle(),
-                    bottle.getDescription(), // <-- La description en premier
-                    bottle.getVariety()      // <-- Le cépage (Variety) ensuite
+                    bottle.getId(),          // <-- L'ID renvoyé par l'API
+                    bottle.getTitle(),       // <-- Titre
+                    bottle.getDescription(), // <-- Description
+                    bottle.getVariety(),     // <-- Cépage
+                    bottle.getColor()        // <-- Couleur (5ème paramètre requis par WineDto)
             );
 
-            wine.setColor(bottle.getColor());
             list.add(wine);
         }
         return list;
     }
+
+
 
     private void displaySuggestions(List<WineDto> suggestions) {
         if (suggestions == null || suggestions.isEmpty()) {
@@ -126,6 +132,19 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
             layoutEmpty.setVisibility(View.GONE);
             adapter.submitList(suggestions);
             resultViewModel.setWineList(suggestions);
+        }
+    }
+
+    private void triggerSuccessVibration() {
+        Vibrator vibrator = (Vibrator) requireContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            // Une vibration très courte et douce de 50 millisecondes
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                // Pour les anciens téléphones
+                vibrator.vibrate(50);
+            }
         }
     }
 

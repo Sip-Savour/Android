@@ -253,6 +253,33 @@ public final class Repository {
     }
 
     // =======================================================
+    //  RÉCUPÉRATION D'UN VIN PAR SON ID
+    // =======================================================
+
+    public LiveData<UiState<WineDto>> getWineById(int wineId) {
+        MutableLiveData<UiState<WineDto>> result = new MutableLiveData<>();
+        result.setValue(UiState.loading());
+
+        wineApi.getWineById(wineId).enqueue(new Callback<WineDto>() {
+            @Override
+            public void onResponse(@NonNull Call<WineDto> call, @NonNull Response<WineDto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    result.setValue(UiState.success(response.body()));
+                } else {
+                    result.setValue(UiState.error("Erreur " + response.code() + " : Impossible de récupérer ce vin"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<WineDto> call, @NonNull Throwable t) {
+                result.setValue(UiState.error("Erreur de connexion : " + t.getMessage()));
+            }
+        });
+
+        return result;
+    }
+
+    // =======================================================
     //  HELPERS
     // =======================================================
 

@@ -186,7 +186,7 @@ public class SelectionViewModel extends ViewModel {
         }
 
         // ==========================================================
-        //  LOGGERS POUR LE LOGCAT
+        //  LOGGERS POUR LE LOGCAT (ENVOI)
         // ==========================================================
         android.util.Log.d("API_TEST", "=======================================");
         android.util.Log.d("API_TEST", "🚀 ENVOI À L'API :");
@@ -205,6 +205,52 @@ public class SelectionViewModel extends ViewModel {
                 }
                 else if (state.isSuccess()) {
                     android.util.Log.d("API_TEST", "✅ SUCCÈS : L'API a répondu correctement !");
+
+                    // ==========================================================
+                    //  NOUVEAUX LOGGERS POUR LE LOGCAT (RÉCEPTION)
+                    // ==========================================================
+                    if (state.getData() != null && state.getData().getBottle() != null) {
+                        int count = state.getData().getBottle().size();
+                        android.util.Log.d("API_TEST", "🍷 Vins reçus : " + count);
+
+                        for (int i = 0; i < count; i++) {
+                            // CORRECTION : On utilise BottleResponse !
+                            com.sipandsavour.data.dto.BottleResponse bottle = state.getData().getBottle().get(i);
+                            android.util.Log.d("API_TEST", "   > Vin #" + (i+1) + " | ID: " + bottle.getId() + " | Nom: " + bottle.getTitle());
+                        }
+
+                        // ==========================================================
+                        //  NOUVEAU TEST : VÉRIFICATION DU GET PAR ID (Sur le 1er vin)
+                        // ==========================================================
+                        if (count > 0) {
+                            int idToTest = state.getData().getBottle().get(0).getId();
+                            android.util.Log.d("API_TEST", "🔍 TEST DE RÉCUPÉRATION : On lance getWineById pour l'ID " + idToTest);
+
+                            LiveData<UiState<com.sipandsavour.data.dto.WineDto>> getWineResult = Repository.getInstance().getWineById(idToTest);
+                            getWineResult.observeForever(new androidx.lifecycle.Observer<>() {
+                                @Override
+                                public void onChanged(UiState<com.sipandsavour.data.dto.WineDto> wineState) {
+                                    if (wineState.isLoading()) {
+                                        android.util.Log.d("API_TEST", "   > ⏳ Requête GET /wines/" + idToTest + " en cours...");
+                                    } else if (wineState.isSuccess() && wineState.getData() != null) {
+                                        com.sipandsavour.data.dto.WineDto fetchedWine = wineState.getData();
+                                        android.util.Log.d("API_TEST", "   > ✅ SUCCÈS GET PAR ID ! Vin récupéré : [" + fetchedWine.getId() + "] " + fetchedWine.getTitle());
+                                        // On se désabonne pour ne pas laisser de fuite de mémoire
+                                        getWineResult.removeObserver(this);
+                                    } else if (wineState.isError()) {
+                                        android.util.Log.e("API_TEST", "   > ❌ ERREUR GET PAR ID : " + wineState.getMessage());
+                                        getWineResult.removeObserver(this);
+                                    }
+                                }
+                            });
+                        }
+
+                    } else {
+                        android.util.Log.d("API_TEST", "⚠️ L'API a répondu, mais la liste des vins est vide ou nulle.");
+                    }
+                    android.util.Log.d("API_TEST", "=======================================");
+                    // ==========================================================
+
                     repoResult.removeObserver(this);
                 }
                 else if (state.isError()) {
