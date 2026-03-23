@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header décoratif -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
@@ -18,12 +17,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/category_title"
+            android:text="Que mangez-vous ?"
             android:fontFamily="@font/playfair_display"
             android:textSize="@dimen/text_headline_medium"
             android:textColor="@color/header_text"
             android:textStyle="bold|italic" />
-
     </FrameLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -38,55 +36,76 @@
             android:orientation="vertical"
             android:padding="@dimen/padding_medium">
 
-            <!-- Sous-titre -->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/category_subtitle"
-                android:fontFamily="@font/lato"
-                android:textSize="@dimen/text_body"
-                android:textColor="@color/on_surface_variant"
-                android:gravity="center"
-                android:layout_marginBottom="@dimen/margin_large" />
-
-            <!-- Catégories en grille -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2" />
-
-            <!-- Sous-catégories -->
-            <TextView
-                android:id="@+id/tvSubcategoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_large"
-                android:text="@string/subcategory_title"
-                android:visibility="gone"
-                style="@style/TextAppearance.SipSavour.TitleMedium" />
+                android:text="1. Base du plat (1 choix)"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="?attr/colorPrimary"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"/>
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupSubcategories"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBaseOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:visibility="gone"
-                app:singleSelection="true"
-                app:chipSpacingHorizontal="@dimen/margin_small"
-                app:chipSpacingVertical="@dimen/margin_small" />
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
 
-            <!-- Bouton suivant -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="2. Profil gustatif (Plusieurs choix)"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="?attr/colorPrimary"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTasteOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="3. Couleur du vin (Optionnel)"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="?attr/colorPrimary"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laissez vide pour laisser l'IA choisir la meilleure couleur."
+                android:textSize="13sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:textStyle="italic" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvColorOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNextToFlavor"
+                android:id="@+id/btnFindWine"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/margin_xlarge"
-                android:text="@string/flavor_next_button"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:text="Trouver le vin idéal"
                 android:enabled="false"
                 android:fontFamily="@font/playfair_display"
                 android:textSize="@dimen/text_title_medium"
@@ -94,17 +113,8 @@
                 android:textStyle="italic"
                 app:backgroundTint="@null"
                 android:background="@drawable/bg_button_gradient_selector"
-                app:rippleColor="#33FFFFFF"
-                app:cornerRadius="@dimen/radius_xlarge"
-                app:elevation="@dimen/elevation_medium"
-                android:stateListAnimator="@null" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_xlarge" />
+                app:cornerRadius="@dimen/radius_xlarge" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </LinearLayout>

@@ -111,6 +111,12 @@ public final class FlavorMapper {
                 Arrays.asList("earth", "mineral", "savory", "complex", "finish_long")
         ));
 
+        categories.add(new AccordionCategory(
+                "Couleur",
+                Arrays.asList("Rouge", "Blanc", "Rosé")
+        ));
+
+
         return categories;
     }
 

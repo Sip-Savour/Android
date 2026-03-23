@@ -9,10 +9,10 @@ public final class Constants {
     public static final String BASE_URL_DEV = "http://10.0.2.2:8000/";
 
     // URL de production (à modifier avec votre serveur)
-    public static final String BASE_URL_PROD = "http://10.0.2.2:8000/";
+    public static final String BASE_URL_PROD = "http://meo-server.duckdns.org:63011/";
 
     // URL active
-    public static final String BASE_URL = BASE_URL_DEV;
+    public static final String BASE_URL = BASE_URL_PROD;
 
     // === ENDPOINTS ===
     public static final String EP_LOGIN = "auth/login";
@@ -23,9 +23,9 @@ public final class Constants {
     public static final String EP_FAVORITES = "favorites";
 
     // === TIMEOUTS (seconds) ===
-    public static final int TIMEOUT_CONNECT = 15;
-    public static final int TIMEOUT_READ = 30;
-    public static final int TIMEOUT_WRITE = 15;
+    public static final int TIMEOUT_CONNECT = 120;
+    public static final int TIMEOUT_READ = 120;
+    public static final int TIMEOUT_WRITE = 120;
 
     // === CACHE ===
     public static final long CACHE_SIZE = 10 * 1024 * 1024; // 10 MB

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,17 +16,24 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.data.dto.BottleResponse; // Vérifiez que cet import correspond bien à votre classe
+import com.sipandsavour.ui.selection.SelectionViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SuggestionListFragment extends Fragment implements SuggestionAdapter.OnSuggestionClickListener {
 
     private NavController navController;
     private ResultViewModel resultViewModel;
+    private SelectionViewModel selectionViewModel; // <-- AJOUT DU VIEWMODEL DE SÉLECTION
 
     private RecyclerView rvSuggestions;
     private LinearLayout layoutEmpty;
@@ -45,11 +53,15 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         super.onViewCreated(view, savedInstanceState);
 
         navController = NavHostFragment.findNavController(this);
+
+        // IMPORTANT : On utilise requireActivity() pour récupérer la MÊME instance du ViewModel
+        // que celle utilisée dans FlavorFragment !
         resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
+        selectionViewModel = new ViewModelProvider(requireActivity()).get(SelectionViewModel.class);
 
         bindViews(view);
         setupRecyclerView();
-        loadSuggestions();
+        observePrediction(); // <-- On lance l'écoute de l'API
     }
 
     private void bindViews(View view) {
@@ -64,12 +76,52 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         rvSuggestions.setAdapter(adapter);
     }
 
-    private void loadSuggestions() {
-        // Données de démonstration — 5 vins
-        // Remplacer par l'appel API réel via Repository.predict()
-        List<WineDto> suggestions = createDemoSuggestions();
-        displaySuggestions(suggestions);
+    private void observePrediction() {
+        // On écoute le résultat de l'API en direct
+        selectionViewModel.getPredictionResult().observe(getViewLifecycleOwner(), state -> {
+            if (state == null) return;
+
+            if (state.isLoading()) {
+                // Optionnel : Afficher un ProgressBar ici si vous en ajoutez un dans layoutEmpty
+                rvSuggestions.setVisibility(View.GONE);
+                layoutEmpty.setVisibility(View.VISIBLE);
+            }
+            else if (state.isSuccess() && state.getData() != null) {
+                // Succès : On convertit les réponses de l'API en objets WineDto pour la liste
+                List<BottleResponse> apiBottles = state.getData().getBottle();
+                List<WineDto> suggestions = mapApiToWineDto(apiBottles);
+                displaySuggestions(suggestions);
+                triggerSuccessVibration();
+            }
+            else if (state.isError()) {
+                // Erreur : On affiche l'écran vide et un message
+                rvSuggestions.setVisibility(View.GONE);
+                layoutEmpty.setVisibility(View.VISIBLE);
+                Toast.makeText(requireContext(), "Erreur : " + state.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
+
+    private List<WineDto> mapApiToWineDto(List<BottleResponse> apiBottles) {
+        List<WineDto> list = new ArrayList<>();
+        if (apiBottles == null) return list;
+
+        for (BottleResponse bottle : apiBottles) {
+            // --- CORRECTION : ON UTILISE L'ID ET LA COULEUR DE L'API ---
+            WineDto wine = new WineDto(
+                    bottle.getId(),          // <-- L'ID renvoyé par l'API
+                    bottle.getTitle(),       // <-- Titre
+                    bottle.getDescription(), // <-- Description
+                    bottle.getVariety(),     // <-- Cépage
+                    bottle.getColor()        // <-- Couleur (5ème paramètre requis par WineDto)
+            );
+
+            list.add(wine);
+        }
+        return list;
+    }
+
+
 
     private void displaySuggestions(List<WineDto> suggestions) {
         if (suggestions == null || suggestions.isEmpty()) {
@@ -79,48 +131,21 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
             rvSuggestions.setVisibility(View.VISIBLE);
             layoutEmpty.setVisibility(View.GONE);
             adapter.submitList(suggestions);
+            resultViewModel.setWineList(suggestions);
         }
     }
 
-    private List<WineDto> createDemoSuggestions() {
-        List<WineDto> list = new ArrayList<>();
-
-        WineDto wine1 = new WineDto(1, "Château Margaux 2018", "Cabernet Sauvignon",
-                "Un grand cru classé aux arômes de cassis, de violette et de cèdre. " +
-                "Tanins soyeux, finale longue et élégante.");
-        wine1.setColor("red");
-        wine1.setKeywords(Arrays.asList("fruité", "tannique", "élégant"));
-        list.add(wine1);
-
-        WineDto wine2 = new WineDto(2, "Penfolds Grange 2017", "Shiraz",
-                "Vin australien puissant aux notes de fruits noirs, de chocolat " +
-                "et d'épices. Structure imposante, grande complexité.");
-        wine2.setColor("red");
-        wine2.setKeywords(Arrays.asList("puissant", "épicé", "complexe"));
-        list.add(wine2);
-
-        WineDto wine3 = new WineDto(3, "Cloudy Bay 2022", "Sauvignon Blanc",
-                "Vin néo-zélandais vif et aromatique. Notes de fruits de la passion, " +
-                "de pamplemousse et d'herbes fraîches.");
-        wine3.setColor("white");
-        wine3.setKeywords(Arrays.asList("frais", "aromatique", "vif"));
-        list.add(wine3);
-
-        WineDto wine4 = new WineDto(4, "Whispering Angel 2023", "Grenache",
-                "Rosé de Provence élégant aux arômes de fraise, de pêche blanche " +
-                "et de fleurs. Frais et délicat.");
-        wine4.setColor("rose");
-        wine4.setKeywords(Arrays.asList("frais", "délicat", "fruité"));
-        list.add(wine4);
-
-        WineDto wine5 = new WineDto(5, "Barolo Monfortino 2015", "Nebbiolo",
-                "Grand vin piémontais aux arômes de rose, de goudron et de cerise. " +
-                "Tanins fermes, potentiel de garde exceptionnel.");
-        wine5.setColor("red");
-        wine5.setKeywords(Arrays.asList("tannique", "complexe", "garde"));
-        list.add(wine5);
-
-        return list;
+    private void triggerSuccessVibration() {
+        Vibrator vibrator = (Vibrator) requireContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            // Une vibration très courte et douce de 50 millisecondes
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                // Pour les anciens téléphones
+                vibrator.vibrate(50);
+            }
+        }
     }
 
     @Override

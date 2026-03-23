@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
-    <!-- === SPLASH === -->
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.sipandsavour.ui.home.SplashFragment"
@@ -29,12 +28,8 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- === AUTH (nested) === -->
     <include app:graph="@navigation/nav_auth" />
 
-    <!-- ================================================ -->
-    <!--  TAB 1 — HOME                                    -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.sipandsavour.ui.home.HomeFragment"
@@ -58,9 +53,6 @@
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  TAB 2 — RECHERCHE AVANCÉE (FlavorFragment)      -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/advancedSearchFragment"
         android:name="com.sipandsavour.ui.selection.FlavorFragment"
@@ -79,9 +71,6 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  TAB 3 — MEAL (Bouteille icon)                   -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/mealFragment"
         android:name="com.sipandsavour.ui.selection.MealFragment"
@@ -95,11 +84,16 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+
+        <action
+            android:id="@+id/action_meal_to_suggestions"
+            app:destination="@id/suggestionListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  TAB 4 — FAVORIS                                 -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.sipandsavour.ui.favorites.FavoritesFragment"
@@ -115,9 +109,6 @@
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  TAB 5 — PROFIL                                  -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.sipandsavour.ui.profile.ProfileFragment"
@@ -128,9 +119,6 @@
             app:destination="@id/nav_auth" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  FLAVOR SELECTION (depuis Home)                   -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/flavorSelectionFragment"
         android:name="com.sipandsavour.ui.selection.FlavorFragment"
@@ -149,9 +137,6 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  FLAVOR FROM MEAL (depuis MealFragment)           -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/flavorFromMealFragment"
         android:name="com.sipandsavour.ui.selection.FlavorFragment"
@@ -170,18 +155,12 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  WEEKLY CHOICE (depuis Home uniquement)           -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/weeklyChoiceFragment"
         android:name="com.sipandsavour.ui.result.WeeklyChoiceFragment"
         android:label=""
         tools:layout="@layout/fragment_weekly_choice" />
 
-    <!-- ================================================ -->
-    <!--  SUGGESTION LIST (5 vins)                         -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/suggestionListFragment"
         android:name="com.sipandsavour.ui.result.SuggestionListFragment"
@@ -197,9 +176,6 @@
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <!-- ================================================ -->
-    <!--  WINE DETAIL (détail d'un vin)                    -->
-    <!-- ================================================ -->
     <fragment
         android:id="@+id/wineDetailFragment"
         android:name="com.sipandsavour.ui.result.ResultFragment"
