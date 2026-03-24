@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         android:fillViewport="true"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,16 +23,49 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/header_height"
-                android:background="@drawable/bg_header_gradient"/>
+                android:background="@drawable/bg_header_gradient">
 
-            <!-- === Sélection hebdomadaire === -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/padding_large"
+                    android:paddingEnd="@dimen/padding_large">
+
+                    <TextView
+                        android:id="@+id/tvGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_greeting_default"
+                        android:fontFamily="@font/playfair_display"
+                        android:textSize="@dimen/text_headline_medium"
+                        android:textColor="@color/header_text"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/app_tagline"
+                        android:fontFamily="@font/lato"
+                        android:textSize="@dimen/text_label"
+                        android:textColor="@color/header_subtitle"
+                        android:letterSpacing="0.06"
+                        android:textAllCaps="true" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- === Carte Sélection hebdomadaire === -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardWeekly"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_card_height"
-                android:layout_marginStart="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_small"
-                android:layout_marginTop="-20dp"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginTop="-28dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_high"
                 app:strokeWidth="0dp"
@@ -43,13 +77,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <!-- Background gradient -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_home_weekly_ripple" />
 
-                    <!-- Image plein fond -->
                     <ImageView
                         android:id="@+id/ivWeeklyImage"
                         android:layout_width="match_parent"
@@ -57,44 +89,84 @@
                         android:scaleType="centerCrop"
                         android:contentDescription="@null" />
 
-                    <!-- Overlay sombre léger pour lisibilité texte -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#30000000" />
+                        android:background="@drawable/bg_card_overlay" />
 
-                    <!-- Titre en bas à gauche -->
-                    <TextView
+                    <!-- Contenu en bas -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:padding="@dimen/padding_large"
-                        android:text="@string/home_weekly_title"
-                        android:fontFamily="@font/playfair_display"
-                        android:textSize="@dimen/text_headline_medium"
-                        android:textColor="@color/header_text"
-                        android:textStyle="bold|italic"
-                        android:shadowColor="#80000000"
-                        android:shadowDx="1"
-                        android:shadowDy="2"
-                        android:shadowRadius="6" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_large">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_daily_subtitle"
+                            android:fontFamily="@font/lato"
+                            android:textSize="@dimen/text_label"
+                            android:textColor="@color/secondary"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.08" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/home_weekly_title"
+                            android:fontFamily="@font/playfair_display"
+                            android:textSize="@dimen/text_title_large"
+                            android:textColor="@color/header_text"
+                            android:textStyle="bold|italic"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="6" />
+
+                    </LinearLayout>
 
                 </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Espacement -->
-            <Space
+            <!-- === Ornement doré central === -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_large" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large">
 
-            <!-- === Choisissez vos saveurs === -->
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+                <View
+                    android:layout_width="@dimen/ornament_dot_size"
+                    android:layout_height="@dimen/ornament_dot_size"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:background="@drawable/bg_ornament_dot" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+            </LinearLayout>
+
+            <!-- === Carte Recherche saveurs === -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardSearch"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_card_search_height"
-                android:layout_marginStart="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_high"
                 app:strokeWidth="0dp"
@@ -108,22 +180,20 @@
                     android:background="@drawable/bg_home_search_card"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="@dimen/padding_large"
+                    android:padding="@dimen/padding_xlarge"
                     android:foreground="?android:attr/selectableItemBackground">
 
-                    <!-- Image bouteille avec ? -->
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="140dp"
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
                         android:src="@drawable/ic_question_bottle"
                         android:scaleType="fitCenter"
                         android:contentDescription="@null" />
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/margin_medium" />
+                        android:layout_height="@dimen/margin_large" />
 
-                    <!-- Texte principal -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -134,14 +204,21 @@
                         android:textStyle="bold|italic"
                         android:gravity="center" />
 
+                    <!-- Divider doré -->
+                    <View
+                        android:layout_width="@dimen/divider_decorative_width"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:background="@drawable/bg_decorative_divider" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_tiny"
                         android:text="@string/home_search_subtitle"
-                        android:fontFamily="@font/playfair_display"
-                        android:textSize="@dimen/text_title_medium"
-                        android:textColor="@color/primary"
+                        android:fontFamily="@font/lato"
+                        android:textSize="@dimen/text_caption"
+                        android:textColor="@color/tertiary"
                         android:textStyle="italic"
                         android:gravity="center" />
 
@@ -149,7 +226,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- === Shimmer placeholder === -->
+            <!-- Shimmer placeholder -->
             <LinearLayout
                 android:id="@+id/shimmerContainer"
                 android:layout_width="match_parent"
@@ -173,7 +250,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_medium" />
+                android:layout_height="@dimen/margin_xlarge" />
 
         </LinearLayout>
 

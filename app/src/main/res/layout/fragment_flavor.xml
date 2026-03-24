@@ -7,22 +7,42 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header décoratif -->
+    <!-- Header -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
         android:background="@drawable/bg_header_gradient">
 
-        <TextView
-            android:id="@+id/tvHeaderTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:fontFamily="@font/playfair_display"
-            android:textSize="@dimen/text_headline_medium"
-            android:textColor="@color/header_text"
-            android:textStyle="bold|italic" />
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvHeaderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_headline_medium"
+                android:textColor="@color/header_text"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/flavor_subtitle"
+                android:fontFamily="@font/lato"
+                android:textSize="@dimen/text_label"
+                android:textColor="@color/header_subtitle"
+                android:letterSpacing="0.06"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -37,7 +57,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Accordion RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvAccordion"
                 android:layout_width="match_parent"
@@ -48,7 +67,6 @@
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <!-- Match / Filtrer button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMatch"
                 android:layout_width="match_parent"
@@ -58,17 +76,8 @@
                 android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginBottom="@dimen/margin_xlarge"
                 android:text="@string/search_match_button"
-                android:fontFamily="@font/playfair_display"
-                android:textSize="@dimen/text_title_medium"
-                android:textColor="@color/btn_gradient_text"
-                android:textStyle="italic"
                 android:enabled="false"
-                app:backgroundTint="@null"
-                android:background="@drawable/bg_button_gradient_selector"
-                app:rippleColor="#33FFFFFF"
-                app:cornerRadius="@dimen/radius_xlarge"
-                app:elevation="@dimen/elevation_medium"
-                android:stateListAnimator="@null" />
+                style="@style/Widget.SipSavour.Button" />
 
         </LinearLayout>
 

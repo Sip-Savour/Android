@@ -7,23 +7,43 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header décoratif -->
+    <!-- Header -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
         android:background="@drawable/bg_header_gradient">
 
-        <TextView
-            android:id="@+id/tvHeaderTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/weekly_title"
-            android:fontFamily="@font/playfair_display"
-            android:textSize="@dimen/text_headline_medium"
-            android:textColor="@color/header_text"
-            android:textStyle="bold|italic" />
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvHeaderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/weekly_title"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_headline_medium"
+                android:textColor="@color/header_text"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/home_daily_subtitle"
+                android:fontFamily="@font/lato"
+                android:textSize="@dimen/text_label"
+                android:textColor="@color/header_subtitle"
+                android:letterSpacing="0.06"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -40,11 +60,11 @@
             android:orientation="vertical"
             android:padding="@dimen/padding_medium">
 
-            <!-- === WINE CARD === -->
+            <!-- Wine Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/radius_large"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_medium"
                 app:strokeWidth="0dp">
 
@@ -52,39 +72,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_card_wine"
+                    android:background="@drawable/bg_card_gradient_rose"
                     android:padding="@dimen/padding_large">
 
-                    <!-- Wine icon -->
                     <ImageView
                         android:layout_width="@dimen/wine_fork_icon_size"
                         android:layout_height="@dimen/wine_fork_icon_size"
                         android:layout_gravity="end"
                         android:src="@drawable/ic_wine_fork"
+                        android:alpha="0.5"
                         android:contentDescription="@null" />
 
-                    <!-- Cépage -->
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="@string/info_cepage_label"
+                        style="@style/TextAppearance.SipSavour.WineLabel" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/info_cepage_label"
-                            style="@style/TextAppearance.SipSavour.WineLabel" />
+                    <TextView
+                        android:id="@+id/tvCepage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        style="@style/TextAppearance.SipSavour.WineValue" />
 
-                        <TextView
-                            android:id="@+id/tvCepage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_small"
-                            style="@style/TextAppearance.SipSavour.WineValue" />
-
-                    </LinearLayout>
-
-                    <!-- Description -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -96,41 +107,60 @@
                         android:id="@+id/tvDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginTop="4dp"
                         style="@style/TextAppearance.SipSavour.WineBody" />
 
-                    <!-- Type -->
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
-                        android:orientation="horizontal">
+                        android:text="@string/info_type_label"
+                        style="@style/TextAppearance.SipSavour.WineLabel" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/info_type_label"
-                            style="@style/TextAppearance.SipSavour.WineLabel" />
-
-                        <TextView
-                            android:id="@+id/tvType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_small"
-                            style="@style/TextAppearance.SipSavour.WineValue" />
-
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        style="@style/TextAppearance.SipSavour.WineValue" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- === MEAL CARD === -->
+            <!-- Ornement doré -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large">
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+                <View
+                    android:layout_width="@dimen/ornament_dot_size"
+                    android:layout_height="@dimen/ornament_dot_size"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:background="@drawable/bg_ornament_dot" />
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+            </LinearLayout>
+
+            <!-- Meal Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_medium"
-                app:cardCornerRadius="@dimen/radius_large"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_medium"
                 app:strokeWidth="0dp">
 
@@ -138,15 +168,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/bg_card_wine"
+                    android:background="@drawable/bg_card_gradient_rose"
                     android:padding="@dimen/padding_large"
                     android:gravity="center_vertical">
 
-                    <!-- Meal icon -->
                     <ImageView
                         android:layout_width="@dimen/wine_fork_icon_size"
                         android:layout_height="@dimen/wine_fork_icon_size"
                         android:src="@drawable/ic_wine_fork"
+                        android:alpha="0.5"
                         android:contentDescription="@null" />
 
                     <LinearLayout
@@ -156,43 +186,32 @@
                         android:layout_marginStart="@dimen/margin_medium"
                         android:orientation="vertical">
 
-                        <!-- Meal name -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/weekly_meal_label"
-                                android:textStyle="bold"
-                                style="@style/TextAppearance.SipSavour.Body" />
-
-                            <TextView
-                                android:id="@+id/tvMealName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/margin_small"
-                                style="@style/TextAppearance.SipSavour.Body" />
-
-                        </LinearLayout>
-
-                        <!-- Ingredients -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/weekly_meal_label"
+                            style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                        <TextView
+                            android:id="@+id/tvMealName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            style="@style/TextAppearance.SipSavour.WineValue" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/weekly_ingredient_label"
-                            android:textStyle="bold"
-                            style="@style/TextAppearance.SipSavour.Body" />
+                            style="@style/TextAppearance.SipSavour.WineLabel" />
 
                         <TextView
                             android:id="@+id/tvIngredients"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_tiny"
-                            style="@style/TextAppearance.SipSavour.BodyLight" />
+                            android:layout_marginTop="2dp"
+                            style="@style/TextAppearance.SipSavour.WineBody" />
 
                     </LinearLayout>
 
