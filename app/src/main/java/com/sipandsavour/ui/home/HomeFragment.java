@@ -41,6 +41,14 @@ public class HomeFragment extends Fragment {
 
         navController = NavHostFragment.findNavController(this);
 
+        // TODO: Vérifier si l'utilisateur est connecté via SessionManager
+        boolean isLoggedIn = false; // TODO: SessionManager.getInstance().isLoggedIn();
+
+        if (!isLoggedIn) {
+            navController.navigate(R.id.nav_auth);
+            return;
+        }
+
         bindViews(view);
         setupListeners();
     }
