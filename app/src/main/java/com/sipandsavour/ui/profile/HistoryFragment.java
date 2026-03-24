@@ -17,6 +17,7 @@ import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.ui.favorites.FavoritesAdapter;
 import com.sipandsavour.ui.profile.HistoryViewModel;
 import com.sipandsavour.ui.result.ResultViewModel;
+import com.sipandsavour.util.SlideBackUtil;
 
 public class HistoryFragment extends Fragment implements FavoritesAdapter.OnFavoriteClickListener {
 
@@ -39,8 +40,8 @@ public class HistoryFragment extends Fragment implements FavoritesAdapter.OnFavo
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
         resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
-
         androidx.recyclerview.widget.RecyclerView rvHistory = view.findViewById(R.id.rvHistory);
+
         View layoutEmptyHistory = view.findViewById(R.id.layoutEmptyHistory);
         View progressHistory = view.findViewById(R.id.progressHistory);
 
@@ -57,6 +58,7 @@ public class HistoryFragment extends Fragment implements FavoritesAdapter.OnFavo
             rvHistory.setVisibility(wines.isEmpty() ? View.GONE : View.VISIBLE);
         });
 
+        SlideBackUtil.attach(() -> navController.popBackStack(), view,rvHistory);
         viewModel.loadHistory();
     }
 

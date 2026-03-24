@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.util.SlideBackUtil;
 
 public class WeeklyChoiceFragment extends Fragment {
 
@@ -51,6 +52,11 @@ public class WeeklyChoiceFragment extends Fragment {
 
         // Lancement du chargement de la recommandation dès l'ouverture de l'écran
         viewModel.loadRecommendation();
+
+
+        // On attache le swipe à la racine ET au ScrollView
+        View scrollView = view.findViewById(R.id.nestedScrollView);
+        SlideBackUtil.attach(() -> navController.popBackStack(), view, scrollView);
     }
 
     private void bindViews(View view) {
@@ -91,4 +97,6 @@ public class WeeklyChoiceFragment extends Fragment {
         if (tvMealName != null) tvMealName.setText("Accords Mets-Vins");
         if (tvIngredients != null) tvIngredients.setText("Bientôt disponible...");
     }
+
+
 }

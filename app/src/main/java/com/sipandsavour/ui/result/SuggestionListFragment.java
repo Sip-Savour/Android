@@ -25,6 +25,7 @@ import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.data.dto.BottleResponse; // Vérifiez que cet import correspond bien à votre classe
 import com.sipandsavour.ui.selection.SelectionViewModel;
+import com.sipandsavour.util.SlideBackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,8 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
 
         bindViews(view);
         setupRecyclerView();
-        observePrediction(); // <-- On lance l'écoute de l'API
+        observePrediction();
+        SlideBackUtil.attach(() -> navController.popBackStack(), view, rvSuggestions);
     }
 
     private void bindViews(View view) {
@@ -147,6 +149,7 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
             }
         }
     }
+
 
     @Override
     public void onSuggestionClick(WineDto wine) {

@@ -18,6 +18,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.sipandsavour.R;
 import com.sipandsavour.util.HapticUtil;
+import com.sipandsavour.util.SlideBackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,8 @@ public class PreferencesFragment extends Fragment {
             Toast.makeText(requireContext(), "Préférences sauvegardées !", Toast.LENGTH_SHORT).show();
             navController.popBackStack(); // Retourne au profil
         });
+        View scrollView = view.findViewById(R.id.scrollView);
+        SlideBackUtil.attach(() -> navController.popBackStack(), view, scrollView);
     }
 
     private void setupColorChips() {
