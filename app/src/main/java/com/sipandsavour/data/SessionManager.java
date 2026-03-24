@@ -246,4 +246,14 @@ public final class SessionManager {
     public String getLanguage() {
         return prefs.getString(Constants.KEY_LANGUAGE, "fr");
     }
+
+    // --- GESTION DU THÈME ---
+    public void setTheme(int themeMode) {
+        prefs.edit().putInt("theme_mode", themeMode).apply();
+    }
+
+    public int getTheme() {
+        // Par défaut, on suit le thème du système
+        return prefs.getInt("theme_mode", androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    }
 }

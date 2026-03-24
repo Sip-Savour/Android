@@ -51,7 +51,35 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_home_to_random"
+            app:destination="@id/randomWinesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
+
+    <fragment
+        android:id="@+id/randomWinesFragment"
+        android:name="com.sipandsavour.ui.result.RandomWinesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_random_wines">
+
+        <action
+            android:id="@+id/action_random_to_detail"
+            app:destination="@id/wineDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/secretFragment"
+        android:name="com.sipandsavour.ui.profile.SecretFragment"
+        android:label=""
+        tools:layout="@layout/fragment_secret" />
 
     <fragment
         android:id="@+id/advancedSearchFragment"
@@ -114,9 +142,13 @@
         android:name="com.sipandsavour.ui.profile.ProfileFragment"
         android:label=""
         tools:layout="@layout/fragment_profile" >
+
         <action
             android:id="@+id/action_profile_to_auth"
-            app:destination="@id/nav_auth" />
+            app:destination="@id/nav_auth"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+
         <action
             android:id="@+id/action_profile_to_preferences"
             app:destination="@id/preferencesFragment" />
@@ -137,7 +169,13 @@
         android:id="@+id/settingsFragment"
         android:name="com.sipandsavour.ui.profile.SettingsFragment"
         android:label=""
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_secret"
+            app:destination="@id/secretFragment"
+            app:enterAnim="@anim/fade_in" />
+    </fragment>
+
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.sipandsavour.ui.profile.HistoryFragment"
@@ -169,11 +207,13 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
     </fragment>
+
     <fragment
         android:id="@+id/preferencesFragment"
         android:name="com.sipandsavour.ui.profile.PreferencesFragment"
         android:label=""
         tools:layout="@layout/fragment_preferences" />
+
     <fragment
         android:id="@+id/flavorFromMealFragment"
         android:name="com.sipandsavour.ui.selection.FlavorFragment"

@@ -219,4 +219,33 @@
     <string name="meal_ai_hint">Leave blank to let the AI choose the best color.</string>
     <string name="meal_find_wine">Find the perfect wine</string>
     <string name="preferences_main_title">My Preferences</string>
+
+
+    <string name="meal_base_red_meat">Red Meat</string>
+    <string name="meal_base_white_meat">White Meat</string>
+    <string name="meal_base_poultry">Poultry</string>
+    <string name="meal_base_fish">Fish</string>
+    <string name="meal_base_seafood">Seafood</string>
+    <string name="meal_base_vegetarian">Vegetarian</string>
+    <string name="meal_base_cheese">Cheese</string>
+
+    <string name="meal_taste_fatty">Fatty</string>
+    <string name="meal_taste_rich">Rich</string>
+    <string name="meal_taste_dry">Dry</string>
+    <string name="meal_taste_salty">Salty</string>
+    <string name="meal_taste_sweet">Sweet</string>
+    <string name="meal_taste_peppery">Peppery</string>
+    <string name="meal_taste_spicy">Spicy</string>
+    <string name="meal_taste_acidic">Acidic</string>
+
+    <string name="meal_color_red">Red Wine</string>
+    <string name="meal_color_white">White Wine</string>
+    <string name="meal_color_rose">Rosé Wine</string>
+
+    <string name="random_discovery_title">Random Discovery</string>
+
+    <string name="settings_theme_title">App Theme</string>
+    <string name="theme_system">System (Default)</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
 </resources>

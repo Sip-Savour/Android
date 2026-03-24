@@ -61,4 +61,7 @@ public interface WineApi {
      */
     @GET("wines/{wineId}")
     Call<WineDto> getWineById(@Path("wineId") int wineId);
+
+    @GET("wines/random")
+    Call<List<WineDto>> getRandomWines();
 }

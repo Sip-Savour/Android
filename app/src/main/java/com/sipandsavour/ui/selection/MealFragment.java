@@ -18,9 +18,12 @@ import com.google.android.material.button.MaterialButton;
 import com.sipandsavour.R;
 import com.sipandsavour.util.HapticUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MealFragment extends Fragment {
@@ -30,23 +33,72 @@ public class MealFragment extends Fragment {
 
     private RecyclerView rvBaseOptions;
     private RecyclerView rvTasteOptions;
-    private RecyclerView rvColorOptions; // NOUVEAU
+    private RecyclerView rvColorOptions;
     private MaterialButton btnFindWine;
 
     private MealCardAdapter baseAdapter;
     private MealCardAdapter tasteAdapter;
-    private MealCardAdapter colorAdapter; // NOUVEAU
+    private MealCardAdapter colorAdapter;
 
-    // Les options affichées sur les cartes
-    private final List<String> baseOptions = Arrays.asList(
-            "Viande Rouge", "Viande Blanche", "Volaille", "Poisson", "Fruits de mer", "Végétarien", "Fromage"
-    );
-    private final List<String> tasteOptions = Arrays.asList(
-            "Gras", "Riche", "Sec", "Salé", "Sucré", "Poivré", "Épicé", "Acide"
-    );
-    private final List<String> colorOptions = Arrays.asList(
-            "Vin Rouge", "Vin Blanc", "Vin Rosé"
-    );
+    // Dictionnaire pour faire correspondre le nom traduit (UI) avec la clé technique (API)
+    private final Map<String, String> displayToApiMap = new HashMap<>();
+
+    // Classe interne pour lier l'option traduite à sa valeur technique
+    private static class MealOption {
+        String displayName;
+        String apiValue;
+
+        MealOption(String displayName, String apiValue) {
+            this.displayName = displayName;
+            this.apiValue = apiValue;
+        }
+    }
+
+    private List<String> getBaseOptions() {
+        List<MealOption> options = Arrays.asList(
+                new MealOption(getString(R.string.meal_base_red_meat), "Viande Rouge"),
+                new MealOption(getString(R.string.meal_base_white_meat), "Viande Blanche"),
+                new MealOption(getString(R.string.meal_base_poultry), "Volaille"),
+                new MealOption(getString(R.string.meal_base_fish), "Poisson"),
+                new MealOption(getString(R.string.meal_base_seafood), "Fruits de mer"),
+                new MealOption(getString(R.string.meal_base_vegetarian), "Végétarien"),
+                new MealOption(getString(R.string.meal_base_cheese), "Fromage")
+        );
+        return extractDisplayNames(options);
+    }
+
+    private List<String> getTasteOptions() {
+        List<MealOption> options = Arrays.asList(
+                new MealOption(getString(R.string.meal_taste_fatty), "Gras"),
+                new MealOption(getString(R.string.meal_taste_rich), "Riche"),
+                new MealOption(getString(R.string.meal_taste_dry), "Sec"),
+                new MealOption(getString(R.string.meal_taste_salty), "Salé"),
+                new MealOption(getString(R.string.meal_taste_sweet), "Sucré"),
+                new MealOption(getString(R.string.meal_taste_peppery), "Poivré"),
+                new MealOption(getString(R.string.meal_taste_spicy), "Épicé"),
+                new MealOption(getString(R.string.meal_taste_acidic), "Acide")
+        );
+        return extractDisplayNames(options);
+    }
+
+    private List<String> getColorOptions() {
+        List<MealOption> options = Arrays.asList(
+                new MealOption(getString(R.string.meal_color_red), "Vin Rouge"),
+                new MealOption(getString(R.string.meal_color_white), "Vin Blanc"),
+                new MealOption(getString(R.string.meal_color_rose), "Vin Rosé")
+        );
+        return extractDisplayNames(options);
+    }
+
+    // Remplit le dictionnaire de traduction et retourne la liste des noms à afficher
+    private List<String> extractDisplayNames(List<MealOption> options) {
+        List<String> displayNames = new ArrayList<>();
+        for (MealOption opt : options) {
+            displayNames.add(opt.displayName);
+            displayToApiMap.put(opt.displayName, opt.apiValue);
+        }
+        return displayNames;
+    }
 
     @Nullable
     @Override
@@ -73,22 +125,19 @@ public class MealFragment extends Fragment {
     }
 
     private void setupRecyclerViews() {
-        // 1. Grille pour la Base du plat (2 colonnes, choix unique)
-        baseAdapter = new MealCardAdapter(baseOptions, true, selectedItems -> {
+        baseAdapter = new MealCardAdapter(getBaseOptions(), true, selectedItems -> {
             checkIfCanFindWine();
         });
         rvBaseOptions.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         rvBaseOptions.setAdapter(baseAdapter);
 
-        // 2. Grille pour les Saveurs (3 colonnes, choix multiples)
-        tasteAdapter = new MealCardAdapter(tasteOptions, false, selectedItems -> {
+        tasteAdapter = new MealCardAdapter(getTasteOptions(), false, selectedItems -> {
             checkIfCanFindWine();
         });
         rvTasteOptions.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         rvTasteOptions.setAdapter(tasteAdapter);
 
-        // 3. Grille pour la Couleur (3 colonnes, choix unique)
-        colorAdapter = new MealCardAdapter(colorOptions, true, selectedItems -> {
+        colorAdapter = new MealCardAdapter(getColorOptions(), true, selectedItems -> {
             checkIfCanFindWine();
         });
         rvColorOptions.setLayoutManager(new GridLayoutManager(requireContext(), 3));
@@ -96,7 +145,6 @@ public class MealFragment extends Fragment {
     }
 
     private void checkIfCanFindWine() {
-        // Le bouton s'active si la base est sélectionnée (la couleur est optionnelle)
         boolean hasBase = !baseAdapter.getSelectedItems().isEmpty();
         btnFindWine.setEnabled(hasBase);
     }
@@ -104,16 +152,22 @@ public class MealFragment extends Fragment {
     private void setupButton() {
         btnFindWine.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
-            // On rassemble TOUS les choix
-            Set<String> allChoices = new HashSet<>();
-            allChoices.addAll(baseAdapter.getSelectedItems());
-            allChoices.addAll(tasteAdapter.getSelectedItems());
-            allChoices.addAll(colorAdapter.getSelectedItems()); // On ajoute la couleur
 
-            // 1. On lance la traduction intelligente (Plat -> Vin)
-            viewModel.predictFromMeal(allChoices);
+            // On prépare le Set avec les CLÉS TECHNIQUES pour l'API
+            Set<String> allChoicesApiKeys = new HashSet<>();
 
-            // 2. Navigation
+            // On convertit chaque sélection visuelle en clé technique
+            for (String displayItem : baseAdapter.getSelectedItems()) {
+                allChoicesApiKeys.add(displayToApiMap.get(displayItem));
+            }
+            for (String displayItem : tasteAdapter.getSelectedItems()) {
+                allChoicesApiKeys.add(displayToApiMap.get(displayItem));
+            }
+            for (String displayItem : colorAdapter.getSelectedItems()) {
+                allChoicesApiKeys.add(displayToApiMap.get(displayItem));
+            }
+
+            viewModel.predictFromMeal(allChoicesApiKeys);
             navController.navigate(R.id.action_meal_to_suggestions);
         });
     }

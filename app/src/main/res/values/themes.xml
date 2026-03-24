@@ -59,4 +59,35 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.SipSavour.Jinx" parent="Theme.SipSavour">
+
+        <item name="colorPrimary">#FF007F</item>
+        <item name="colorPrimaryDark">#C50062</item>
+        <item name="colorPrimaryVariant">#C50062</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <item name="colorSecondary">#00E5FF</item>
+        <item name="colorSecondaryVariant">#00B8CC</item>
+        <item name="colorOnSecondary">#000000</item>
+
+        <item name="android:colorBackground">#09090C</item>
+        <item name="colorSurface">#14141C</item>
+        <item name="colorOnBackground">#00E5FF</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+
+        <item name="colorSurfaceVariant">#1E1E2A</item>
+        <item name="colorOnSurfaceVariant">#00B8CC</item>
+
+        <item name="colorError">#FF3366</item>
+        <item name="colorOnError">#FFFFFF</item>
+
+        <item name="android:windowBackground">#09090C</item>
+        <item name="android:statusBarColor">#09090C</item>
+        <item name="android:navigationBarColor">#09090C</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:textColorPrimary">#FF007F</item>
+
+    </style>
+
 </resources>

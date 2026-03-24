@@ -58,7 +58,7 @@
                         android:background="@drawable/bg_person_circle" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:id="@+id/ivProfileAvatar" android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_person"
