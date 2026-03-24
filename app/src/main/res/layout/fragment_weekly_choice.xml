@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_card_gradient_rose"
+                    android:background="@drawable/bg_card_wine"
                     android:padding="@dimen/padding_large">
 
                     <!-- Wine icon -->
@@ -138,7 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/bg_card_gradient_rose"
+                    android:background="@drawable/bg_card_wine"
                     android:padding="@dimen/padding_large"
                     android:gravity="center_vertical">
 

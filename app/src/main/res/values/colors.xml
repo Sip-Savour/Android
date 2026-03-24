@@ -1,95 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- === PRIMARY - Rose/Bordeaux adouci === -->
-    <color name="primary">#8B4A5A</color>
-    <color name="primary_dark">#5C2A3A</color>
-    <color name="primary_light">#B87A8A</color>
-    <color name="primary_container">#F5D5D9</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="on_primary_container">#5C2A3A</color>
+    <!-- ==============================================
+         PALETTE « BORDEAUX & OR — PREMIUM CLASSIQUE »
+         Inspirée des grands crus et étiquettes millésimées
+         ============================================== -->
 
-    <!-- === SECONDARY - Pêche / Doré doux === -->
-    <color name="secondary">#D4A574</color>
-    <color name="secondary_dark">#8B6B40</color>
-    <color name="secondary_container">#F5E6C8</color>
-    <color name="on_secondary">#FFFFFF</color>
+    <!-- === PRIMARY — Bordeaux Grand Cru === -->
+    <color name="primary">#6B1D32</color>
+    <color name="primary_dark">#471425</color>
+    <color name="primary_light">#8A3B50</color>
+    <color name="primary_container">#F5D5DC</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary_container">#471425</color>
+
+    <!-- === SECONDARY — Or vieilli === -->
+    <color name="secondary">#C9A96E</color>
+    <color name="secondary_dark">#A68B4B</color>
+    <color name="secondary_light">#E0CFA0</color>
+    <color name="secondary_container">#F5EDD8</color>
+    <color name="on_secondary">#1A1214</color>
     <color name="on_secondary_container">#5C4A20</color>
 
-    <!-- === TERTIARY - Vert forêt (inchangé) === -->
-    <color name="tertiary">#2E5339</color>
-    <color name="tertiary_container">#B8DFC4</color>
+    <!-- === TERTIARY — Cognac / Cuir === -->
+    <color name="tertiary">#8B6844</color>
+    <color name="tertiary_dark">#6D4E30</color>
+    <color name="tertiary_light">#A68060</color>
+    <color name="tertiary_container">#F0DCC8</color>
     <color name="on_tertiary">#FFFFFF</color>
-    <color name="on_tertiary_container">#1A3322</color>
+    <color name="on_tertiary_container">#4A3018</color>
 
-    <!-- === BACKGROUND & SURFACE - Beige rosé === -->
-    <color name="background">#F5EBE0</color>
-    <color name="on_background">#3A2028</color>
-    <color name="surface">#FAF4EE</color>
-    <color name="on_surface">#3A2028</color>
-    <color name="surface_variant">#EDE0D8</color>
-    <color name="on_surface_variant">#6B5E57</color>
-    <color name="surface_container">#F0E6DC</color>
-    <color name="surface_container_high">#EBE0D6</color>
+    <!-- === BACKGROUND & SURFACE === -->
+    <color name="background">#F8F4EF</color>
+    <color name="on_background">#1A1214</color>
+    <color name="surface">#FFFCF8</color>
+    <color name="on_surface">#1A1214</color>
+    <color name="surface_variant">#EDE6DC</color>
+    <color name="on_surface_variant">#6E5E56</color>
+    <color name="surface_container">#F2ECE4</color>
+    <color name="surface_container_high">#EBE4DA</color>
+    <color name="surface_container_low">#FAF6F2</color>
 
-    <!-- === ERROR (inchangé) === -->
-    <color name="error">#BA1A1A</color>
+    <!-- === ERROR === -->
+    <color name="error">#B3261E</color>
     <color name="on_error">#FFFFFF</color>
     <color name="error_container">#FFDAD6</color>
     <color name="on_error_container">#410002</color>
 
     <!-- === OUTLINE === -->
-    <color name="outline">#A09389</color>
-    <color name="outline_variant">#D4C8BE</color>
+    <color name="outline">#B5A598</color>
+    <color name="outline_variant">#D6CABC</color>
 
     <!-- === COULEURS VIN === -->
-    <color name="wine_red">@color/primary</color>
-    <color name="wine_white">#F5E6A8</color>
-    <color name="wine_rose">#E8A0B5</color>
+    <color name="wine_red">#6B1D32</color>
+    <color name="wine_red_bg">#186B1D32</color>
+    <color name="wine_white">#E0D080</color>
+    <color name="wine_white_bg">#18E0D080</color>
+    <color name="wine_rose">#D08098</color>
+    <color name="wine_rose_bg">#18D08098</color>
 
     <!-- === COULEURS CATÉGORIES === -->
-    <color name="category_meat">#8B4513</color>
-    <color name="category_fish">#4A90A4</color>
-    <color name="category_veggie">#4CAF50</color>
-    <color name="category_cheese">#FFC107</color>
+    <color name="category_meat">#8B4A28</color>
+    <color name="category_fish">#4A88A0</color>
+    <color name="category_veggie">#5A7A50</color>
+    <color name="category_cheese">#C49830</color>
 
     <!-- === UTILITAIRES === -->
-    <color name="ripple">#338B4A5A</color>
-    <color name="divider">#1A3A2028</color>
+    <color name="ripple">#206B1D32</color>
+    <color name="ripple_light">#15FFFFFF</color>
+    <color name="ripple_gold">#20C9A96E</color>
+    <color name="divider">#181A1214</color>
+    <color name="divider_gold">#40C9A96E</color>
     <color name="shadow">#1A000000</color>
     <color name="scrim">#80000000</color>
-    <color name="shimmer_base">#EDE0D8</color>
-    <color name="shimmer_highlight">#FAF4EE</color>
+    <color name="shimmer_base">#EDE6DC</color>
+    <color name="shimmer_highlight">#FAF6F2</color>
 
-    <!-- === INPUT PILLS - Rose doux === -->
-    <color name="input_pill_bg">#C08B8B</color>
-    <color name="input_pill_bg_focused">#B07A7A</color>
-    <color name="input_pill_bg_disabled">#D4A8A8</color>
-    <color name="input_pill_text">#FAF4EE</color>
-    <color name="input_pill_text_disabled">#99FAF4EE</color>
-    <color name="input_pill_hint">#FAF4EE</color>
-    <color name="input_pill_hint_inactive">#CCFAF4EE</color>
-    <color name="input_pill_stroke">#FAF4EE</color>
+    <!-- === INPUT PILLS === -->
+    <color name="input_pill_bg">#8B6844</color>
+    <color name="input_pill_bg_focused">#6D4E30</color>
+    <color name="input_pill_bg_disabled">#A89880</color>
+    <color name="input_pill_text">#F8F4EF</color>
+    <color name="input_pill_text_disabled">#88F8F4EF</color>
+    <color name="input_pill_hint">#E0CFA0</color>
+    <color name="input_pill_hint_inactive">#AAE0CFA0</color>
+    <color name="input_pill_stroke">#C9A96E</color>
 
     <!-- === BOUTONS === -->
-    <color name="btn_gradient_text">#FAF4EE</color>
+    <color name="btn_gradient_start">#6B1D32</color>
+    <color name="btn_gradient_end">#8B6844</color>
+    <color name="btn_gradient_pressed_start">#471425</color>
+    <color name="btn_gradient_pressed_end">#6D4E30</color>
+    <color name="btn_gradient_text">#F8F4EF</color>
+    <color name="btn_disabled_bg">#D6CABC</color>
+    <color name="btn_disabled_text">#88A09080</color>
 
     <!-- === HEADER BAR === -->
-    <color name="header_text">#FAF4EE</color>
-    <color name="header_text_alpha">#CCFAF4EE</color>
+    <color name="header_start">#471425</color>
+    <color name="header_center">#6B1D32</color>
+    <color name="header_end">#8A3B50</color>
+    <color name="header_text">#F8F4EF</color>
+    <color name="header_text_alpha">#CCF8F4EF</color>
+    <color name="header_subtitle">#C9A96E</color>
 
     <!-- === WINE CARD === -->
-    <color name="wine_card_text">#3A2028</color>
+    <color name="wine_card_bg_start">#6B1D32</color>
+    <color name="wine_card_bg_center">#8A3B50</color>
+    <color name="wine_card_bg_end">#C9A96E</color>
+    <color name="wine_card_title">#F8F4EF</color>
+    <color name="wine_card_label">#C9A96E</color>
+    <color name="wine_card_value">#E0CFA0</color>
+    <color name="wine_card_body">#E8DDD0</color>
 
     <!-- === BOTTOM NAV === -->
-    <color name="bottom_nav_active">#FAF4EE</color>
-    <color name="bottom_nav_inactive">#99FAF4EE</color>
+    <color name="bottom_nav_bg_start">#471425</color>
+    <color name="bottom_nav_bg_end">#6B1D32</color>
+    <color name="bottom_nav_active">#C9A96E</color>
+    <color name="bottom_nav_inactive">#80F8F4EF</color>
+    <color name="bottom_nav_indicator">#20C9A96E</color>
 
-    <!-- === HEADER DÉCORATIF === -->
-    <color name="header_wave_overlay">#30FFFFFF</color>
+    <!-- === HOME CARDS === -->
+    <color name="home_search_card_start">#F8F4EF</color>
+    <color name="home_search_card_center">#EDE6DC</color>
+    <color name="home_search_card_end">#D6CABC</color>
 
-    <!-- === HOME CARD SEARCH === -->
-    <color name="home_search_card_start">#F0DDD0</color>
-    <color name="home_search_card_end">#D4A090</color>
+    <!-- === FAVORITES === -->
+    <color name="favorite_pill_start">#6B1D32</color>
+    <color name="favorite_pill_end">#8B6844</color>
+
+    <!-- === MEAL CARD === -->
+    <color name="meal_card_selected_stroke">#C9A96E</color>
+    <color name="meal_card_selected_bg">#0AC9A96E</color>
+    <color name="meal_card_unselected_bg">@color/surface</color>
+
+    <!-- === ACCORDION === -->
+    <color name="accordion_bg">#06C9A96E</color>
+    <color name="accordion_expanded_bg">#0FC9A96E</color>
+
+    <!-- === CHIP === -->
+    <color name="chip_selected_bg">#6B1D32</color>
+    <color name="chip_selected_text">#F8F4EF</color>
+    <color name="chip_unselected_bg">#EDE6DC</color>
+    <color name="chip_unselected_text">#8B6844</color>
+    <color name="chip_unselected_stroke">#C9A96E</color>
+
+    <!-- === STEP INDICATOR === -->
+    <color name="step_active_bg">#6B1D32</color>
+    <color name="step_active_text">#C9A96E</color>
+    <color name="step_inactive_bg">#EDE6DC</color>
+    <color name="step_inactive_text">#B5A598</color>
+    <color name="step_inactive_stroke">#C9A96E</color>
+
+    <!-- === SPLASH === -->
+    <color name="splash_start">#3A0C18</color>
+    <color name="splash_center">#6B1D32</color>
+    <color name="splash_end">#8A3B50</color>
+    <color name="splash_overlay_end">#30C9A96E</color>
+
+    <!-- === PROFILE === -->
+    <color name="profile_logout">#B3261E</color>
+    <color name="profile_bottom_bar">@color/surface_container_low</color>
 
 </resources>

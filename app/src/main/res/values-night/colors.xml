@@ -3,34 +3,38 @@
 
     <!-- === PRIMARY === -->
     <color name="primary">#E8909A</color>
-    <color name="primary_dark">#C2606B</color>
-    <color name="primary_light">#F5BDC4</color>
-    <color name="primary_container">#5C2028</color>
-    <color name="on_primary">#3A0D12</color>
-    <color name="on_primary_container">#F5BDC4</color>
+    <color name="primary_dark">#C06878</color>
+    <color name="primary_light">#F0B8C0</color>
+    <color name="primary_container">#471425</color>
+    <color name="on_primary">#2E0810</color>
+    <color name="on_primary_container">#F0B8C0</color>
 
     <!-- === SECONDARY === -->
-    <color name="secondary">#E8C98A</color>
-    <color name="secondary_dark">#9C7A30</color>
-    <color name="secondary_container">#4A3810</color>
-    <color name="on_secondary">#3A2A00</color>
-    <color name="on_secondary_container">#E8C98A</color>
+    <color name="secondary">#C9A96E</color>
+    <color name="secondary_dark">#9C8048</color>
+    <color name="secondary_light">#E0CFA0</color>
+    <color name="secondary_container">#3A2810</color>
+    <color name="on_secondary">#1A1008</color>
+    <color name="on_secondary_container">#E0CFA0</color>
 
     <!-- === TERTIARY === -->
-    <color name="tertiary">#7DC49A</color>
-    <color name="tertiary_container">#1E3D28</color>
-    <color name="on_tertiary">#0A2014</color>
-    <color name="on_tertiary_container">#7DC49A</color>
+    <color name="tertiary">#C49878</color>
+    <color name="tertiary_dark">#8B6848</color>
+    <color name="tertiary_light">#D4A888</color>
+    <color name="tertiary_container">#3A2418</color>
+    <color name="on_tertiary">#1A0C08</color>
+    <color name="on_tertiary_container">#D4A888</color>
 
     <!-- === BACKGROUND & SURFACE === -->
-    <color name="background">#1A0F0A</color>
-    <color name="on_background">#F0E0D8</color>
-    <color name="surface">#241510</color>
-    <color name="on_surface">#F0E0D8</color>
-    <color name="surface_variant">#3A2820</color>
-    <color name="on_surface_variant">#C0A89A</color>
-    <color name="surface_container">#2E1C14</color>
-    <color name="surface_container_high">#382218</color>
+    <color name="background">#110C0E</color>
+    <color name="on_background">#F0E6DE</color>
+    <color name="surface">#1E1618</color>
+    <color name="on_surface">#F0E6DE</color>
+    <color name="surface_variant">#302428</color>
+    <color name="on_surface_variant">#B8A89E</color>
+    <color name="surface_container">#281E20</color>
+    <color name="surface_container_high">#322628</color>
+    <color name="surface_container_low">#1A1214</color>
 
     <!-- === ERROR === -->
     <color name="error">#FFB4AB</color>
@@ -39,50 +43,117 @@
     <color name="on_error_container">#FFDAD6</color>
 
     <!-- === OUTLINE === -->
-    <color name="outline">#8A7068</color>
-    <color name="outline_variant">#4A3830</color>
+    <color name="outline">#8A7870</color>
+    <color name="outline_variant">#3A3030</color>
 
     <!-- === COULEURS VIN === -->
-    <color name="wine_red">@color/primary</color>
-    <color name="wine_white">#F0D878</color>
-    <color name="wine_rose">#D4788A</color>
+    <color name="wine_red">#E8909A</color>
+    <color name="wine_red_bg">#28E8909A</color>
+    <color name="wine_white">#E0D080</color>
+    <color name="wine_white_bg">#28E0D080</color>
+    <color name="wine_rose">#D08098</color>
+    <color name="wine_rose_bg">#28D08098</color>
 
     <!-- === COULEURS CATÉGORIES === -->
     <color name="category_meat">#C47840</color>
     <color name="category_fish">#6AB8D0</color>
-    <color name="category_veggie">#6DC870</color>
-    <color name="category_cheese">#FFD54F</color>
+    <color name="category_veggie">#7CB880</color>
+    <color name="category_cheese">#E0C050</color>
 
     <!-- === UTILITAIRES === -->
-    <color name="ripple">#33E8909A</color>
-    <color name="divider">#1AF0E0D8</color>
+    <color name="ripple">#30E8909A</color>
+    <color name="ripple_light">#10FFFFFF</color>
+    <color name="ripple_gold">#20C9A96E</color>
+    <color name="divider">#18F0E6DE</color>
+    <color name="divider_gold">#30C9A96E</color>
     <color name="shadow">#40000000</color>
     <color name="scrim">#99000000</color>
-    <color name="shimmer_base">#3A2820</color>
-    <color name="shimmer_highlight">#4A3830</color>
+    <color name="shimmer_base">#302428</color>
+    <color name="shimmer_highlight">#3A3030</color>
 
     <!-- === INPUT PILLS === -->
-    <color name="input_pill_bg">#6B3840</color>
-    <color name="input_pill_bg_focused">#7D4450</color>
-    <color name="input_pill_bg_disabled">#4A2830</color>
-    <color name="input_pill_text">#F0E0D8</color>
-    <color name="input_pill_text_disabled">#99F0E0D8</color>
-    <color name="input_pill_hint">#F0E0D8</color>
-    <color name="input_pill_hint_inactive">#CCF0E0D8</color>
-    <color name="input_pill_stroke">#F0E0D8</color>
+    <color name="input_pill_bg">#302028</color>
+    <color name="input_pill_bg_focused">#3A2830</color>
+    <color name="input_pill_bg_disabled">#281E20</color>
+    <color name="input_pill_text">#F0E6DE</color>
+    <color name="input_pill_text_disabled">#80F0E6DE</color>
+    <color name="input_pill_hint">#C9A96E</color>
+    <color name="input_pill_hint_inactive">#88C9A96E</color>
+    <color name="input_pill_stroke">#C9A96E</color>
 
     <!-- === BOUTONS === -->
-    <color name="btn_gradient_text">#F0E0D8</color>
+    <color name="btn_gradient_start">#8A3B50</color>
+    <color name="btn_gradient_end">#8B6844</color>
+    <color name="btn_gradient_pressed_start">#6B1D32</color>
+    <color name="btn_gradient_pressed_end">#6D4E30</color>
+    <color name="btn_gradient_text">#F0E6DE</color>
+    <color name="btn_disabled_bg">#302428</color>
+    <color name="btn_disabled_text">#50B8A89E</color>
 
     <!-- === HEADER BAR === -->
-    <color name="header_text">#F0E0D8</color>
-    <color name="header_text_alpha">#CCF0E0D8</color>
+    <color name="header_start">#1A1214</color>
+    <color name="header_center">#281820</color>
+    <color name="header_end">#302028</color>
+    <color name="header_text">#F0E6DE</color>
+    <color name="header_text_alpha">#CCF0E6DE</color>
+    <color name="header_subtitle">#C9A96E</color>
 
     <!-- === WINE CARD === -->
-    <color name="wine_card_text">#F0E0D8</color>
+    <color name="wine_card_bg_start">#281420</color>
+    <color name="wine_card_bg_center">#321C28</color>
+    <color name="wine_card_bg_end">#3A2818</color>
+    <color name="wine_card_title">#F0E6DE</color>
+    <color name="wine_card_label">#C9A96E</color>
+    <color name="wine_card_value">#E0CFA0</color>
+    <color name="wine_card_body">#D0C0B0</color>
 
     <!-- === BOTTOM NAV === -->
-    <color name="bottom_nav_active">#F0E0D8</color>
-    <color name="bottom_nav_inactive">#99F0E0D8</color>
+    <color name="bottom_nav_bg_start">#110C0E</color>
+    <color name="bottom_nav_bg_end">#1E1618</color>
+    <color name="bottom_nav_active">#C9A96E</color>
+    <color name="bottom_nav_inactive">#50B8A89E</color>
+    <color name="bottom_nav_indicator">#18C9A96E</color>
+
+    <!-- === HOME CARDS === -->
+    <color name="home_search_card_start">#1E1618</color>
+    <color name="home_search_card_center">#281E20</color>
+    <color name="home_search_card_end">#322828</color>
+
+    <!-- === FAVORITES === -->
+    <color name="favorite_pill_start">#321C28</color>
+    <color name="favorite_pill_end">#3A2818</color>
+
+    <!-- === MEAL CARD === -->
+    <color name="meal_card_selected_stroke">#C9A96E</color>
+    <color name="meal_card_selected_bg">#12C9A96E</color>
+    <color name="meal_card_unselected_bg">@color/surface</color>
+
+    <!-- === ACCORDION === -->
+    <color name="accordion_bg">#08C9A96E</color>
+    <color name="accordion_expanded_bg">#12C9A96E</color>
+
+    <!-- === CHIP === -->
+    <color name="chip_selected_bg">#E8909A</color>
+    <color name="chip_selected_text">#110C0E</color>
+    <color name="chip_unselected_bg">#302428</color>
+    <color name="chip_unselected_text">#C49878</color>
+    <color name="chip_unselected_stroke">#3A3030</color>
+
+    <!-- === STEP INDICATOR === -->
+    <color name="step_active_bg">#C9A96E</color>
+    <color name="step_active_text">#110C0E</color>
+    <color name="step_inactive_bg">#302428</color>
+    <color name="step_inactive_text">#8A7870</color>
+    <color name="step_inactive_stroke">#3A3030</color>
+
+    <!-- === SPLASH === -->
+    <color name="splash_start">#0A0608</color>
+    <color name="splash_center">#1A1018</color>
+    <color name="splash_end">#281820</color>
+    <color name="splash_overlay_end">#20C9A96E</color>
+
+    <!-- === PROFILE === -->
+    <color name="profile_logout">#FFB4AB</color>
+    <color name="profile_bottom_bar">@color/surface_container_low</color>
 
 </resources>

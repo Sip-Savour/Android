@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Background gradient -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="linear"
                 android:angle="135"
-                android:startColor="@color/primary"
-                android:centerColor="@color/primary_light"
-                android:endColor="@color/secondary" />
+                android:startColor="@color/header_start"
+                android:centerColor="@color/header_center"
+                android:endColor="@color/header_end" />
         </shape>
     </item>
-
-    <!-- Curved bottom edge -->
-    <item
-        android:top="80dp">
+    <item android:gravity="bottom">
         <shape android:shape="rectangle">
-            <solid android:color="@color/background" />
-            <corners
-                android:topLeftRadius="30dp"
-                android:topRightRadius="30dp" />
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#00C9A96E"
+                android:endColor="#15C9A96E" />
+            <size android:height="30dp" />
         </shape>
     </item>
-
 </layer-list>
