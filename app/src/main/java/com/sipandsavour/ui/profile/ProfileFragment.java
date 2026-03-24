@@ -93,18 +93,12 @@ public class ProfileFragment extends Fragment {
 
     private void observeViewModel() {
         viewModel.getUserName().observe(getViewLifecycleOwner(), name -> tvProfileName.setText(name != null ? name : "-"));
-
         viewModel.getUserEmail().observe(getViewLifecycleOwner(), email -> tvProfileEmail.setText(email != null ? email : "-"));
-
         viewModel.getUserDob().observe(getViewLifecycleOwner(), dob -> tvProfileDob.setText(dob != null ? dob : "-"));
     }
 
     private void onEditClicked() {
         // TODO: Naviguer vers l'écran d'édition de profil
-    }
-
-    private void onSettingsClicked() {
-        // TODO: Naviguer vers les paramètres
     }
 
     private void onPreferencesClicked() {
@@ -116,6 +110,13 @@ public class ProfileFragment extends Fragment {
     private void onHistoryClicked() {
         if (navController != null) {
             navController.navigate(R.id.action_profile_to_history);
+        }
+    }
+
+    private void onSettingsClicked() {
+        if (navController != null) {
+            // Utilisation de l'ID de l'action définie dans nav_graph.xml
+            navController.navigate(R.id.action_profile_to_settings);
         }
     }
 

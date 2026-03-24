@@ -117,23 +117,27 @@
         <action
             android:id="@+id/action_profile_to_auth"
             app:destination="@id/nav_auth" />
-
         <action
             android:id="@+id/action_profile_to_preferences"
-            app:destination="@id/preferencesFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:destination="@id/preferencesFragment" />
         <action
             android:id="@+id/action_profile_to_history"
-            app:destination="@id/historyFragment"
+            app:destination="@id/historyFragment" />
+
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.sipandsavour.ui.profile.SettingsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.sipandsavour.ui.profile.HistoryFragment"

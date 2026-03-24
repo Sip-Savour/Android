@@ -44,13 +44,12 @@ public class RegisterFragment extends Fragment {
     private LinearProgressIndicator progressRegister;
     private TextView btnGoToLogin;
 
-
-
     // Date
     private final Calendar calendar = Calendar.getInstance();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
     private final SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
     private String apiDob = ""; // La date formatée pour l'API
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -131,9 +130,7 @@ public class RegisterFragment extends Fragment {
                 requireContext(),
                 (view, year, month, dayOfMonth) -> {
                     calendar.set(year, month, dayOfMonth);
-                    // 1. Affichage pour l'utilisateur (ex: 25/12/1990)
                     etDob.setText(dateFormat.format(calendar.getTime()));
-                    // 2. Sauvegarde silencieuse pour l'API (ex: 1990-12-25)
                     apiDob = apiDateFormat.format(calendar.getTime());
                 },
                 calendar.get(Calendar.YEAR) - 25,
@@ -152,7 +149,6 @@ public class RegisterFragment extends Fragment {
         String name = etName.getText() != null ? etName.getText().toString().trim() : "";
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
         String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
-        // On utilise la date API si elle existe, sinon on prend le texte (qui causera sûrement une erreur API, ce qui est normal)
         String dob = apiDob.isEmpty() ? (etDob.getText() != null ? etDob.getText().toString().trim() : "") : apiDob;
 
         boolean isValid = true;
@@ -182,7 +178,8 @@ public class RegisterFragment extends Fragment {
         }
 
         if (dob.isEmpty()) {
-            tilDob.setError("Date de naissance requise");
+            // CORRECTION: Utilisation de getString()
+            tilDob.setError(getString(R.string.validation_dob_required));
             isValid = false;
         } else {
             tilDob.setError(null);
@@ -191,7 +188,6 @@ public class RegisterFragment extends Fragment {
         if (!isValid) return;
 
         viewModel.clearError();
-        // On envoie la date au format YYYY-MM-DD au ViewModel
         viewModel.register(name, email, password, dob);
     }
 

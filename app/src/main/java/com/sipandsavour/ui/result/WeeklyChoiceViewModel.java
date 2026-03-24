@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.ui.common.UiState;
+import com.sipandsavour.util.TranslationManager;
 
 public class WeeklyChoiceViewModel extends ViewModel {
 
@@ -18,18 +19,24 @@ public class WeeklyChoiceViewModel extends ViewModel {
     }
 
     public void loadRecommendation() {
-        // On signale à l'interface que le chargement commence
         recommendationState.setValue(UiState.loading());
 
-        // On appelle la nouvelle méthode du Repository (qui gère la prédiction + le tirage au sort)
         LiveData<UiState<WineDto>> source = Repository.getInstance().getWeeklyRecommendation();
 
         source.observeForever(new Observer<UiState<WineDto>>() {
             @Override
             public void onChanged(UiState<WineDto> state) {
                 if (!state.isLoading()) {
-                    recommendationState.setValue(state);
-                    source.removeObserver(this); // On se désabonne pour éviter les fuites de mémoire
+                    source.removeObserver(this);
+
+                    if (state.isSuccess() && state.getData() != null) {
+                        // Traduction de la recommandation hebdomadaire
+                        TranslationManager.getInstance().translateWineIfNeeded(state.getData(), translatedWine -> {
+                            recommendationState.setValue(state);
+                        });
+                    } else {
+                        recommendationState.setValue(state);
+                    }
                 }
             }
         });

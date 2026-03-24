@@ -9,6 +9,7 @@ import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.ui.common.UiState;
+import com.sipandsavour.util.TranslationManager;
 
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class ResultViewModel extends ViewModel {
     }
 
     public void setCurrentWine(WineDto wine) {
-        currentWine.setValue(wine);
         isFavorite.setValue(false); // Par défaut, on met à false en attendant la réponse de l'API
 
         if (wine != null) {
@@ -47,12 +47,16 @@ public class ResultViewModel extends ViewModel {
                     }
                 }
             }
+
+            // Traduction avant affichage
+            TranslationManager.getInstance().translateWineIfNeeded(wine, translatedWine -> {
+                currentWine.setValue(translatedWine);
+            });
+        } else {
+            currentWine.setValue(null);
         }
     }
 
-    /**
-     * Interroge l'API pour savoir si ce vin précis fait partie des favoris de l'utilisateur
-     */
     private void checkIfFavorite(WineDto wine) {
         LiveData<UiState<List<WineDto>>> source = Repository.getInstance().getFavorites();
         source.observeForever(new Observer<UiState<List<WineDto>>>() {
@@ -78,7 +82,7 @@ public class ResultViewModel extends ViewModel {
     public boolean nextWine() {
         if (wineList != null && currentIndex >= 0 && currentIndex < wineList.size() - 1) {
             currentIndex++;
-            setCurrentWine(wineList.get(currentIndex)); // On réutilise setCurrentWine pour déclencher la vérification favori
+            setCurrentWine(wineList.get(currentIndex));
             return true;
         }
         return false;
@@ -88,9 +92,6 @@ public class ResultViewModel extends ViewModel {
         return isFavorite;
     }
 
-    /**
-     * Appelé quand on clique sur le coeur. Ajoute ou supprime de l'API.
-     */
     public void toggleFavorite() {
         WineDto wine = currentWine.getValue();
         if (wine == null) return;
@@ -98,15 +99,11 @@ public class ResultViewModel extends ViewModel {
         Boolean current = isFavorite.getValue();
         boolean isFav = current != null ? current : false;
 
-        // 1. Mise à jour immédiate de l'interface (pour que le coeur change tout de suite)
         isFavorite.setValue(!isFav);
 
-        // 2. Appel à l'API en arrière-plan
         if (isFav) {
-            // C'était un favori, on le retire
             Repository.getInstance().removeFavorite(wine.getId());
         } else {
-            // Ce n'était pas un favori, on l'ajoute
             Repository.getInstance().addFavorite(wine.getId());
         }
     }

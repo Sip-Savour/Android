@@ -23,9 +23,10 @@ import android.os.Vibrator;
 
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
-import com.sipandsavour.data.dto.BottleResponse; // Vérifiez que cet import correspond bien à votre classe
+import com.sipandsavour.data.dto.BottleResponse;
 import com.sipandsavour.ui.selection.SelectionViewModel;
 import com.sipandsavour.util.SlideBackUtil;
+import com.sipandsavour.util.TranslationManager; // <-- NOUVEL IMPORT
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
 
     private NavController navController;
     private ResultViewModel resultViewModel;
-    private SelectionViewModel selectionViewModel; // <-- AJOUT DU VIEWMODEL DE SÉLECTION
+    private SelectionViewModel selectionViewModel;
 
     private RecyclerView rvSuggestions;
     private LinearLayout layoutEmpty;
@@ -55,8 +56,6 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
 
         navController = NavHostFragment.findNavController(this);
 
-        // IMPORTANT : On utilise requireActivity() pour récupérer la MÊME instance du ViewModel
-        // que celle utilisée dans FlavorFragment !
         resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
         selectionViewModel = new ViewModelProvider(requireActivity()).get(SelectionViewModel.class);
 
@@ -79,27 +78,28 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
     }
 
     private void observePrediction() {
-        // On écoute le résultat de l'API en direct
         selectionViewModel.getPredictionResult().observe(getViewLifecycleOwner(), state -> {
             if (state == null) return;
 
             if (state.isLoading()) {
-                // Optionnel : Afficher un ProgressBar ici si vous en ajoutez un dans layoutEmpty
                 rvSuggestions.setVisibility(View.GONE);
                 layoutEmpty.setVisibility(View.VISIBLE);
             }
             else if (state.isSuccess() && state.getData() != null) {
-                // Succès : On convertit les réponses de l'API en objets WineDto pour la liste
                 List<BottleResponse> apiBottles = state.getData().getBottle();
                 List<WineDto> suggestions = mapApiToWineDto(apiBottles);
-                displaySuggestions(suggestions);
-                triggerSuccessVibration();
+
+                // --- TRADUCTION DE LA LISTE ICI ---
+                TranslationManager.getInstance().translateWineListIfNeeded(suggestions, translatedList -> {
+                    displaySuggestions(translatedList);
+                    triggerSuccessVibration();
+                });
             }
             else if (state.isError()) {
-                // Erreur : On affiche l'écran vide et un message
                 rvSuggestions.setVisibility(View.GONE);
                 layoutEmpty.setVisibility(View.VISIBLE);
-                Toast.makeText(requireContext(), "Erreur : " + state.getMessage(), Toast.LENGTH_LONG).show();
+                // Correction du texte d'erreur en dur
+                Toast.makeText(requireContext(), getString(R.string.error_title) + " " + state.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -109,21 +109,18 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         if (apiBottles == null) return list;
 
         for (BottleResponse bottle : apiBottles) {
-            // --- CORRECTION : ON UTILISE L'ID ET LA COULEUR DE L'API ---
             WineDto wine = new WineDto(
-                    bottle.getId(),          // <-- L'ID renvoyé par l'API
-                    bottle.getTitle(),       // <-- Titre
-                    bottle.getDescription(), // <-- Description
-                    bottle.getVariety(),     // <-- Cépage
-                    bottle.getColor()        // <-- Couleur (5ème paramètre requis par WineDto)
+                    bottle.getId(),
+                    bottle.getTitle(),
+                    bottle.getDescription(),
+                    bottle.getVariety(),
+                    bottle.getColor()
             );
 
             list.add(wine);
         }
         return list;
     }
-
-
 
     private void displaySuggestions(List<WineDto> suggestions) {
         if (suggestions == null || suggestions.isEmpty()) {
@@ -140,16 +137,13 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
     private void triggerSuccessVibration() {
         Vibrator vibrator = (Vibrator) requireContext().getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator != null && vibrator.hasVibrator()) {
-            // Une vibration très courte et douce de 50 millisecondes
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
-                // Pour les anciens téléphones
                 vibrator.vibrate(50);
             }
         }
     }
-
 
     @Override
     public void onSuggestionClick(WineDto wine) {

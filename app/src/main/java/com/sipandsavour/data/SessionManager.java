@@ -228,4 +228,22 @@ public final class SessionManager {
             ApiClient.getInstance().setAuthToken(token);
         }
     }
+
+    // =======================================================
+    //  LANGUE / LOCALE
+    // =======================================================
+
+    /**
+     * Sauvegarde la langue choisie (ex: "fr" ou "en")
+     */
+    public void setLanguage(String langCode) {
+        prefs.edit().putString(Constants.KEY_LANGUAGE, langCode).apply();
+    }
+
+    /**
+     * Récupère la langue (par défaut le français pour votre app)
+     */
+    public String getLanguage() {
+        return prefs.getString(Constants.KEY_LANGUAGE, "fr");
+    }
 }

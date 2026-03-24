@@ -32,7 +32,6 @@ public class PreferencesFragment extends Fragment {
     private ChipGroup cgFlavors;
     private MaterialButton btnSave;
 
-    // Classe interne pour lier l'affichage (FR) et la clé API (EN)
     private static class FlavorOption {
         String displayName;
         String apiKey;
@@ -43,21 +42,22 @@ public class PreferencesFragment extends Fragment {
         }
     }
 
-    // La liste complète de vos arômes de la recherche avancée
-    private final List<FlavorOption> availableFlavors = new ArrayList<FlavorOption>() {{
-        add(new FlavorOption("Fruité", "Fruity"));
-        add(new FlavorOption("Boisé", "Woody"));
-        add(new FlavorOption("Agrumes", "Citrus"));
-        add(new FlavorOption("Floral", "Floral"));
-        add(new FlavorOption("Épicé", "Spicy"));
-        add(new FlavorOption("Terrestre", "Earthy"));
-        add(new FlavorOption("Minéral", "Mineral"));
-        add(new FlavorOption("Végétal / Herbacé", "Vegetal"));
-        add(new FlavorOption("Beurré / Vanillé", "Buttery"));
-        add(new FlavorOption("Fumé", "Smoky"));
-        add(new FlavorOption("Caramel / Torréfié", "Caramel"));
-        // N'hésitez pas à en ajouter d'autres ici pour coller exactement à votre API !
-    }};
+    // Méthode pour générer la liste dynamiquement avec la bonne langue
+    private List<FlavorOption> getAvailableFlavors() {
+        List<FlavorOption> flavors = new ArrayList<>();
+        flavors.add(new FlavorOption(getString(R.string.flavor_fruity), "Fruity"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_woody), "Woody"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_citrus), "Citrus"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_floral), "Floral"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_spicy), "Spicy"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_earthy), "Earthy"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_mineral), "Mineral"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_vegetal), "Vegetal"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_buttery), "Buttery"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_smoked), "Smoky"));
+        flavors.add(new FlavorOption(getString(R.string.flavor_caramel), "Caramel"));
+        return flavors;
+    }
 
     @Nullable
     @Override
@@ -83,9 +83,10 @@ public class PreferencesFragment extends Fragment {
         btnSave.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
             viewModel.save();
-            Toast.makeText(requireContext(), "Préférences sauvegardées !", Toast.LENGTH_SHORT).show();
-            navController.popBackStack(); // Retourne au profil
+            Toast.makeText(requireContext(), getString(R.string.preferences_saved_toast), Toast.LENGTH_SHORT).show();
+            navController.popBackStack();
         });
+
         View scrollView = view.findViewById(R.id.scrollView);
         SlideBackUtil.attach(() -> navController.popBackStack(), view, scrollView);
     }
@@ -100,17 +101,16 @@ public class PreferencesFragment extends Fragment {
     }
 
     private void setupFlavorChips() {
-        for (FlavorOption flavor : availableFlavors) {
+        // Utilisation de la liste dynamique traduite
+        for (FlavorOption flavor : getAvailableFlavors()) {
             Chip chip = new Chip(requireContext());
-            chip.setText(flavor.displayName); // On affiche "Agrumes"
-            chip.setTag(flavor.apiKey);       // On cache "Citrus" dans le Tag du Chip
+            chip.setText(flavor.displayName);
+            chip.setTag(flavor.apiKey);
             chip.setCheckable(true);
 
-            // Applique le style par défaut des chips de sélection
             chip.setChipBackgroundColorResource(R.color.background);
 
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                // Quand on clique, on envoie "Citrus" (la clé API) au ViewModel
                 viewModel.toggleFeature((String) buttonView.getTag());
             });
             cgFlavors.addView(chip);
@@ -118,7 +118,6 @@ public class PreferencesFragment extends Fragment {
     }
 
     private void observeViewModel() {
-        // Observer pour la couleur
         viewModel.getSelectedColor().observe(getViewLifecycleOwner(), color -> {
             if (color == null) {
                 cgColor.clearCheck();
@@ -131,16 +130,13 @@ public class PreferencesFragment extends Fragment {
             }
         });
 
-        // Observer pour les arômes
         viewModel.getSelectedFeatures().observe(getViewLifecycleOwner(), features -> {
             if (features == null) return;
 
-            // On parcourt tous les chips pour cocher ceux qui sont dans les préférences
             for (int i = 0; i < cgFlavors.getChildCount(); i++) {
                 Chip chip = (Chip) cgFlavors.getChildAt(i);
                 String apiKey = (String) chip.getTag();
 
-                // On met à jour l'état sans déclencher le listener (pour éviter les boucles infinies)
                 chip.setOnCheckedChangeListener(null);
                 chip.setChecked(features.contains(apiKey));
                 chip.setOnCheckedChangeListener((buttonView, isChecked) -> {

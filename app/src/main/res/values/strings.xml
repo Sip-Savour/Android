@@ -220,4 +220,38 @@
     <string name="cd_wine_color">Couleur du vin %1$s</string>
     <string name="profile_settings">Paramètres</string>
 
+    <string name="preferences_color_title">Ma couleur préférée</string>
+    <string name="preferences_flavor_title">Mes arômes favoris</string>
+    <string name="preferences_save">Sauvegarder mes préférences</string>
+    <string name="preferences_saved_toast">Préférences sauvegardées !</string>
+
+    <string name="history_empty_title">Aucun historique</string>
+
+    <string name="settings_language_title">Changer la langue</string>
+    <string name="result_unknown_wine">Vin Inconnu</string>
+    <string name="result_last_wine">C\'est le dernier vin de la liste !</string>
+
+    <string name="validation_dob_required">Date de naissance requise</string>
+    <string name="weekly_loading_title">Recherche de la meilleure bouteille...</string>
+    <string name="weekly_loading_desc">Nous interrogeons notre sommelier virtuel pour vous...</string>
+    <string name="result_no_description">Aucune description disponible pour ce vin.</string>
+    <string name="weekly_pairing">Accords Mets-Vins</string>
+    <string name="weekly_coming_soon">Bientôt disponible...</string>
+
+    <string name="settings_title">Paramètres</string>
+
+    <string name="flavor_fruity">Fruité</string>
+    <string name="flavor_woody">Boisé</string>
+    <string name="flavor_citrus">Agrumes</string>
+    <string name="flavor_floral">Floral</string>
+    <string name="flavor_earthy">Terrestre</string>
+    <string name="flavor_mineral">Minéral</string>
+    <string name="flavor_vegetal">Végétal / Herbacé</string>
+    <string name="flavor_caramel">Caramel / Torréfié</string>
+    <string name="meal_step_1">1. Base du plat (1 choix)</string>
+    <string name="meal_step_2">2. Profil gustatif (Plusieurs choix)</string>
+    <string name="meal_step_3">3. Couleur du vin (Optionnel)</string>
+    <string name="meal_ai_hint">Laissez vide pour laisser l\'IA choisir la meilleure couleur.</string>
+    <string name="meal_find_wine">Trouver le vin idéal</string>
+    <string name="preferences_main_title">Mes Préférences</string>
 </resources>

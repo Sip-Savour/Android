@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sipandsavour.util.TranslationManager;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_SipSavour);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        TranslationManager.getInstance();
         setupNavigation();
     }
 

@@ -43,18 +43,13 @@ public class WeeklyChoiceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = NavHostFragment.findNavController(this);
-
-        // Initialisation du ViewModel
         viewModel = new ViewModelProvider(this).get(WeeklyChoiceViewModel.class);
 
         bindViews(view);
         observeViewModel();
 
-        // Lancement du chargement de la recommandation dès l'ouverture de l'écran
         viewModel.loadRecommendation();
 
-
-        // On attache le swipe à la racine ET au ScrollView
         View scrollView = view.findViewById(R.id.nestedScrollView);
         SlideBackUtil.attach(() -> navController.popBackStack(), view, scrollView);
     }
@@ -70,33 +65,36 @@ public class WeeklyChoiceFragment extends Fragment {
     private void observeViewModel() {
         viewModel.getRecommendationState().observe(getViewLifecycleOwner(), state -> {
             if (state.isLoading()) {
-                // Pendant la recherche du vin, on affiche un texte d'attente
-                if (tvCepage != null) tvCepage.setText("Recherche de la meilleure bouteille...");
-                if (tvDescription != null) tvDescription.setText("Nous interrogeons notre sommelier virtuel pour vous...");
+                // CORRECTION: Textes de chargement traduits
+                if (tvCepage != null) tvCepage.setText(getString(R.string.weekly_loading_title));
+                if (tvDescription != null) tvDescription.setText(getString(R.string.weekly_loading_desc));
                 if (tvType != null) tvType.setText("");
             } else if (state.isSuccess() && state.getData() != null) {
-                // Succès : on affiche les vraies données
                 displayWine(state.getData());
             } else if (state.isError()) {
-                // Erreur : on prévient l'utilisateur
                 Toast.makeText(requireContext(), state.getMessage(), Toast.LENGTH_LONG).show();
-                if (tvCepage != null) tvCepage.setText("Oups !");
+                // CORRECTION: Utilisation de error_title ("Oups !")
+                if (tvCepage != null) tvCepage.setText(getString(R.string.error_title));
                 if (tvDescription != null) tvDescription.setText(state.getMessage());
             }
         });
     }
 
     private void displayWine(WineDto wine) {
-        // On remplace les données de test par le vin suggéré
-        if (tvCepage != null) tvCepage.setText(wine.getTitle() != null ? wine.getTitle() : (wine.getVariety() != null ? wine.getVariety() : "Cépage inconnu"));
-        if (tvDescription != null) tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : "Aucune description disponible pour ce vin.");
+        // CORRECTION: Remplacements par getString() pour les inconnus
+        if (tvCepage != null) {
+            tvCepage.setText(wine.getTitle() != null ? wine.getTitle() :
+                    (wine.getVariety() != null ? wine.getVariety() : getString(R.string.result_unknown_wine)));
+        }
+
+        if (tvDescription != null) {
+            tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : getString(R.string.result_no_description));
+        }
+
         if (tvType != null) tvType.setText(wine.getColorDisplayName());
 
-        // Note : N'ayant pas encore les recettes associées au vin dans l'API,
-        // on peut mettre un texte générique en attendant, ou les cacher.
-        if (tvMealName != null) tvMealName.setText("Accords Mets-Vins");
-        if (tvIngredients != null) tvIngredients.setText("Bientôt disponible...");
+        // CORRECTION: Textes par défaut des recettes
+        if (tvMealName != null) tvMealName.setText(getString(R.string.weekly_pairing));
+        if (tvIngredients != null) tvIngredients.setText(getString(R.string.weekly_coming_soon));
     }
-
-
 }

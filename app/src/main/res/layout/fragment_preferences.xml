@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Mes Préférences"
+            android:text="@string/preferences_main_title"
             android:fontFamily="@font/playfair_display"
             android:textSize="@dimen/text_headline_medium"
             android:textColor="@color/header_text"
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ma couleur préférée"
+                android:text="@string/preferences_color_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
@@ -59,27 +59,27 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rouge" />
+                    android:text="@string/color_red" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipWhite"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Blanc" />
+                    android:text="@string/color_white" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRose"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rosé" />
+                    android:text="@string/color_rose" />
             </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mes arômes favoris"
+                android:text="@string/preferences_flavor_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="16dp"
-                android:text="Sauvegarder"
+                android:text="@string/preferences_save"
                 android:fontFamily="@font/playfair_display"
                 android:textSize="@dimen/text_title_medium"
                 android:textColor="@color/btn_gradient_text"
