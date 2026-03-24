@@ -18,6 +18,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 public class LoginFragment extends Fragment {
 
@@ -70,13 +71,20 @@ public class LoginFragment extends Fragment {
     }
 
     private void setupListeners() {
-        btnLogin.setOnClickListener(v -> onLoginClicked());
+        btnLogin.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onLoginClicked();
+        });
 
         tvForgotPassword.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
             // TODO: Naviguer vers l'écran de mot de passe oublié
         });
 
-        btnGoToRegister.setOnClickListener(v -> navController.navigate(R.id.action_login_to_register));
+        btnGoToRegister.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            navController.navigate(R.id.action_login_to_register);
+        });
     }
 
     private void observeViewModel() {

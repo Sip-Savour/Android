@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.util.HapticUtil;
 
 /**
  * Adapter pour la liste des favoris.
@@ -83,12 +84,14 @@ public class FavoritesAdapter extends ListAdapter<WineDto, FavoritesAdapter.Favo
             ivWineImage.setImageResource(imageRes);
 
             itemView.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (listener != null) {
                     listener.onFavoriteClick(wine, position);
                 }
             });
 
             tvWineName.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (listener != null) {
                     listener.onFavoriteClick(wine, position);
                 }

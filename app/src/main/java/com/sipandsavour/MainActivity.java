@@ -12,6 +12,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sipandsavour.data.SessionManager;
+import com.sipandsavour.util.TranslationManager;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,9 +34,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_SipSavour);
+        // 1. Initialiser le gestionnaire de session le plus tôt possible
+        SessionManager.init(getApplicationContext());
+
+        // 2. LECTURE DU THÈME SAUVEGARDÉ POUR L'EASTER EGG JINX
+        int currentThemeCode = SessionManager.getInstance().getTheme();
+
+        if (currentThemeCode == 100) {
+            // L'utilisateur a activé le JinxTheme via le menu secret !
+            setTheme(R.style.Theme_SipSavour_Jinx);
+            // On force les popups et éléments natifs Android à rester en mode sombre
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            // Thème standard
+            setTheme(R.style.Theme_SipSavour);
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(currentThemeCode);
+        }
+
+        // 3. Appel à la méthode parente APRES avoir configuré le thème
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // 4. Réinjecter le token de sécurité s'il y en a un
+        SessionManager.getInstance().restoreSession();
+
+        // 5. Initialiser la traduction
+        TranslationManager.getInstance();
 
         setupNavigation();
     }

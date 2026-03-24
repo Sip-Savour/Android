@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.util.HapticUtil;
 
 public class ResultFragment extends Fragment {
 
@@ -51,7 +52,6 @@ public class ResultFragment extends Fragment {
         setupFavoriteButton();
         observeViewModel();
 
-        // On active le slide indestructible !
         setupSwipeGesture(view);
     }
 
@@ -65,7 +65,10 @@ public class ResultFragment extends Fragment {
 
     private void setupFavoriteButton() {
         if (fabFavorite != null) {
-            fabFavorite.setOnClickListener(v -> viewModel.toggleFavorite());
+            fabFavorite.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
+                viewModel.toggleFavorite();
+            });
         }
     }
 
@@ -77,15 +80,15 @@ public class ResultFragment extends Fragment {
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
-        // ANIMATION VISUELLE DU SLIDE
         View card = getView() != null ? getView().findViewById(R.id.wineCard) : null;
         if (card != null) {
             card.setAlpha(0f);
-            card.setTranslationX(150f); // Démarre décalé vers la droite
-            card.animate().alpha(1f).translationX(0f).setDuration(250).start(); // Glisse vers le centre
+            card.setTranslationX(150f);
+            card.animate().alpha(1f).translationX(0f).setDuration(250).start();
         }
 
-        if (tvTitle != null) tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : "Vin Inconnu");
+        // CORRECTION: getString pour le titre et les valeurs par défaut
+        if (tvTitle != null) tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : getString(R.string.result_unknown_wine));
         tvCepage.setText(wine.getVariety() != null ? wine.getVariety() : "-");
         tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : "-");
         tvType.setText(wine.getColorDisplayName());
@@ -96,6 +99,12 @@ public class ResultFragment extends Fragment {
             fabFavorite.setImageResource(
                     isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
             );
+
+            if (isFavorite) {
+                fabFavorite.setColorFilter(android.graphics.Color.parseColor("#E53935"));
+            } else {
+                fabFavorite.setColorFilter(android.graphics.Color.parseColor("#FFFFFF"));
+            }
         }
     }
 
@@ -105,16 +114,13 @@ public class ResultFragment extends Fragment {
         }
     }
 
-    // =======================================================
-    //  GESTION DU SWIPE (MÉTHODE RAWX ABSOLUE)
-    // =======================================================
     @SuppressLint("ClickableViewAccessibility")
     private void setupSwipeGesture(View view) {
         View.OnTouchListener invincibleSwipeListener = new View.OnTouchListener() {
             private float startX = 0;
             private float startY = 0;
             private boolean isSwiping = false;
-            private static final int SWIPE_THRESHOLD = 120; // Sensibilité du glissement
+            private static final int SWIPE_THRESHOLD = 120;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -129,14 +135,11 @@ public class ResultFragment extends Fragment {
                         float diffX = event.getRawX() - startX;
                         float diffY = event.getRawY() - startY;
 
-                        // Si on bouge horizontalement de plus de 40 pixels
                         if (!isSwiping && Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
                             isSwiping = true;
-                            // On hurle au ScrollView de ne pas toucher à ce geste !
                             v.getParent().requestDisallowInterceptTouchEvent(true);
                         }
 
-                        // Si on est en train de swiper, on "avale" l'événement pour bloquer le défilement haut/bas
                         if (isSwiping) return true;
                         break;
 
@@ -145,26 +148,24 @@ public class ResultFragment extends Fragment {
                             float finalDiffX = event.getRawX() - startX;
                             if (Math.abs(finalDiffX) > SWIPE_THRESHOLD) {
                                 if (finalDiffX > 0) {
-                                    // Slide vers la DROITE (→) : Retour en arrière
                                     navController.popBackStack();
                                 } else {
-                                    // Slide vers la GAUCHE (←) : Vin Suivant
                                     boolean hasNext = viewModel.nextWine();
                                     if (!hasNext) {
-                                        showSnackbar("C'est le dernier vin de la liste !");
+                                        // CORRECTION: On prévient avec la bonne langue
+                                        showSnackbar(getString(R.string.result_last_wine));
                                     }
                                 }
                             }
                             isSwiping = false;
-                            return true; // Le swipe est terminé
+                            return true;
                         }
                         break;
                 }
-                return false; // Laisse passer le clic normal et le scroll normal
+                return false;
             }
         };
 
-        // On attache le super-détecteur à la fois au ScrollView et au fond de l'écran
         View scrollView = view.findViewById(R.id.scrollView);
         if (scrollView != null) scrollView.setOnTouchListener(invincibleSwipeListener);
         view.setOnTouchListener(invincibleSwipeListener);

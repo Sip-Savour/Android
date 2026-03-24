@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.util.HapticUtil;
 
 public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.SuggestionViewHolder> {
 
@@ -59,7 +60,6 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
 
     class SuggestionViewHolder extends RecyclerView.ViewHolder {
 
-        // --- NOUVEAU : Ajout de la variable pour le titre ---
         private final TextView tvTitle;
         private final TextView tvCepage;
         private final TextView tvDescription;
@@ -67,7 +67,6 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
 
         SuggestionViewHolder(@NonNull View itemView) {
             super(itemView);
-            // --- NOUVEAU : Liaison avec l'ID du XML ---
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvCepage = itemView.findViewById(R.id.tvCepage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
@@ -75,9 +74,9 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
         }
 
         void bind(WineDto wine) {
-            // --- NOUVEAU : Affichage du titre du vin ---
+            // --- CORRECTION : Appel dynamique aux ressources ---
             if (tvTitle != null) {
-                tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : "Vin Inconnu");
+                tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : itemView.getContext().getString(R.string.result_unknown_wine));
             }
 
             tvCepage.setText(wine.getVariety() != null ? wine.getVariety() : "-");
@@ -85,6 +84,7 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
             tvType.setText(wine.getColorDisplayName());
 
             itemView.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (listener != null) {
                     listener.onSuggestionClick(wine);
                 }

@@ -1,5 +1,7 @@
 package com.sipandsavour.data.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Requête d'inscription.
  */
@@ -8,6 +10,9 @@ public class RegisterRequest {
     private String username;
     private String email;
     private String password;
+
+    // On fait le lien entre Java (dateOfBirth) et Python (date_naissance)
+    @SerializedName("date_naissance")
     private String dateOfBirth;
 
     // === CONSTRUCTORS ===

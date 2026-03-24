@@ -31,7 +31,7 @@ public interface WineApi {
      * Récupère la suggestion hebdomadaire
      * GET /weekly
      */
-    @GET("weekly")
+    @GET("wines/weekly")
     Call<DailySuggestionResponse> getWeeklySuggestion();
 
     /**
@@ -61,4 +61,7 @@ public interface WineApi {
      */
     @GET("wines/{wineId}")
     Call<WineDto> getWineById(@Path("wineId") int wineId);
+
+    @GET("wines/random")
+    Call<List<WineDto>> getRandomWines();
 }

@@ -58,4 +58,11 @@ public final class Constants {
 
     // === WORKER ===
     public static final String WORKER_DAILY_TAG = "daily_suggestion_worker";
+
+    // === LOCAL ===
+    public static final String KEY_PREF_FEATURES = "pref_features";
+    public static final String KEY_PREF_COLOR = "pref_color";
+    public static final String KEY_HISTORY = "history_ids";
+
+    public static final String KEY_LANGUAGE = "app_language";
 }

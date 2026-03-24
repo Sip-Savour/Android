@@ -19,6 +19,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.sipandsavour.R;
+import com.sipandsavour.data.SessionManager;
 
 /**
  * Fragment de splash screen avec animation du logo.
@@ -90,8 +91,8 @@ public class SplashFragment extends Fragment {
 
         NavController navController = NavHostFragment.findNavController(this);
 
-        // TODO: Vérifier si l'utilisateur est connecté via SessionManager
-        boolean isLoggedIn = false; // TODO: SessionManager.getInstance().isLoggedIn();
+        // Vérification de l'état de connexion via le SessionManager
+        boolean isLoggedIn = SessionManager.getInstance().isLoggedIn();
 
         if (isLoggedIn) {
             navController.navigate(R.id.action_splash_to_home);

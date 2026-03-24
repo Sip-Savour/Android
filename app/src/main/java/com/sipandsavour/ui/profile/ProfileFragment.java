@@ -1,10 +1,12 @@
 package com.sipandsavour.ui.profile;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sipandsavour.R;
-import com.sipandsavour.ui.auth.AuthViewModel;
+import com.sipandsavour.data.SessionManager;
+import com.sipandsavour.util.HapticUtil;
 
 public class ProfileFragment extends Fragment {
 
@@ -28,6 +31,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvProfileName;
     private TextView tvProfileEmail;
     private TextView tvProfileDob;
+    private ImageView ivProfileAvatar;
     private MaterialButton btnPreferences;
     private MaterialButton btnHistory;
     private ImageButton fabEdit;
@@ -52,6 +56,7 @@ public class ProfileFragment extends Fragment {
         bindViews(view);
         setupListeners();
         observeViewModel();
+        checkAndApplySecretAvatar();
 
         viewModel.loadUserData();
     }
@@ -60,6 +65,7 @@ public class ProfileFragment extends Fragment {
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
         tvProfileDob = view.findViewById(R.id.tvProfileDob);
+        ivProfileAvatar = view.findViewById(R.id.ivProfileAvatar);
         btnPreferences = view.findViewById(R.id.btnPreferences);
         btnHistory = view.findViewById(R.id.btnHistory);
         fabEdit = view.findViewById(R.id.fabEdit);
@@ -67,19 +73,43 @@ public class ProfileFragment extends Fragment {
         fabLogout = view.findViewById(R.id.fabLogout);
     }
 
+    private void checkAndApplySecretAvatar() {
+        int currentThemeCode = SessionManager.getInstance().getTheme();
+
+        if (currentThemeCode == 100) {
+            ivProfileAvatar.setImageResource(R.drawable.ic_jinx);
+            ivProfileAvatar.setImageTintList(null);
+        } else {
+            ivProfileAvatar.setImageResource(R.drawable.ic_person);
+        }
+    }
+
     private void setupListeners() {
-        fabEdit.setOnClickListener(v -> onEditClicked());
-        fabSettings.setOnClickListener(v -> onSettingsClicked());
-        fabLogout.setOnClickListener(v -> onLogoutClicked());
-        btnPreferences.setOnClickListener(v -> onPreferencesClicked());
-        btnHistory.setOnClickListener(v -> onHistoryClicked());
+        fabEdit.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onEditClicked();
+        });
+        fabSettings.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onSettingsClicked();
+        });
+        fabLogout.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onLogoutClicked();
+        });
+        btnPreferences.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onPreferencesClicked();
+        });
+        btnHistory.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onHistoryClicked();
+        });
     }
 
     private void observeViewModel() {
         viewModel.getUserName().observe(getViewLifecycleOwner(), name -> tvProfileName.setText(name != null ? name : "-"));
-
         viewModel.getUserEmail().observe(getViewLifecycleOwner(), email -> tvProfileEmail.setText(email != null ? email : "-"));
-
         viewModel.getUserDob().observe(getViewLifecycleOwner(), dob -> tvProfileDob.setText(dob != null ? dob : "-"));
     }
 
@@ -87,16 +117,22 @@ public class ProfileFragment extends Fragment {
         // TODO: Naviguer vers l'écran d'édition de profil
     }
 
-    private void onSettingsClicked() {
-        // TODO: Naviguer vers les paramètres
-    }
-
     private void onPreferencesClicked() {
-        // TODO: Naviguer vers les préférences de vins
+        if (navController != null) {
+            navController.navigate(R.id.action_profile_to_preferences);
+        }
     }
 
     private void onHistoryClicked() {
-        // TODO: Naviguer vers l'historique des recherches
+        if (navController != null) {
+            navController.navigate(R.id.action_profile_to_history);
+        }
+    }
+
+    private void onSettingsClicked() {
+        if (navController != null) {
+            navController.navigate(R.id.action_profile_to_settings);
+        }
     }
 
     private void onLogoutClicked() {
@@ -104,8 +140,14 @@ public class ProfileFragment extends Fragment {
                 .setTitle(R.string.profile_logout_confirm_title)
                 .setMessage(R.string.profile_logout_confirm_message)
                 .setPositiveButton(R.string.profile_logout, (dialog, which) -> {
+
+                    // On vide la session proprement
                     viewModel.logout();
-                    navController.navigate(R.id.action_profile_to_auth);
+
+                    // SÉCURITÉ : on s'assure que le fragment est toujours attaché avant de naviguer
+                    if (isAdded() && navController != null) {
+                        navController.navigate(R.id.action_profile_to_auth);
+                    }
                 })
                 .setNegativeButton(R.string.error_cancel, null)
                 .show();
