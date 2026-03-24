@@ -282,4 +282,9 @@
     <string name="theme_system">Système (Par défaut)</string>
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
+    <string name="jinx_catchphrase">Les règles sont faites pour être brisées.</string>
+    <string name="jinx_welcome">Bienvenue dans la planque.</string>
+    <string name="jinx_activate">Activer JinxTheme</string>
+
+
 </resources>

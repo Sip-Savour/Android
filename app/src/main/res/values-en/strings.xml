@@ -248,4 +248,8 @@
     <string name="theme_system">System (Default)</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+
+    <string name="jinx_catchphrase">Rules are made to be broken.</string>
+    <string name="jinx_welcome">Welcome to the playground</string>
+    <string name="jinx_activate">Activate JinxTheme</string>
 </resources>
