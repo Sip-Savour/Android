@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 public class FlavorFragment extends Fragment implements
         CategoryAdapter.OnFlavorSelectionListener,
@@ -94,7 +95,10 @@ public class FlavorFragment extends Fragment implements
                 ? R.string.search_match_button
                 : R.string.search_filter_button);
 
-        btnMatch.setOnClickListener(v -> onMatchClicked());
+        btnMatch.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onMatchClicked();
+        });
     }
 
     private void observeViewModel() {

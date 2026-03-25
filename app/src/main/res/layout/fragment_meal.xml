@@ -7,7 +7,9 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- HEADER - Version premium avec titre + sous-titre                 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
@@ -46,6 +48,9 @@
 
     </FrameLayout>
 
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CONTENU SCROLLABLE                                               -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -59,7 +64,9 @@
             android:orientation="vertical"
             android:padding="@dimen/padding_medium">
 
-            <!-- ═══ ÉTAPE 1 ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ÉTAPE 1 — Base du plat                                   -->
+            <!-- ═══════════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,19 +102,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Base du plat"
+                        android:text="@string/meal_step_1"
                         style="@style/TextAppearance.SipSavour.StepTitle" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1 choix obligatoire"
+                        android:text="@string/meal_step_1_hint"
                         style="@style/TextAppearance.SipSavour.StepSubtitle" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
+            <!-- ═══ Ornement doré ═══ -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvBaseOptions"
                 android:layout_width="match_parent"
@@ -115,7 +123,6 @@
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
 
-            <!-- Ornement doré -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +150,9 @@
 
             </LinearLayout>
 
-            <!-- ═══ ÉTAPE 2 ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ÉTAPE 2 — Profil gustatif                                -->
+            <!-- ═══════════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,13 +188,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Profil gustatif"
+                        android:text="@string/meal_step_2"
                         style="@style/TextAppearance.SipSavour.StepTitle" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Plusieurs choix possibles"
+                        android:text="@string/meal_step_2_hint"
                         style="@style/TextAppearance.SipSavour.StepSubtitle" />
 
                 </LinearLayout>
@@ -199,7 +208,7 @@
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
 
-            <!-- Ornement doré -->
+            <!-- ═══ Ornement doré ═══ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,7 +236,9 @@
 
             </LinearLayout>
 
-            <!-- ═══ ÉTAPE 3 ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ÉTAPE 3 — Couleur (optionnel)                            -->
+            <!-- ═══════════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -266,13 +277,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/color_title"
+                        android:text="@string/meal_step_3"
                         style="@style/TextAppearance.SipSavour.StepTitle" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Optionnel — l\'IA choisira sinon"
+                        android:text="@string/meal_ai_hint"
                         style="@style/TextAppearance.SipSavour.StepSubtitle" />
 
                 </LinearLayout>
@@ -286,7 +297,9 @@
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
 
-            <!-- Bouton -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- BOUTON — Style premium                                   -->
+            <!-- ═══════════════════════════════════════════════════════ -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFindWine"
                 android:layout_width="match_parent"
@@ -295,7 +308,7 @@
                 android:layout_marginBottom="@dimen/margin_xlarge"
                 android:layout_marginStart="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_medium"
-                android:text="@string/color_search_button"
+                android:text="@string/meal_find_wine"
                 android:enabled="false"
                 style="@style/Widget.SipSavour.Button" />
 

@@ -19,6 +19,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sipandsavour.R;
+import com.sipandsavour.util.HapticUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,6 +47,8 @@ public class RegisterFragment extends Fragment {
     // Date
     private final Calendar calendar = Calendar.getInstance();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+    private final SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+    private String apiDob = ""; // La date formatée pour l'API
 
     @Nullable
     @Override
@@ -83,12 +86,21 @@ public class RegisterFragment extends Fragment {
     }
 
     private void setupListeners() {
-        btnRegister.setOnClickListener(v -> onRegisterClicked());
+        btnRegister.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            onRegisterClicked();
+        });
 
-        btnGoToLogin.setOnClickListener(v -> navController.navigateUp());
+        btnGoToLogin.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            navController.navigateUp();
+        });
 
         etDob.setOnClickListener(v -> showDatePicker());
-        tilDob.setEndIconOnClickListener(v -> showDatePicker());
+        tilDob.setEndIconOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            showDatePicker();
+        });
     }
 
     private void observeViewModel() {
@@ -119,6 +131,7 @@ public class RegisterFragment extends Fragment {
                 (view, year, month, dayOfMonth) -> {
                     calendar.set(year, month, dayOfMonth);
                     etDob.setText(dateFormat.format(calendar.getTime()));
+                    apiDob = apiDateFormat.format(calendar.getTime());
                 },
                 calendar.get(Calendar.YEAR) - 25,
                 calendar.get(Calendar.MONTH),
@@ -136,7 +149,7 @@ public class RegisterFragment extends Fragment {
         String name = etName.getText() != null ? etName.getText().toString().trim() : "";
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
         String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
-        String dob = etDob.getText() != null ? etDob.getText().toString().trim() : "";
+        String dob = apiDob.isEmpty() ? (etDob.getText() != null ? etDob.getText().toString().trim() : "") : apiDob;
 
         boolean isValid = true;
 
@@ -162,6 +175,14 @@ public class RegisterFragment extends Fragment {
             isValid = false;
         } else {
             tilPassword.setError(null);
+        }
+
+        if (dob.isEmpty()) {
+            // CORRECTION: Utilisation de getString()
+            tilDob.setError(getString(R.string.validation_dob_required));
+            isValid = false;
+        } else {
+            tilDob.setError(null);
         }
 
         if (!isValid) return;

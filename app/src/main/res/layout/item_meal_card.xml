@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardItem"
     android:layout_width="match_parent"
     android:layout_height="@dimen/meal_card_height"
@@ -29,6 +30,7 @@
             android:scaleType="centerInside"
             android:layout_marginBottom="6dp"
             android:contentDescription="@null"
+            app:tint="@color/primary"
             android:visibility="gone" />
 
         <TextView
@@ -36,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Option"
+            tools:text="Option"
             android:textAlignment="center"
             android:fontFamily="@font/lato"
             android:textColor="@color/on_surface"

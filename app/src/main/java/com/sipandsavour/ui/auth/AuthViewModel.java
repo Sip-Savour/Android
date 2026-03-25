@@ -69,15 +69,28 @@ public class AuthViewModel extends ViewModel {
     }
 
     public void register(String name, String email, String password, String dob) {
-        // TODO: Valider les champs
-        // TODO: Appeler Repository.register(name, email, password, dob)
-        // TODO: Mettre à jour isLoading, errorMessage, registerSuccess
-
         isLoading.setValue(true);
+        clearError();
 
-        // Simulation temporaire
-        isLoading.setValue(false);
-        registerSuccess.setValue(true);
+        // On appelle le vrai Repository
+        LiveData<UiState<AuthResponse>> source = Repository.getInstance().register(name, email, password, dob);
+
+        source.observeForever(new Observer<UiState<AuthResponse>>() {
+            @Override
+            public void onChanged(UiState<AuthResponse> state) {
+                if (!state.isLoading()) {
+                    source.removeObserver(this); // Désabonnement pour éviter les fuites
+                    isLoading.setValue(false);
+
+                    if (state.isSuccess()) {
+                        registerSuccess.setValue(true);
+                    } else if (state.isError()) {
+                        errorMessage.setValue(state.getMessage());
+                        registerSuccess.setValue(false);
+                    }
+                }
+            }
+        });
     }
 
     public void clearError() {

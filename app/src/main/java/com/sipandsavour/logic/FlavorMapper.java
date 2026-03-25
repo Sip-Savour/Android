@@ -1,5 +1,6 @@
 package com.sipandsavour.logic;
 
+import com.sipandsavour.data.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,41 +82,41 @@ public final class FlavorMapper {
 
     /**
      * Retourne les 5 groupes de l'UI accordéon.
-     * Chaque groupe contient des sous-groupes de KEYWORD_GROUPS.
+     * Gère dynamiquement la traduction selon le SessionManager.
      */
     public static List<AccordionCategory> getAccordionCategories() {
+        boolean isEn = "en".equals(SessionManager.getInstance().getLanguage());
         List<AccordionCategory> categories = new ArrayList<>();
 
         categories.add(new AccordionCategory(
-                "Fruits",
+                isEn ? "Fruits" : "Fruits",
                 Arrays.asList("red_fruit", "black_fruit", "dried_fruit", "citrus", "tropical", "tree_fruit")
         ));
 
         categories.add(new AccordionCategory(
-                "Structure & Corps",
+                isEn ? "Structure & Body" : "Structure & Corps",
                 Arrays.asList("acidity", "tannins", "body_full", "body_light", "texture_soft", "dry", "sweet")
         ));
 
         categories.add(new AccordionCategory(
-                "Bois, Fumée & Épices",
+                isEn ? "Wood, Smoke & Spices" : "Bois, Fumée & Épices",
                 Arrays.asList("oak", "smoke_tobacco", "pastry", "spices", "nutty", "cocoa")
         ));
 
         categories.add(new AccordionCategory(
-                "Végétal & Floral",
+                isEn ? "Vegetal & Floral" : "Végétal & Floral",
                 Arrays.asList("herbal", "aromatic_herb", "vegetable", "floral")
         ));
 
         categories.add(new AccordionCategory(
-                "Terroir & Complexité",
+                isEn ? "Terroir & Complexity" : "Terroir & Complexité",
                 Arrays.asList("earth", "mineral", "savory", "complex", "finish_long")
         ));
 
         categories.add(new AccordionCategory(
-                "Couleur",
+                isEn ? "Color" : "Couleur",
                 Arrays.asList("Rouge", "Blanc", "Rosé")
         ));
-
 
         return categories;
     }
@@ -126,7 +127,7 @@ public final class FlavorMapper {
 
     /**
      * Convertit un descripteur de saveur utilisateur (ex: "grillé")
-     * en mots-clefs vin pertinents.
+     * en mots-clefs vin pertinents. (Supporte le FR et EN)
      */
     public static List<String> mapFlavorToWineKeywords(String flavor) {
         if (flavor == null) return Collections.emptyList();
@@ -253,38 +254,42 @@ public final class FlavorMapper {
     }
 
     /**
-     * Nom d'affichage pour un sous-groupe.
+     * Nom d'affichage pour un sous-groupe (Géré dynamiquement pour la traduction).
      */
     public static String getGroupDisplayName(String groupKey) {
+        boolean isEn = "en".equals(SessionManager.getInstance().getLanguage());
         switch (groupKey) {
-            case "red_fruit":      return "Fruits rouges";
-            case "black_fruit":    return "Fruits noirs";
-            case "dried_fruit":    return "Fruits secs";
-            case "citrus":         return "Agrumes";
-            case "tropical":       return "Tropical";
-            case "tree_fruit":     return "Pomme/Poire";
-            case "acidity":        return "Acidité";
-            case "tannins":        return "Tanins";
-            case "body_full":      return "Corps plein";
-            case "body_light":     return "Corps léger";
-            case "texture_soft":   return "Soyeux";
-            case "dry":            return "Sec";
-            case "sweet":          return "Sucré";
-            case "oak":            return "Boisé";
-            case "smoke_tobacco":  return "Fumé";
-            case "pastry":         return "Pâtissier";
-            case "spices":         return "Épices";
-            case "nutty":          return "Noisette";
-            case "cocoa":          return "Cacao";
-            case "herbal":         return "Herbacé";
-            case "aromatic_herb":  return "Herbes arom.";
-            case "vegetable":      return "Végétal";
-            case "floral":         return "Floral";
-            case "earth":          return "Terreux";
-            case "mineral":        return "Minéral";
-            case "savory":         return "Umami";
-            case "complex":        return "Complexe";
-            case "finish_long":    return "Long en bouche";
+            case "red_fruit":      return isEn ? "Red fruits" : "Fruits rouges";
+            case "black_fruit":    return isEn ? "Black fruits" : "Fruits noirs";
+            case "dried_fruit":    return isEn ? "Dried fruits" : "Fruits secs";
+            case "citrus":         return isEn ? "Citrus" : "Agrumes";
+            case "tropical":       return isEn ? "Tropical" : "Tropical";
+            case "tree_fruit":     return isEn ? "Apple/Pear" : "Pomme/Poire";
+            case "acidity":        return isEn ? "Acidity" : "Acidité";
+            case "tannins":        return isEn ? "Tannins" : "Tanins";
+            case "body_full":      return isEn ? "Full body" : "Corps plein";
+            case "body_light":     return isEn ? "Light body" : "Corps léger";
+            case "texture_soft":   return isEn ? "Silky" : "Soyeux";
+            case "dry":            return isEn ? "Dry" : "Sec";
+            case "sweet":          return isEn ? "Sweet" : "Sucré";
+            case "oak":            return isEn ? "Oak" : "Boisé";
+            case "smoke_tobacco":  return isEn ? "Smoky" : "Fumé";
+            case "pastry":         return isEn ? "Pastry/Bakery" : "Pâtissier";
+            case "spices":         return isEn ? "Spices" : "Épices";
+            case "nutty":          return isEn ? "Nutty" : "Noisette";
+            case "cocoa":          return isEn ? "Cocoa" : "Cacao";
+            case "herbal":         return isEn ? "Herbal" : "Herbacé";
+            case "aromatic_herb":  return isEn ? "Aromatic herbs" : "Herbes arom.";
+            case "vegetable":      return isEn ? "Vegetal" : "Végétal";
+            case "floral":         return isEn ? "Floral" : "Floral";
+            case "earth":          return isEn ? "Earthy" : "Terreux";
+            case "mineral":        return isEn ? "Mineral" : "Minéral";
+            case "savory":         return isEn ? "Umami" : "Umami";
+            case "complex":        return isEn ? "Complex" : "Complexe";
+            case "finish_long":    return isEn ? "Long finish" : "Long en bouche";
+            case "Rouge":          return isEn ? "Red" : "Rouge";
+            case "Blanc":          return isEn ? "White" : "Blanc";
+            case "Rosé":           return isEn ? "Rosé" : "Rosé";
             default:               return groupKey;
         }
     }

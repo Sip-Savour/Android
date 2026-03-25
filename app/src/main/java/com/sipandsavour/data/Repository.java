@@ -1,5 +1,7 @@
 package com.sipandsavour.data;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -277,6 +279,75 @@ public final class Repository {
         });
 
         return result;
+    }
+
+    public LiveData<UiState<WineDto>> getWeeklyRecommendation() {
+        MutableLiveData<UiState<WineDto>> finalResult = new MutableLiveData<>();
+        finalResult.setValue(UiState.loading());
+
+        // 1. Récupérer les préférences locales
+        String myPrefColor = SessionManager.getInstance().getPreferredColor();
+        java.util.Set<String> prefFeaturesSet = SessionManager.getInstance().getPreferredFeatures();
+
+        // Formater les features comme attendu par l'API (avec des espaces)
+        StringBuilder sb = new StringBuilder();
+        if (prefFeaturesSet != null && !prefFeaturesSet.isEmpty()) {
+            for (String flavor : prefFeaturesSet) {
+                if (sb.length() > 0) sb.append(" ");
+                sb.append(flavor.replace("_", " ")); // Nettoyage au cas où
+            }
+        }
+        String myPrefFeatures = sb.toString();
+
+        // 2. Appeler la méthode predict existante
+        LiveData<UiState<PredictResponse>> predictSource = predict(myPrefFeatures, myPrefColor);
+        predictSource.observeForever(new androidx.lifecycle.Observer<UiState<PredictResponse>>() {
+            @Override
+            public void onChanged(UiState<PredictResponse> state) {
+                if (state.isLoading()) return; // On attend la fin du chargement
+
+                predictSource.removeObserver(this); // Désabonnement
+
+                if (state.isSuccess() && state.getData() != null && state.getData().getBottle() != null && !state.getData().getBottle().isEmpty()) {
+
+                    java.util.List<com.sipandsavour.data.dto.BottleResponse> bottles = state.getData().getBottle();
+
+                    // 3. Tirage au sort hebdomadaire (basé sur l'année et la semaine)
+                    java.util.Calendar calendar = java.util.Calendar.getInstance();
+                    int year = calendar.get(java.util.Calendar.YEAR);
+                    int week = calendar.get(java.util.Calendar.WEEK_OF_YEAR);
+
+                    // En utilisant une "seed" fixe pour la semaine, le random donnera toujours le même index
+                    java.util.Random random = new java.util.Random(year * 1000L + week);
+                    int randomIndex = random.nextInt(bottles.size());
+
+                    int chosenWineId = bottles.get(randomIndex).getId();
+
+                    // 4. Récupérer les détails complets du vin choisi
+                    LiveData<UiState<WineDto>> wineSource = getWineById(chosenWineId);
+                    wineSource.observeForever(new androidx.lifecycle.Observer<UiState<WineDto>>() {
+                        @Override
+                        public void onChanged(UiState<WineDto> wineState) {
+                            if (wineState.isLoading()) return;
+
+                            wineSource.removeObserver(this);
+
+                            if (wineState.isSuccess() && wineState.getData() != null) {
+                                // Succès total : on renvoie le vin complet à l'interface
+                                finalResult.setValue(UiState.success(wineState.getData()));
+                            } else {
+                                finalResult.setValue(UiState.error("Impossible de récupérer les détails du vin de la semaine."));
+                            }
+                        }
+                    });
+
+                } else {
+                    finalResult.setValue(UiState.error("Aucune recommandation trouvée pour vos préférences."));
+                }
+            }
+        });
+
+        return finalResult;
     }
 
     // =======================================================

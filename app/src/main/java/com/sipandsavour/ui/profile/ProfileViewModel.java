@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sipandsavour.R;
-import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.SessionManager;
-import com.sipandsavour.ui.auth.AuthViewModel;
 
 /**
  * ViewModel pour l'écran de profil.
@@ -36,8 +33,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void logout() {
-        Repository.logout();
-        AuthViewModel.logout();
-
+        // C'est ICI que se passe la vraie déconnexion sans faire planter l'application !
+        SessionManager.getInstance().logout();
     }
 }

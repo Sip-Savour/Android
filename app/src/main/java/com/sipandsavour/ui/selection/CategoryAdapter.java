@@ -15,6 +15,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.sipandsavour.R;
 import com.sipandsavour.logic.FlavorMapper;
+import com.sipandsavour.util.HapticUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             ivExpand.setRotation(isExpanded ? 180f : 0f);
 
             layoutHeader.setOnClickListener(v -> {
+                HapticUtil.playConfirm(v);
                 if (categoryListener != null) {
                     categoryListener.onCategoryToggled(position);
                 }

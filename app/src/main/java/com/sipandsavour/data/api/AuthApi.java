@@ -25,7 +25,7 @@ public interface AuthApi {
      * Inscription utilisateur
      * POST /auth/register
      */
-    @POST("auth/register")
+    @POST("/signup")
     Call<AuthResponse> register(@Body RegisterRequest request);
 
     /**
