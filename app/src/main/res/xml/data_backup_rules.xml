@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- Included all shared preferences -->
     <include domain="sharedpref" path="." />
-
-    <!--
-      REMOVED: <exclude domain="cache" path="." />
-      REMOVED: <exclude domain="no_backup" path="." />
-
-      Note: Android automatically excludes the cache and no_backup
-      directories from Auto Backup, so these lines were redundant
-      and causing Lint errors.
-    -->
+    <exclude domain="cache" path="." />
+    <exclude domain="no_backup" path="." />
 </full-backup-content>
