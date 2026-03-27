@@ -58,6 +58,7 @@
     <string name="category_wood">Wood, Smoke &amp; Spices</string>
     <string name="category_vegetal">Vegetal &amp; Floral</string>
     <string name="category_terroir">Terroir &amp; Complexity</string>
+    <string name="category_color">Color</string>
 
     <string name="subcategory_title">Specify your meal</string>
     <string name="subcategory_beef">Beef</string>

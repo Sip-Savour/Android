@@ -74,6 +74,7 @@
     <string name="category_wood">Bois, Fumée &amp; Épices</string>
     <string name="category_vegetal">Végétal &amp; Floral</string>
     <string name="category_terroir">Terroir &amp; Complexité</string>
+    <string name="category_color">Couleur</string>
 
     <!-- === SÉLECTION — SOUS-CATÉGORIES === -->
     <string name="subcategory_title">Précisez votre plat</string>

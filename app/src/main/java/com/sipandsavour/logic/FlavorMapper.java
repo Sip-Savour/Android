@@ -85,36 +85,35 @@ public final class FlavorMapper {
      * Gère dynamiquement la traduction selon le SessionManager.
      */
     public static List<AccordionCategory> getAccordionCategories() {
-        boolean isEn = "en".equals(SessionManager.getInstance().getLanguage());
         List<AccordionCategory> categories = new ArrayList<>();
 
         categories.add(new AccordionCategory(
-                isEn ? "Fruits" : "Fruits",
+                "category_fruits",
                 Arrays.asList("red_fruit", "black_fruit", "dried_fruit", "citrus", "tropical", "tree_fruit")
         ));
 
         categories.add(new AccordionCategory(
-                isEn ? "Structure & Body" : "Structure & Corps",
+                "category_structure",
                 Arrays.asList("acidity", "tannins", "body_full", "body_light", "texture_soft", "dry", "sweet")
         ));
 
         categories.add(new AccordionCategory(
-                isEn ? "Wood, Smoke & Spices" : "Bois, Fumée & Épices",
+                "category_wood",
                 Arrays.asList("oak", "smoke_tobacco", "pastry", "spices", "nutty", "cocoa")
         ));
 
         categories.add(new AccordionCategory(
-                isEn ? "Vegetal & Floral" : "Végétal & Floral",
+                "category_vegetal",
                 Arrays.asList("herbal", "aromatic_herb", "vegetable", "floral")
         ));
 
         categories.add(new AccordionCategory(
-                isEn ? "Terroir & Complexity" : "Terroir & Complexité",
+                "category_terroir",
                 Arrays.asList("earth", "mineral", "savory", "complex", "finish_long")
         ));
 
         categories.add(new AccordionCategory(
-                isEn ? "Color" : "Couleur",
+                "category_color",
                 Arrays.asList("Rouge", "Blanc", "Rosé")
         ));
 
@@ -300,17 +299,30 @@ public final class FlavorMapper {
 
     public static class AccordionCategory {
 
-        private final String title;
+        private final String titleKey;
         private final List<String> subGroupKeys;
         private boolean expanded;
 
-        public AccordionCategory(String title, List<String> subGroupKeys) {
-            this.title = title;
+        public AccordionCategory(String titleKey, List<String> subGroupKeys) {
+            this.titleKey = titleKey;
             this.subGroupKeys = subGroupKeys;
             this.expanded = false;
         }
 
-        public String getTitle()               { return title; }
+        public String getTitle()               { return getTitleTranslated(); }
+        public String getTitleTranslated() {
+            // Retourne le titre traduit dynamiquement selon la langue actuelle
+            boolean isEn = "en".equals(SessionManager.getInstance().getLanguage());
+            switch (titleKey) {
+                case "category_fruits": return "Fruits";
+                case "category_structure": return isEn ? "Structure & Body" : "Structure & Corps";
+                case "category_wood": return isEn ? "Wood, Smoke & Spices" : "Bois, Fumée & Épices";
+                case "category_vegetal": return isEn ? "Vegetal & Floral" : "Végétal & Floral";
+                case "category_terroir": return isEn ? "Terroir & Complexity" : "Terroir & Complexité";
+                case "category_color": return isEn ? "Color" : "Couleur";
+                default: return titleKey;
+            }
+        }
         public List<String> getSubGroupKeys()  { return subGroupKeys; }
         public boolean isExpanded()             { return expanded; }
         public void setExpanded(boolean expanded) { this.expanded = expanded; }
