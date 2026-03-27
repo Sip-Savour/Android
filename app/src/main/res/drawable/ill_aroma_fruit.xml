@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="28"
+    android:viewportHeight="28">
+
+    <!-- Cerise 1 -->
+    <path
+        android:pathData="M10,18 A5,5 0 1,1 10.01,18"
+        android:fillColor="#C62828" />
+
+    <!-- Cerise 2 -->
+    <path
+        android:pathData="M19,18 A5,5 0 1,1 19.01,18"
+        android:fillColor="#B71C1C" />
+
+    <!-- Reflet -->
+    <path
+        android:pathData="M8,16 A1.5,1.5 0 1,1 8.01,16"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3" />
+
+    <path
+        android:pathData="M17,16 A1.5,1.5 0 1,1 17.01,16"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3" />
+
+    <!-- Tiges -->
+    <path
+        android:pathData="M10,13 Q12,6 14.5,5"
+        android:strokeColor="#5C7A3A"
+        android:strokeWidth="1.2"
+        android:fillColor="@android:color/transparent" />
+
+    <path
+        android:pathData="M19,13 Q17,7 14.5,5"
+        android:strokeColor="#5C7A3A"
+        android:strokeWidth="1.2"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Petite feuille -->
+    <path
+        android:pathData="M14.5,5 Q17,3 19,4 Q18,6 14.5,5Z"
+        android:fillColor="#4A7A2E" />
+
+</vector>

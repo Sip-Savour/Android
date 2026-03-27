@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="28"
+    android:viewportHeight="28">
+
+    <!-- Bâton de cannelle 1 -->
+    <path
+        android:pathData="M6,4 L22,20"
+        android:strokeColor="#8B5E3C"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Stries du bâton -->
+    <path
+        android:pathData="M8,5.5 L21,18.5"
+        android:strokeColor="#7A5232"
+        android:strokeWidth="0.8"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Bâton de cannelle 2 (croisé) -->
+    <path
+        android:pathData="M22,6 L8,22"
+        android:strokeColor="#A0704C"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Stries bâton 2 -->
+    <path
+        android:pathData="M20.5,7.5 L9.5,20.5"
+        android:strokeColor="#8B6340"
+        android:strokeWidth="0.8"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Étoile d'anis (petit accent) -->
+    <path
+        android:pathData="M20,24 L21,22 L22,24 L20,23 L22,23Z"
+        android:fillColor="#6B4530" />
+
+</vector>

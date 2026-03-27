@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header décoratif -->
+    <!-- Header -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
@@ -27,45 +27,64 @@
 
     </FrameLayout>
 
-    <!-- Liste des suggestions -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSuggestions"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="@dimen/padding_medium"
-        android:scrollbars="none"
-        android:overScrollMode="ifContentScrolls"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_weight="1">
 
-    <!-- État vide -->
-    <LinearLayout
-        android:id="@+id/layoutEmpty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSuggestions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/padding_medium"
+            android:scrollbars="none"
+            android:overScrollMode="ifContentScrolls"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_search"
-            app:tint="@color/outline"
-            android:alpha="0.5"
-            android:contentDescription="@null" />
-
-        <TextView
+        <!-- État vide -->
+        <LinearLayout
+            android:id="@+id/layoutEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:text="@string/suggestion_no_result"
-            android:fontFamily="@font/playfair_display"
-            android:textSize="@dimen/text_title_medium"
-            android:textColor="@color/primary" />
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_search"
+                app:tint="@color/secondary"
+                android:alpha="0.6"
+                android:contentDescription="@null" />
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/divider_gold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/suggestion_no_result"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_title_medium"
+                android:textColor="@color/primary"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@string/suggestion_no_result_subtitle"
+                style="@style/TextAppearance.SipSavour.Caption" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

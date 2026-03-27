@@ -7,23 +7,43 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header décoratif -->
+    <!-- Header -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
         android:background="@drawable/bg_header_gradient">
 
-        <TextView
-            android:id="@+id/tvHeaderTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/favorites_title"
-            android:fontFamily="@font/playfair_display"
-            android:textSize="@dimen/text_headline_medium"
-            android:textColor="@color/header_text"
-            android:textStyle="bold|italic" />
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvHeaderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/favorites_title"
+                android:fontFamily="@font/playfair_display"
+                android:textSize="@dimen/text_headline_medium"
+                android:textColor="@color/header_text"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/favorites_swipe_hint"
+                android:fontFamily="@font/lato"
+                android:textSize="@dimen/text_label"
+                android:textColor="@color/header_subtitle"
+                android:letterSpacing="0.06"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -58,26 +78,35 @@
                 android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:src="@drawable/ic_heart_outline"
                     android:alpha="0.5"
                     android:contentDescription="@null"
-                    app:tint="@color/outline" />
+                    app:tint="@color/secondary" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@color/divider_gold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/favorites_empty_title"
-                    style="@style/TextAppearance.SipSavour.AccordionTitle" />
+                    android:fontFamily="@font/playfair_display"
+                    android:textSize="@dimen/text_title_medium"
+                    android:textColor="@color/primary"
+                    android:textStyle="italic" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginTop="@dimen/margin_small"
                     android:text="@string/favorites_empty_subtitle"
-                    style="@style/TextAppearance.SipSavour.BodyLight" />
+                    style="@style/TextAppearance.SipSavour.Caption" />
 
             </LinearLayout>
 

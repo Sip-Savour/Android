@@ -3,18 +3,15 @@
 
     <style name="Theme.SipSavour" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Primary - Rose adouci -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
         <item name="colorOnPrimary">@color/on_primary</item>
 
-        <!-- Secondary - Pêche -->
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSecondaryVariant">@color/secondary_dark</item>
         <item name="colorOnSecondary">@color/on_secondary</item>
 
-        <!-- Background & Surface -->
         <item name="android:colorBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnBackground">@color/on_background</item>
@@ -22,36 +19,30 @@
         <item name="colorSurfaceVariant">@color/surface_variant</item>
         <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
 
-        <!-- Error -->
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/on_error</item>
 
-        <!-- Status & Navigation bar - Rose foncé -->
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
         <item name="android:windowLightStatusBar">false</item>
-
-        <!-- Window -->
         <item name="android:windowBackground">@color/background</item>
 
-        <!-- Widget styles -->
         <item name="materialButtonStyle">@style/Widget.SipSavour.Button</item>
         <item name="textInputStyle">@style/Widget.SipSavour.TextInput</item>
         <item name="chipStyle">@style/Widget.SipSavour.Chip</item>
         <item name="materialCardViewStyle">@style/Widget.SipSavour.Card</item>
         <item name="bottomNavigationStyle">@style/Widget.SipSavour.BottomNav</item>
 
-        <!-- Shape -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SipSavour.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SipSavour.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SipSavour.LargeComponent</item>
 
     </style>
 
-    <style name="Theme.SipSavour.Splash" parent="Theme.SipSavour">
-        <item name="android:windowBackground">@drawable/bg_splash_gradient</item>
-        <item name="android:statusBarColor">#7A3050</item>
-        <item name="android:navigationBarColor">#7A3050</item>
+    <style name="Theme.SipSavour.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#6B1D32</item>
+        <item name="windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.SipSavour</item>
     </style>
 
     <style name="Theme.SipSavour.NoActionBar" parent="Theme.SipSavour">

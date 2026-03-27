@@ -21,15 +21,14 @@
         android:gravity="center"
         android:padding="@dimen/padding_large">
 
-        <!-- Indicateur de couleur -->
+        <!-- Indicateur doré -->
         <View
             android:id="@+id/colorIndicator"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_gravity="end"
-            android:background="@drawable/bg_person_circle" />
+            android:background="@drawable/bg_ornament_dot" />
 
-        <!-- Icône catégorie -->
         <ImageView
             android:id="@+id/ivCategoryIcon"
             android:layout_width="@dimen/category_icon_size"
@@ -38,14 +37,13 @@
             android:scaleType="fitCenter"
             android:contentDescription="@null" />
 
-        <!-- Nom catégorie -->
         <TextView
             android:id="@+id/tvCategoryName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
             android:fontFamily="@font/playfair_display"
-            android:textSize="@dimen/text_body"
+            android:textSize="@dimen/text_caption"
             android:textColor="@color/on_surface"
             android:textStyle="bold" />
 

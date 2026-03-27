@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <gradient
-        android:type="linear"
-        android:angle="180"
-        android:startColor="#F0DDD0"
-        android:endColor="#D4A090" />
+    <!-- Couche 1 : Dégradé principal chaud -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/home_search_card_start"
+                android:centerColor="@color/home_search_card_center"
+                android:endColor="@color/home_search_card_end" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
 
-    <corners android:radius="20dp" />
+    <!-- Couche 2 : Halo radial doré subtil centré en haut -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="280dp"
+                android:centerX="0.5"
+                android:centerY="0.15"
+                android:startColor="#10C9A96E"
+                android:endColor="#00C9A96E" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
 
-</shape>
+    <!-- Couche 3 : Bordure fine dorée -->
+    <item>
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="0.5dp"
+                android:color="@color/search_card_stroke" />
+            <corners android:radius="20dp" />
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+</layer-list>

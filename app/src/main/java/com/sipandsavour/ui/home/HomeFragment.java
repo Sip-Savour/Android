@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.card.MaterialCardView;
 import com.sipandsavour.R;
+import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.util.HapticUtil;
 import com.sipandsavour.util.ShakeDetector;
 
@@ -29,6 +32,13 @@ public class HomeFragment extends Fragment {
     private MaterialCardView cardWeekly;
     private MaterialCardView cardSearch;
     private View shimmerContainer;
+
+    // Vues animées de la carte recherche
+    private View iconHalo;
+    private View imgSearchIcon;
+
+    private Animation pulseIconAnim;
+    private Animation pulseHaloAnim;
 
     private NavController navController;
     private SensorManager mSensorManager;
@@ -49,7 +59,16 @@ public class HomeFragment extends Fragment {
 
         navController = NavHostFragment.findNavController(this);
 
+        // Vérifier si l'utilisateur est connecté via SessionManager
+        boolean isLoggedIn = SessionManager.getInstance().isLoggedIn();
+
+        if (!isLoggedIn) {
+            navController.navigate(R.id.nav_auth);
+            return;
+        }
+
         bindViews(view);
+        loadAnimations();
         setupListeners();
         setupShakeDetection();
     }
@@ -61,13 +80,13 @@ public class HomeFragment extends Fragment {
             mShakeDetector = new ShakeDetector();
 
             mShakeDetector.setOnShakeListener(count -> {
-                // On vérifie qu'on est bien toujours sur la page d'accueil avant de naviguer
-                if (isAdded() && navController != null && navController.getCurrentDestination() != null && navController.getCurrentDestination().getId() == R.id.homeFragment) {
+                if (isAdded()
+                        && navController != null
+                        && navController.getCurrentDestination() != null
+                        && navController.getCurrentDestination().getId() == R.id.homeFragment) {
 
-                    // CORRECTION 1 : On désinscrit le capteur IMMÉDIATEMENT pour éviter les rebonds !
                     mSensorManager.unregisterListener(mShakeDetector);
 
-                    // CORRECTION 2 : On sécurise l'appel au haptic
                     View view = getView();
                     if (view != null) HapticUtil.playConfirm(view);
 
@@ -84,22 +103,53 @@ public class HomeFragment extends Fragment {
         if (mSensorManager != null && mAccelerometer != null) {
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         }
+        // Lancer les animations de la carte recherche
+        startSearchCardAnimations();
     }
 
     @Override
     public void onPause() {
-        // CORRECTION 3 : Désactiver le détecteur quand on change d'écran pour économiser la batterie
+        // Désactiver le détecteur quand on change d'écran
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(mShakeDetector);
         }
+        // Arrêter les animations pour économiser la batterie
+        stopSearchCardAnimations();
         super.onPause();
     }
 
     private void bindViews(View view) {
-        swipeRefresh = view.findViewById(R.id.swipeRefresh);
-        cardWeekly = view.findViewById(R.id.cardWeekly);
-        cardSearch = view.findViewById(R.id.cardSearch);
+        swipeRefresh    = view.findViewById(R.id.swipeRefresh);
+        cardWeekly      = view.findViewById(R.id.cardWeekly);
+        cardSearch      = view.findViewById(R.id.cardSearch);
         shimmerContainer = view.findViewById(R.id.shimmerContainer);
+
+        // Vues animées
+        iconHalo       = view.findViewById(R.id.iconHalo);
+        imgSearchIcon  = view.findViewById(R.id.imgSearchIcon);
+    }
+
+    private void loadAnimations() {
+        pulseIconAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse_icon);
+        pulseHaloAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse_halo);
+    }
+
+    private void startSearchCardAnimations() {
+        if (imgSearchIcon != null && pulseIconAnim != null) {
+            imgSearchIcon.startAnimation(pulseIconAnim);
+        }
+        if (iconHalo != null && pulseHaloAnim != null) {
+            iconHalo.startAnimation(pulseHaloAnim);
+        }
+    }
+
+    private void stopSearchCardAnimations() {
+        if (imgSearchIcon != null) {
+            imgSearchIcon.clearAnimation();
+        }
+        if (iconHalo != null) {
+            iconHalo.clearAnimation();
+        }
     }
 
     private void setupListeners() {

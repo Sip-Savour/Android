@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ============================================== -->
-    <!--  WIDGET STYLES                                 -->
-    <!-- ============================================== -->
+    <!-- =================================================
+         WIDGETS — PREMIUM CLASSIQUE
+         ================================================= -->
 
-    <!-- === BUTTON === -->
+    <!-- ═══ BUTTON ═══ -->
     <style name="Widget.SipSavour.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_button</item>
         <item name="android:textColor">@color/btn_gradient_text</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">0.04</item>
         <item name="cornerRadius">@dimen/radius_xlarge</item>
         <item name="backgroundTint">@null</item>
         <item name="android:background">@drawable/bg_button_gradient_selector</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="elevation">@dimen/elevation_medium</item>
-        <item name="rippleColor">#33FFFFFF</item>
+        <item name="rippleColor">@color/ripple_light</item>
     </style>
 
     <style name="Widget.SipSavour.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_button</item>
-        <item name="android:textColor">@color/primary</item>
-        <item name="strokeColor">@color/primary</item>
-        <item name="strokeWidth">2dp</item>
+        <item name="android:textColor">@color/secondary_dark</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="strokeColor">@color/secondary</item>
+        <item name="strokeWidth">1.5dp</item>
         <item name="cornerRadius">@dimen/radius_xlarge</item>
-        <item name="rippleColor">@color/ripple</item>
+        <item name="rippleColor">@color/ripple_gold</item>
     </style>
 
     <style name="Widget.SipSavour.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_button</item>
         <item name="android:textColor">@color/primary</item>
+        <item name="android:letterSpacing">0.02</item>
         <item name="rippleColor">@color/ripple</item>
     </style>
 
-    <!-- === TEXT INPUT === -->
+    <!-- ═══ TEXT INPUT ═══ -->
     <style name="Widget.SipSavour.TextInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@color/input_pill_bg</item>
         <item name="boxCornerRadiusTopStart">@dimen/radius_xlarge</item>
@@ -44,9 +47,11 @@
         <item name="boxCornerRadiusBottomStart">@dimen/radius_xlarge</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/radius_xlarge</item>
         <item name="boxStrokeWidth">0dp</item>
-        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxStrokeColor">@color/input_pill_stroke</item>
         <item name="hintTextColor">@color/input_pill_hint</item>
         <item name="android:textColorHint">@color/input_pill_hint_inactive</item>
+        <item name="endIconTint">@color/input_pill_hint</item>
     </style>
 
     <style name="Widget.SipSavour.TextInput.EditText" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
@@ -61,7 +66,7 @@
     <style name="Widget.SipSavour.PillInput" parent="Widget.SipSavour.TextInput" />
     <style name="Widget.SipSavour.PillInput.EditText" parent="Widget.SipSavour.TextInput.EditText" />
 
-    <!-- === CHIP === -->
+    <!-- ═══ CHIP ═══ -->
     <style name="Widget.SipSavour.Chip" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">@dimen/text_caption</item>
@@ -71,6 +76,8 @@
         <item name="chipStrokeWidth">@dimen/chip_stroke_width</item>
         <item name="chipCornerRadius">@dimen/chip_corner_radius</item>
         <item name="chipMinHeight">@dimen/chip_height</item>
+        <item name="chipStartPadding">16dp</item>
+        <item name="chipEndPadding">16dp</item>
         <item name="checkedIconVisible">false</item>
         <item name="rippleColor">@color/ripple</item>
     </style>
@@ -88,10 +95,10 @@
         <item name="rippleColor">@color/ripple</item>
     </style>
 
-    <!-- === CARD === -->
+    <!-- ═══ CARD ═══ -->
     <style name="Widget.SipSavour.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/radius_large</item>
-        <item name="cardElevation">@dimen/elevation_medium</item>
+        <item name="cardElevation">@dimen/elevation_low</item>
         <item name="strokeWidth">0dp</item>
         <item name="cardBackgroundColor">@color/surface</item>
         <item name="rippleColor">@color/ripple</item>
@@ -101,7 +108,12 @@
         <item name="cardElevation">@dimen/elevation_high</item>
     </style>
 
-    <!-- === BOTTOM NAVIGATION === -->
+    <style name="Widget.SipSavour.Card.Wine" parent="Widget.SipSavour.Card">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">@dimen/elevation_medium</item>
+    </style>
+
+    <!-- ═══ BOTTOM NAVIGATION ═══ -->
     <style name="Widget.SipSavour.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:background">@drawable/bg_bottom_nav_gradient</item>
         <item name="itemIconTint">@color/bottom_nav_icon_color</item>
@@ -109,18 +121,19 @@
         <item name="labelVisibilityMode">unlabeled</item>
         <item name="itemIconSize">26dp</item>
         <item name="elevation">0dp</item>
-        <item name="itemRippleColor">#22FFFFFF</item>
+        <item name="itemRippleColor">@color/ripple_gold</item>
     </style>
 
-    <!-- ============================================== -->
-    <!--  TEXT APPEARANCES                              -->
-    <!-- ============================================== -->
+    <!-- =================================================
+         TEXT APPEARANCES — PREMIUM TYPOGRAPHY
+         ================================================= -->
 
     <style name="TextAppearance.SipSavour.HeadlineLarge" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:fontFamily">@font/playfair_display</item>
         <item name="android:textSize">@dimen/text_headline_large</item>
         <item name="android:textColor">@color/on_background</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.01</item>
     </style>
 
     <style name="TextAppearance.SipSavour.HeadlineMedium" parent="TextAppearance.MaterialComponents.Headline5">
@@ -147,6 +160,7 @@
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">@dimen/text_body</item>
         <item name="android:textColor">@color/on_background</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
     </style>
 
     <style name="TextAppearance.SipSavour.BodyLight" parent="TextAppearance.SipSavour.Body">
@@ -162,40 +176,83 @@
     <style name="TextAppearance.SipSavour.Label" parent="TextAppearance.MaterialComponents.Overline">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">@dimen/text_label</item>
-        <item name="android:textColor">@color/on_surface_variant</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
     </style>
 
-    <!-- === ACCORDION === -->
-    <style name="TextAppearance.SipSavour.AccordionTitle" parent="TextAppearance.SipSavour.TitleMedium">
-        <item name="android:textColor">@color/primary</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <!-- === WINE DETAIL === -->
-    <style name="TextAppearance.SipSavour.WineLabel" parent="TextAppearance.SipSavour.Body">
-        <item name="android:textColor">@color/wine_card_text</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.SipSavour.WineValue" parent="TextAppearance.SipSavour.Body">
-        <item name="android:textColor">@color/wine_card_text</item>
-    </style>
-
-    <style name="TextAppearance.SipSavour.WineBody" parent="TextAppearance.SipSavour.Body">
-        <item name="android:textColor">@color/wine_card_text</item>
-        <item name="android:lineSpacingMultiplier">1.3</item>
-    </style>
-
-    <!-- === HEADER DÉCORATIF === -->
+    <!-- ═══ HEADER ═══ -->
     <style name="TextAppearance.SipSavour.Header" parent="TextAppearance.SipSavour.TitleLarge">
         <item name="android:textColor">@color/header_text</item>
         <item name="android:textStyle">bold|italic</item>
     </style>
 
-    <!-- ============================================== -->
-    <!--  SHAPE APPEARANCES                             -->
-    <!-- ============================================== -->
+    <style name="TextAppearance.SipSavour.HeaderSubtitle" parent="TextAppearance.SipSavour.Caption">
+        <item name="android:textColor">@color/header_subtitle</item>
+        <item name="android:letterSpacing">0.06</item>
+    </style>
+
+    <!-- ═══ STEP INDICATOR ═══ -->
+    <style name="TextAppearance.SipSavour.StepNumber" parent="TextAppearance.SipSavour.Caption">
+        <item name="android:fontFamily">@font/playfair_display</item>
+        <item name="android:textColor">@color/step_active_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.SipSavour.StepTitle" parent="TextAppearance.SipSavour.TitleMedium">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.SipSavour.StepSubtitle" parent="TextAppearance.SipSavour.Caption">
+        <item name="android:textColor">@color/on_surface_variant</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!-- ═══ ACCORDION ═══ -->
+    <style name="TextAppearance.SipSavour.AccordionTitle" parent="TextAppearance.SipSavour.TitleMedium">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- ═══ WINE CARD (sur fond bordeaux→or) ═══ -->
+    <style name="TextAppearance.SipSavour.WineTitle" parent="TextAppearance.SipSavour.TitleLarge">
+        <item name="android:textColor">@color/wine_card_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.SipSavour.WineLabel" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textColor">@color/wine_card_label</item>
+        <item name="android:textSize">@dimen/text_label</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.SipSavour.WineValue" parent="TextAppearance.SipSavour.Body">
+        <item name="android:textColor">@color/wine_card_value</item>
+    </style>
+
+    <style name="TextAppearance.SipSavour.WineBody" parent="TextAppearance.SipSavour.Body">
+        <item name="android:textColor">@color/wine_card_body</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <!-- ═══ PROFILE ═══ -->
+    <style name="TextAppearance.SipSavour.ProfileName" parent="TextAppearance.SipSavour.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.SipSavour.ProfileDetail" parent="TextAppearance.SipSavour.Body">
+        <item name="android:textColor">@color/on_surface_variant</item>
+    </style>
+
+    <!-- =================================================
+         SHAPE APPEARANCES
+         ================================================= -->
 
     <style name="ShapeAppearance.SipSavour.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>

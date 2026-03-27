@@ -11,27 +11,63 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         android:fillViewport="true"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- === Header décoratif (vague) === -->
+            <!-- ═══ Header avec salutation ═══ -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/header_height"
-                android:background="@drawable/bg_header_gradient"/>
+                android:background="@drawable/bg_header_gradient">
 
-            <!-- === Sélection hebdomadaire === -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/padding_large"
+                    android:paddingEnd="@dimen/padding_large">
+
+                    <TextView
+                        android:id="@+id/tvGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_greeting_default"
+                        android:fontFamily="@font/playfair_display"
+                        android:textSize="@dimen/text_headline_medium"
+                        android:textColor="@color/header_text"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/app_tagline"
+                        android:fontFamily="@font/lato"
+                        android:textSize="@dimen/text_label"
+                        android:textColor="@color/header_subtitle"
+                        android:letterSpacing="0.06"
+                        android:textAllCaps="true" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- ═══ Carte 1 – Sélection hebdomadaire  ═══ -->
+            <!-- ═══════════════════════════════════════════ -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardWeekly"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_card_height"
-                android:layout_marginStart="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_small"
-                android:layout_marginTop="-20dp"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginTop="-28dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_high"
                 app:strokeWidth="0dp"
@@ -43,58 +79,139 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <!-- Background gradient -->
+                    <!-- Fond de couleur d'attente -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_home_weekly_ripple" />
 
-                    <!-- Image plein fond -->
+                    <!-- ★ Illustration principale (chargée dynamiquement,
+                         placeholder statique en attendant) -->
                     <ImageView
                         android:id="@+id/ivWeeklyImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
+                        android:src="@drawable/img_weekly_placeholder"
+                        android:contentDescription="@string/home_weekly_title" />
+
+                    <!-- ★ Petite illustration décorative (feuille de vigne / raisin)
+                         positionnée en haut à droite -->
+                    <ImageView
+                        android:id="@+id/ivWeeklyDeco"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="14dp"
+                        android:src="@drawable/ill_grape_leaf"
+                        android:scaleType="fitCenter"
+                        android:alpha="0.5"
                         android:contentDescription="@null" />
 
-                    <!-- Overlay sombre léger pour lisibilité texte -->
+                    <!-- Overlay gradient sombre pour lisibilité du texte -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#30000000" />
+                        android:background="@drawable/bg_card_overlay" />
 
-                    <!-- Titre en bas à gauche -->
-                    <TextView
+                    <!-- Textes -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:padding="@dimen/padding_large"
-                        android:text="@string/home_weekly_title"
-                        android:fontFamily="@font/playfair_display"
-                        android:textSize="@dimen/text_headline_medium"
-                        android:textColor="@color/header_text"
-                        android:textStyle="bold|italic"
-                        android:shadowColor="#80000000"
-                        android:shadowDx="1"
-                        android:shadowDy="2"
-                        android:shadowRadius="6" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_large">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_daily_subtitle"
+                            android:fontFamily="@font/lato"
+                            android:textSize="@dimen/text_label"
+                            android:textColor="@color/secondary"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.08" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/home_weekly_title"
+                            android:fontFamily="@font/playfair_display"
+                            android:textSize="@dimen/text_title_large"
+                            android:textColor="@color/header_text"
+                            android:textStyle="bold|italic"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="6" />
+
+                    </LinearLayout>
+
+                    <!-- ★ Badge / pastille décorative "Nouveau" en haut à gauche -->
+                    <TextView
+                        android:id="@+id/badgeNew"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|start"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginStart="14dp"
+                        android:text="@string/badge_new"
+                        android:fontFamily="@font/lato"
+                        android:textSize="11sp"
+                        android:textColor="@color/on_primary"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.06"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:background="@drawable/bg_badge_new"
+                        android:elevation="2dp" />
 
                 </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Espacement -->
-            <Space
+            <!-- ═══ Ornement doré central ═══ -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_large" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large">
 
-            <!-- === Choisissez vos saveurs === -->
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+                <View
+                    android:layout_width="@dimen/ornament_dot_size"
+                    android:layout_height="@dimen/ornament_dot_size"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:background="@drawable/bg_ornament_dot" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+            </LinearLayout>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- ═══ Carte 2 – Recherche saveurs   ═══ -->
+            <!-- ═══════════════════════════════════════ -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardSearch"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/home_card_search_height"
-                android:layout_marginStart="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_high"
                 app:strokeWidth="0dp"
@@ -102,54 +219,244 @@
                 android:focusable="true"
                 android:transitionName="card_search">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_home_search_card"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="@dimen/padding_large"
-                    android:foreground="?android:attr/selectableItemBackground">
+                    android:layout_height="wrap_content">
 
-                    <!-- Image bouteille avec ? -->
+                    <!-- ★ Illustration d'arrière-plan (vignoble, tonneaux…)
+                         occupe toute la carte, semi-transparente -->
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="140dp"
-                        android:src="@drawable/ic_question_bottle"
-                        android:scaleType="fitCenter"
+                        android:id="@+id/ivSearchBgIllustration"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ill_vineyard_bg"
+                        android:alpha="0.08"
                         android:contentDescription="@null" />
 
-                    <Space
+                    <!-- ★ Illustration décorative latérale (branche / feuillage)
+                         positionnée à droite, déborde légèrement -->
+                    <ImageView
+                        android:id="@+id/ivSearchSideDeco"
+                        android:layout_width="140dp"
+                        android:layout_height="180dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="-16dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ill_wine_branch"
+                        android:alpha="0.12"
+                        android:contentDescription="@null" />
+
+                    <!-- Contenu principal -->
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/margin_medium" />
-
-                    <!-- Texte principal -->
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/home_search_title"
-                        android:fontFamily="@font/playfair_display"
-                        android:textSize="@dimen/text_title_large"
-                        android:textColor="@color/primary"
-                        android:textStyle="bold|italic"
-                        android:gravity="center" />
+                        android:background="@drawable/bg_home_search_card"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/padding_xlarge"
+                        android:paddingEnd="@dimen/padding_xlarge"
+                        android:paddingTop="28dp"
+                        android:paddingBottom="28dp"
+                        android:foreground="?android:attr/selectableItemBackground">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_tiny"
-                        android:text="@string/home_search_subtitle"
-                        android:fontFamily="@font/playfair_display"
-                        android:textSize="@dimen/text_title_medium"
-                        android:textColor="@color/primary"
-                        android:textStyle="italic"
-                        android:gravity="center" />
+                        <!-- Conteneur icône avec halo animé -->
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
 
-                </LinearLayout>
+                            <!-- Halo décoratif derrière l'icône -->
+                            <View
+                                android:id="@+id/iconHalo"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_icon_halo"
+                                android:alpha="0.3" />
+
+                            <!-- ★ Anneau décoratif supplémentaire -->
+                            <View
+                                android:id="@+id/iconRing"
+                                android:layout_width="130dp"
+                                android:layout_height="130dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_icon_ring"
+                                android:alpha="0.12" />
+
+                            <!-- Icône principale – illustration de bouteille -->
+                            <ImageView
+                                android:id="@+id/imgSearchIcon"
+                                android:layout_width="88dp"
+                                android:layout_height="88dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_question_bottle"
+                                android:scaleType="fitCenter"
+                                android:contentDescription="@string/home_search_title" />
+
+                        </FrameLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
+
+                        <!-- ★ Petites illustrations d'arômes (3 icônes en ligne) -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ill_aroma_fruit"
+                                android:scaleType="fitCenter"
+                                android:alpha="0.6"
+                                android:contentDescription="@null" />
+
+                            <View
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/bg_ornament_dot" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ill_aroma_floral"
+                                android:scaleType="fitCenter"
+                                android:alpha="0.6"
+                                android:contentDescription="@null" />
+
+                            <View
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/bg_ornament_dot" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ill_aroma_spice"
+                                android:scaleType="fitCenter"
+                                android:alpha="0.6"
+                                android:contentDescription="@null" />
+
+                        </LinearLayout>
+
+                        <!-- Titre -->
+                        <TextView
+                            android:id="@+id/tvSearchTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_search_title"
+                            android:fontFamily="@font/playfair_display"
+                            android:textSize="@dimen/text_title_large"
+                            android:textColor="@color/primary"
+                            android:textStyle="bold|italic"
+                            android:gravity="center"
+                            android:ellipsize="none"
+                            android:singleLine="false" />
+
+                        <!-- Séparateur décoratif -->
+                        <View
+                            android:layout_width="@dimen/divider_decorative_width"
+                            android:layout_height="@dimen/divider_height"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/bg_decorative_divider" />
+
+                        <!-- Sous-titre -->
+                        <TextView
+                            android:id="@+id/tvSearchSubtitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_search_subtitle"
+                            android:fontFamily="@font/lato"
+                            android:textSize="@dimen/text_body"
+                            android:textColor="@color/on_surface_variant"
+                            android:gravity="center"
+                            android:lineSpacingExtra="4dp"
+                            android:ellipsize="none"
+                            android:singleLine="false" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="12dp" />
+
+                        <!-- CTA -->
+                        <TextView
+                            android:id="@+id/tvSearchCta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_search_cta"
+                            android:fontFamily="@font/lato"
+                            android:textSize="13sp"
+                            android:textColor="@color/primary"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.08"
+                            android:drawableEnd="@drawable/ic_arrow_right_small"
+                            android:drawablePadding="6dp"
+                            android:gravity="center"
+                            android:alpha="0.85" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- === Shimmer placeholder === -->
+            <!-- ═══ Hint Shake ═══ -->
+            <LinearLayout
+                android:id="@+id/layoutShakeHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:background="@drawable/bg_shake_hint"
+                android:padding="@dimen/padding_medium"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_shake_phone"
+                    android:contentDescription="@null"
+                    app:tint="@color/secondary" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:text="@string/home_shake_hint"
+                    android:fontFamily="@font/lato"
+                    android:textSize="@dimen/text_caption"
+                    android:textColor="@color/on_surface_variant"
+                    android:textStyle="italic" />
+
+                <ImageButton
+                    android:id="@+id/btnDismissShakeHint"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_close"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cd_dismiss"
+                    app:tint="@color/on_surface_variant" />
+
+            </LinearLayout>
+
+            <!-- Shimmer placeholder -->
             <LinearLayout
                 android:id="@+id/shimmerContainer"
                 android:layout_width="match_parent"
@@ -173,7 +480,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_medium" />
+                android:layout_height="@dimen/margin_xlarge" />
 
         </LinearLayout>
 

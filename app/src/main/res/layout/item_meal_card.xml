@@ -5,31 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardItem"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="@dimen/meal_card_height"
     android:layout_margin="6dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="2dp"
-    app:strokeColor="@android:color/transparent"
+    app:cardElevation="@dimen/elevation_low"
+    app:strokeWidth="1.5dp"
+    app:strokeColor="@color/outline_variant"
+    app:cardBackgroundColor="@color/surface"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="8dp">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/ivMealIcon"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/meal_card_icon_size"
+            android:layout_height="@dimen/meal_card_icon_size"
             android:scaleType="centerInside"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="6dp"
             android:contentDescription="@null"
-            app:tint="?attr/colorPrimary"
-            android:visibility="gone"/>
+            app:tint="@color/primary"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvOptionName"
@@ -38,9 +40,12 @@
             android:gravity="center"
             tools:text="Option"
             android:textAlignment="center"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/lato"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
     </LinearLayout>
 

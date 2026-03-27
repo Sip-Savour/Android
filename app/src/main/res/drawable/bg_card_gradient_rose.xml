@@ -5,9 +5,9 @@
     <gradient
         android:type="linear"
         android:angle="135"
-        android:startColor="@color/primary"
-        android:centerColor="@color/primary_light"
-        android:endColor="@color/surface_variant" />
+        android:startColor="@color/wine_card_bg_start"
+        android:centerColor="@color/wine_card_bg_center"
+        android:endColor="@color/wine_card_bg_end" />
 
     <corners android:radius="20dp" />
 

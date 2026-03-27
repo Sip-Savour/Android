@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <!-- Logo app_icon.png -->
     <ImageView
         android:id="@+id/ivSplashLogo"
         android:layout_width="@dimen/logo_size_splash"
@@ -16,7 +15,6 @@
         android:scaleType="fitCenter"
         android:contentDescription="@string/cd_logo" />
 
-    <!-- App name -->
     <TextView
         android:id="@+id/tvSplashName"
         android:layout_width="wrap_content"
@@ -26,6 +24,25 @@
         android:fontFamily="@font/playfair_display"
         android:textSize="40sp"
         android:textColor="@color/header_text"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:letterSpacing="0.02" />
+
+    <!-- Tagline dorée -->
+    <View
+        android:layout_width="60dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@color/secondary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/app_tagline"
+        android:fontFamily="@font/lato"
+        android:textSize="@dimen/text_caption"
+        android:textColor="@color/secondary"
+        android:letterSpacing="0.1"
+        android:textAllCaps="true" />
 
 </LinearLayout>
