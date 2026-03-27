@@ -8,6 +8,7 @@ on:
 
 jobs:
   build-and-test:
+    name: Build & Test Android App
     runs-on: ubuntu-latest
 
     steps:
@@ -19,17 +20,28 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
 
-      # CORRECTION ICI : On précise le dossier de travail
+      # NOUVEAU : L'action officielle Gradle (bien plus performante pour le cache)
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        working-directory: ./app  # Indispensable car gradlew est dans le dossier 'app'
 
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
-        working-directory: ./app  # Idem ici
+      # BONUS 1 : Vérification de la qualité du code (Lint)
+      - name: Run Android Lint
+        run: ./gradlew lintDebug
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
-        working-directory: ./app  # Et ici
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      # BONUS 2 : Met l'APK à disposition sur GitHub !
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: SipAndSavour-Debug-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
