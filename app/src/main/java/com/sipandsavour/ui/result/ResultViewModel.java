@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.data.dto.meal.MealFilterResponse;
 import com.sipandsavour.ui.common.UiState;
 import com.sipandsavour.util.TranslationManager;
 
@@ -106,5 +107,13 @@ public class ResultViewModel extends ViewModel {
         } else {
             Repository.getInstance().addFavorite(wine.getId());
         }
+    }
+
+    public LiveData<UiState<MealFilterResponse>> getMealsForCategory(String category) {
+        return Repository.getInstance().getMealsByCategory(category);
+    }
+
+    public LiveData<UiState<MealFilterResponse>> getMealDetails(String id) {
+        return Repository.getInstance().getMealDetails(id);
     }
 }

@@ -19,6 +19,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.data.dto.meal.MealDto;
+import com.sipandsavour.ui.selection.MealDetailsBottomSheetFragment;
 import com.sipandsavour.util.HapticUtil;
 
 public class ResultFragment extends Fragment {
@@ -32,6 +34,12 @@ public class ResultFragment extends Fragment {
     private TextView tvDescription;
     private TextView tvType;
     private ImageButton fabFavorite;
+    private TextView tvMealName;
+    private TextView tvMealInstructions;
+    private View mealCard;
+
+    // State
+    private MealDto currentMeal;
 
     @Nullable
     @Override
@@ -61,6 +69,18 @@ public class ResultFragment extends Fragment {
         tvDescription = view.findViewById(R.id.tvDescription);
         tvType = view.findViewById(R.id.tvType);
         fabFavorite = view.findViewById(R.id.fabFavorite);
+        tvMealName = view.findViewById(R.id.tvMealName);
+        tvMealInstructions = view.findViewById(R.id.tvMealInstructions);
+        mealCard = view.findViewById(R.id.mealCard);
+        
+        // Setup meal card click listener
+        if (mealCard != null) {
+            mealCard.setOnClickListener(v -> {
+                if (currentMeal != null) {
+                    showMealDetailsBottomSheet(currentMeal);
+                }
+            });
+        }
     }
 
     private void setupFavoriteButton() {
@@ -92,6 +112,41 @@ public class ResultFragment extends Fragment {
         tvCepage.setText(wine.getVariety() != null ? wine.getVariety() : "-");
         tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : "-");
         tvType.setText(wine.getColorDisplayName());
+
+        // Fetch meal suggestions
+        fetchMealSuggestions();
+    }
+
+    private void fetchMealSuggestions() {
+        // For demonstration, use "Beef" category
+        viewModel.getMealsForCategory("Beef").observe(getViewLifecycleOwner(), state -> {
+            if (state.isSuccess() && state.getData() != null && state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
+                // Get the first meal and fetch its details
+                String mealId = state.getData().getMeals().get(0).getIdMeal();
+                fetchMealDetails(mealId);
+            } else if (state.isError()) {
+                tvMealInstructions.setText("Impossible de charger les suggestions culinaires.");
+            }
+        });
+    }
+
+    private void fetchMealDetails(String mealId) {
+        viewModel.getMealDetails(mealId).observe(getViewLifecycleOwner(), state -> {
+            if (state.isSuccess() && state.getData() != null && state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
+                MealDto meal = state.getData().getMeals().get(0);
+                currentMeal = meal;
+                
+                tvMealName.setText(meal.getStrMeal());
+                String instructions = meal.getStrInstructions();
+                if (instructions != null && !instructions.isEmpty()) {
+                    tvMealInstructions.setText(instructions);
+                } else {
+                    tvMealInstructions.setText("Aucune instruction disponible.");
+                }
+            } else {
+                tvMealInstructions.setText("Impossible de charger les détails du repas.");
+            }
+        });
     }
 
     private void updateFavoriteIcon(boolean isFavorite) {
@@ -169,5 +224,13 @@ public class ResultFragment extends Fragment {
         View scrollView = view.findViewById(R.id.scrollView);
         if (scrollView != null) scrollView.setOnTouchListener(invincibleSwipeListener);
         view.setOnTouchListener(invincibleSwipeListener);
+    }
+
+    /**
+     * Affiche les détails complets d'une recette dans un bottom sheet
+     */
+    private void showMealDetailsBottomSheet(MealDto meal) {
+        MealDetailsBottomSheetFragment bottomSheet = MealDetailsBottomSheetFragment.newInstance(meal);
+        bottomSheet.show(getChildFragmentManager(), "MealDetails");
     }
 }

@@ -256,4 +256,22 @@ public final class SessionManager {
         // Par défaut, on suit le thème du système
         return prefs.getInt("theme_mode", androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }
+
+    // =======================================================
+    //  SÉLECTION ALIMENTAIRE
+    // =======================================================
+
+    /**
+     * Sauvegarde la dernière sous-catégorie sélectionnée
+     */
+    public void setLastSelectedSubcategory(String subcategory) {
+        prefs.edit().putString("last_subcategory", subcategory).apply();
+    }
+
+    /**
+     * Récupère la dernière sous-catégorie sélectionnée
+     */
+    public String getLastSelectedSubcategory() {
+        return prefs.getString("last_subcategory", null);
+    }
 }

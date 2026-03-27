@@ -297,4 +297,9 @@
     <string name="home_shake_hint">Secouez votre téléphone pour découvrir 5 vins surprise !</string>
     <string name="cd_dismiss">Fermer</string>
 
+    <!-- Meal Details -->
+    <string name="ingredients">Ingrédients</string>
+    <string name="instructions">Instructions</string>
+    <string name="close">Fermer</string>
+
 </resources>

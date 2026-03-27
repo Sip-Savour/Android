@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.dto.PredictResponse;
+import com.sipandsavour.data.dto.meal.MealFilterResponse;
 import com.sipandsavour.logic.FlavorMapper;
 import com.sipandsavour.ui.common.UiState;
 
@@ -88,6 +89,20 @@ public class SelectionViewModel extends ViewModel {
     public LiveData<UiState<PredictResponse>> getPredictionResult() { return predictionResult; }
     public void setMode(String mode) { this.mode = mode; }
     public String getMode() { return mode; }
+
+    /**
+     * Récupère les suggestions de repas
+     */
+    public LiveData<UiState<MealFilterResponse>> getMealSuggestions() {
+        return Repository.getInstance().getMealsByCategory("Beef");
+    }
+
+    /**
+     * Récupère les détails complètes d'une recette par son ID
+     */
+    public LiveData<UiState<MealFilterResponse>> getMealDetails(String mealId) {
+        return Repository.getInstance().getMealDetails(mealId);
+    }
 
     // =======================================================
     //  MAPPING INTELLIGENT AVEC GESTION DE LA COULEUR OPTIONNELLE
@@ -261,3 +276,5 @@ public class SelectionViewModel extends ViewModel {
         });
     }
 }
+
+

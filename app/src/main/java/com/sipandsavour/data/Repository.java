@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.sipandsavour.data.api.ApiClient;
 import com.sipandsavour.data.api.AuthApi;
 import com.sipandsavour.data.api.WineApi;
+import com.sipandsavour.data.api.MealApi;
+import com.sipandsavour.data.api.MealApiClient;
 import com.sipandsavour.data.dto.AuthResponse;
 import com.sipandsavour.data.dto.DailySuggestionResponse;
 import com.sipandsavour.data.dto.LoginRequest;
@@ -17,6 +19,7 @@ import com.sipandsavour.data.dto.PredictResponse;
 import com.sipandsavour.data.dto.RegisterRequest;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.data.dto.AddFavoriteRequest;
+import com.sipandsavour.data.dto.meal.MealFilterResponse;
 import com.sipandsavour.ui.common.UiState;
 
 import java.util.List;
@@ -35,12 +38,15 @@ public final class Repository {
 
     private static AuthApi authApi = null;
     private final WineApi wineApi;
+    private final MealApi mealApi;
     private static SessionManager sessionManager = null;
 
     private Repository() {
         ApiClient apiClient = ApiClient.getInstance();
         authApi = apiClient.getAuthApi();
         this.wineApi = apiClient.getWineApi();
+        MealApiClient mealApiClient = MealApiClient.getInstance();
+        this.mealApi = mealApiClient.getMealApi();
         sessionManager = SessionManager.getInstance();
     }
 
@@ -351,6 +357,114 @@ public final class Repository {
     }
 
     // =======================================================
+    //  MEALS (TheMealDB)
+    // =======================================================
+
+    /**
+     * Récupère les repas filtrés par catégorie
+     */
+    public LiveData<UiState<MealFilterResponse>> getMealsByCategory(String category) {
+        MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
+        result.setValue(UiState.loading());
+
+        mealApi.filterByCategory(category).enqueue(new Callback<MealFilterResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MealFilterResponse> call, @NonNull Response<MealFilterResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    result.setValue(UiState.success(response.body()));
+                } else {
+                    result.setValue(UiState.error("Aucun repas trouvé"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MealFilterResponse> call, @NonNull Throwable t) {
+                result.setValue(UiState.error("Erreur : " + t.getMessage()));
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Recherche un repas par nom
+     */
+    public LiveData<UiState<MealFilterResponse>> searchMeal(String name) {
+        MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
+        result.setValue(UiState.loading());
+
+        mealApi.searchMeal(name).enqueue(new Callback<MealFilterResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MealFilterResponse> call, @NonNull Response<MealFilterResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    result.setValue(UiState.success(response.body()));
+                } else {
+                    result.setValue(UiState.error("Aucun repas trouvé"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MealFilterResponse> call, @NonNull Throwable t) {
+                result.setValue(UiState.error("Erreur : " + t.getMessage()));
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Récupère un repas aléatoire
+     */
+    public LiveData<UiState<MealFilterResponse>> getRandomMeal() {
+        MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
+        result.setValue(UiState.loading());
+
+        mealApi.getRandomMeal().enqueue(new Callback<MealFilterResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MealFilterResponse> call, @NonNull Response<MealFilterResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    result.setValue(UiState.success(response.body()));
+                } else {
+                    result.setValue(UiState.error("Erreur lors de la récupération"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MealFilterResponse> call, @NonNull Throwable t) {
+                result.setValue(UiState.error("Erreur : " + t.getMessage()));
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Récupère les détails complets d'un repas
+     */
+    public LiveData<UiState<MealFilterResponse>> getMealDetails(String id) {
+        MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
+        result.setValue(UiState.loading());
+
+        mealApi.getMealDetails(id).enqueue(new Callback<MealFilterResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MealFilterResponse> call, @NonNull Response<MealFilterResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    result.setValue(UiState.success(response.body()));
+                } else {
+                    result.setValue(UiState.error("Détails du repas non trouvés"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MealFilterResponse> call, @NonNull Throwable t) {
+                result.setValue(UiState.error("Erreur : " + t.getMessage()));
+            }
+        });
+
+        return result;
+    }
+
+    // =======================================================
     //  HELPERS
     // =======================================================
 
@@ -366,3 +480,4 @@ public final class Repository {
         return sessionManager.getEmail();
     }
 }
+

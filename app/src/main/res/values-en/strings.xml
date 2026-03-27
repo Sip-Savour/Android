@@ -264,4 +264,9 @@
     <string name="home_shake_hint">Shake your phone to discover 5 surprise wines!</string>
     <string name="cd_dismiss">Dismiss</string>
 
+    <!-- Meal Details -->
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="close">Close</string>
+
 </resources>
