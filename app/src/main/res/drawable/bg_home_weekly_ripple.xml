@@ -2,15 +2,14 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/ripple_gold">
 
-    <item>
+    <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <gradient
                 android:type="linear"
                 android:angle="135"
-                android:startColor="#6B1D32"
-                android:centerColor="#8A3B50"
-                android:endColor="#C9A96E" />
-            <corners android:radius="20dp" />
+                android:startColor="@color/weekly_gradient_start"
+                android:centerColor="@color/weekly_gradient_center"
+                android:endColor="@color/weekly_gradient_end" />
         </shape>
     </item>
 

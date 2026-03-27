@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="240dp"
+    android:viewportWidth="360"
+    android:viewportHeight="240">
+
+    <!-- Ciel nocturne bordeaux profond -->
+    <path android:pathData="M0,0h360v240H0z"
+        android:fillColor="#0A0508" />
+    <path android:pathData="M0,0h360v160H0z"
+        android:fillColor="#1A0C14" />
+
+    <!-- Lueur bordeaux horizon -->
+    <path android:pathData="M0,80h360v80H0z"
+        android:fillColor="#321520"
+        android:fillAlpha="0.50" />
+
+    <!-- Collines -->
+    <path android:pathData="M0,140 Q60,110 120,125 Q180,140 240,115 Q300,90 360,120 L360,240 L0,240Z"
+        android:fillColor="#140A08" />
+    <path android:pathData="M0,170 Q90,140 160,155 Q230,170 300,145 Q340,135 360,150 L360,240 L0,240Z"
+        android:fillColor="#1C100C" />
+
+    <!-- Rangées vignes -->
+    <path android:pathData="M0,190 L40,185 L80,190 L120,185 L160,190 L200,185 L240,190 L280,185 L320,190 L360,185 L360,195 L320,200 L280,195 L240,200 L200,195 L160,200 L120,195 L80,200 L40,195 L0,200Z"
+        android:fillColor="#201008" />
+    <path android:pathData="M0,210 L50,205 L100,210 L150,205 L200,210 L250,205 L300,210 L360,205 L360,215 L300,220 L250,215 L200,220 L150,215 L100,220 L50,215 L0,220Z"
+        android:fillColor="#201008" />
+    <path android:pathData="M0,225h360v15H0z"
+        android:fillColor="#281810" />
+
+    <!-- Bouteille — silhouette + liseré doré -->
+    <path android:pathData="M155,55 L155,75 Q140,82 140,100 L140,185 Q140,198 155,198 L185,198 Q200,198 200,185 L200,100 Q200,82 185,75 L185,55Z"
+        android:fillColor="#C9A96E"
+        android:fillAlpha="0.06" />
+    <path android:pathData="M155,55 L155,75 Q140,82 140,100 L140,185 Q140,198 155,198 L185,198 Q200,198 200,185 L200,100 Q200,82 185,75 L185,55Z"
+        android:strokeColor="#C9A96E"
+        android:strokeAlpha="0.15"
+        android:strokeWidth="0.8"
+        android:fillColor="@android:color/transparent" />
+    <path android:pathData="M163,35 L163,55 L177,55 L177,35 Q177,30 170,30 Q163,30 163,35Z"
+        android:fillColor="#C9A96E"
+        android:fillAlpha="0.06" />
+
+    <!-- Verre — liseré rosé -->
+    <path android:pathData="M215,100 Q212,100 210,130 L210,160 Q210,168 220,168 L240,168 Q250,168 250,160 L250,130 Q248,100 245,100Z"
+        android:fillColor="#E8909A"
+        android:fillAlpha="0.05" />
+    <path android:pathData="M215,100 Q212,100 210,130 L210,160 Q210,168 220,168 L240,168 Q250,168 250,160 L250,130 Q248,100 245,100Z"
+        android:strokeColor="#E8909A"
+        android:strokeAlpha="0.12"
+        android:strokeWidth="0.6"
+        android:fillColor="@android:color/transparent" />
+    <path android:pathData="M230,168 L230,190"
+        android:strokeColor="#E8909A"
+        android:strokeAlpha="0.12"
+        android:strokeWidth="3" />
+    <path android:pathData="M218,190 L242,190"
+        android:strokeColor="#E8909A"
+        android:strokeAlpha="0.12"
+        android:strokeWidth="2.5" />
+
+    <!-- Étoiles bordeaux + or -->
+    <path android:pathData="M50,30 L51,33 L54,33 L51.5,35.5 L52.5,39 L50,37 L47.5,39 L48.5,35.5 L46,33 L49,33Z"
+        android:fillColor="#E8909A"
+        android:fillAlpha="0.40" />
+    <path android:pathData="M290,25 L291,28 L294,28 L291.5,30.5 L292.5,34 L290,32 L287.5,34 L288.5,30.5 L286,28 L289,28Z"
+        android:fillColor="#C9A96E"
+        android:fillAlpha="0.30" />
+    <path android:pathData="M320,55 L320.7,57 L323,57 L321,58.5 L321.7,61 L320,59.5 L318.3,61 L319,58.5 L317,57 L319.3,57Z"
+        android:fillColor="#C9A96E"
+        android:fillAlpha="0.22" />
+
+</vector>

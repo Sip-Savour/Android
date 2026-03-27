@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="360dp"
+    android:viewportWidth="360"
+    android:viewportHeight="360">
+
+    <!-- Collines douces -->
+    <path
+        android:pathData="M0,200 Q60,160 120,180 Q180,200 240,170 Q300,140 360,175 L360,360 L0,360Z"
+        android:fillColor="#5C3A24" />
+
+    <path
+        android:pathData="M0,240 Q90,210 180,230 Q270,250 360,220 L360,360 L0,360Z"
+        android:fillColor="#6B4530" />
+
+    <!-- Rangées de vignes stylisées -->
+    <path
+        android:pathData="M20,250 Q50,245 80,250 Q110,255 140,250 Q170,245 200,250 Q230,255 260,250 Q290,245 320,250 Q350,255 360,250"
+        android:strokeColor="#4A2E1C"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent" />
+
+    <path
+        android:pathData="M0,275 Q40,270 80,275 Q120,280 160,275 Q200,270 240,275 Q280,280 320,275 Q350,270 360,275"
+        android:strokeColor="#4A2E1C"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent" />
+
+    <path
+        android:pathData="M10,300 Q50,295 90,300 Q130,305 170,300 Q210,295 250,300 Q290,305 330,300 Q355,295 360,300"
+        android:strokeColor="#4A2E1C"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Soleil / lune -->
+    <path
+        android:pathData="M280,120 A40,40 0 1,1 280.01,120"
+        android:fillColor="#C9A96E" />
+
+    <!-- Rayons -->
+    <path
+        android:pathData="M280,70 L280,85"
+        android:strokeColor="#C9A96E"
+        android:strokeWidth="2" />
+
+    <path
+        android:pathData="M320,100 L310,108"
+        android:strokeColor="#C9A96E"
+        android:strokeWidth="2" />
+
+    <path
+        android:pathData="M240,100 L250,108"
+        android:strokeColor="#C9A96E"
+        android:strokeWidth="2" />
+
+</vector>

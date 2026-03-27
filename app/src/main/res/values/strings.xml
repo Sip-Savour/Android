@@ -59,6 +59,8 @@
     <string name="home_weekly_title">Sélection hebdomadaire</string>
     <string name="home_search_title">Choisissez vos saveurs</string>
     <string name="home_search_subtitle">&amp;\nRecevez vos vins recommandés</string>
+    <string name="home_search_cta">Découvrir</string>
+    <string name="badge_new">Nouveau</string>
 
     <!-- === SÉLECTION — CATÉGORIE === -->
     <string name="category_title">Que mangez-vous ?</string>
@@ -289,5 +291,9 @@
     <!-- Meal Fragment - Steps -->
     <string name="meal_step_1_hint">1 choix obligatoire</string>
     <string name="meal_step_2_hint">Plusieurs choix possibles</string>
+
+    <!-- Shake Hint -->
+    <string name="home_shake_hint">Secouez votre téléphone pour découvrir 5 vins surprise !</string>
+    <string name="cd_dismiss">Fermer</string>
 
 </resources>

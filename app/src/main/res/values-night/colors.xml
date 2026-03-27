@@ -114,11 +114,6 @@
     <color name="bottom_nav_inactive">#50B8A89E</color>
     <color name="bottom_nav_indicator">#18C9A96E</color>
 
-    <!-- === HOME CARDS === -->
-    <color name="home_search_card_start">#1E1618</color>
-    <color name="home_search_card_center">#281E20</color>
-    <color name="home_search_card_end">#322828</color>
-
     <!-- === FAVORITES === -->
     <color name="favorite_pill_start">#321C28</color>
     <color name="favorite_pill_end">#3A2818</color>
@@ -156,4 +151,32 @@
     <color name="profile_logout">#FFB4AB</color>
     <color name="profile_bottom_bar">@color/surface_container_low</color>
 
+<!-- ═══ WEEKLY CARD — Profondeur et chaleur ═══ -->
+<color name="weekly_gradient_start">#0E0508</color>      <!-- Noir bordeaux abyssal -->
+<color name="weekly_gradient_center">#28101C</color>      <!-- Bordeaux nocturne -->
+<color name="weekly_gradient_end">#261808</color>         <!-- Cognac sombre -->
+<color name="weekly_overlay_start">#000A0408</color>
+<color name="weekly_overlay_center">#600E060C</color>     <!-- Fumée bordeaux -->
+<color name="weekly_overlay_end">#CC080308</color>        <!-- Noir profond bordeaux -->
+
+<!-- Badge doré premium -->
+<color name="weekly_badge_bg_start">#C9A96E</color>
+<color name="weekly_badge_bg_end">#8C6838</color>
+<color name="weekly_badge_shadow">#50000000</color>
+
+<!-- ═══ HOME SEARCH CARD — Élégance sombre ═══ -->
+<color name="home_search_card_start">#181014</color>     <!-- Base sombre rosée -->
+<color name="home_search_card_center">#22161C</color>    <!-- Bordeaux-nuit -->
+<color name="home_search_card_end">#2C2016</color>       <!-- Cognac nocturne -->
+
+<!-- Éléments Search Card -->
+<color name="search_card_stroke">#14C9A96E</color>
+<color name="search_icon_halo_start">#20C9A96E</color>
+<color name="search_icon_halo_end">#06C9A96E</color>
+<color name="search_icon_ring_color">#18E8909A</color>
+<color name="search_divider_start">#00C9A96E</color>
+<color name="search_divider_center">#48C9A96E</color>
+<color name="search_divider_end">#00C9A96E</color>
+<color name="search_cta_bg">#10E8909A</color>
+<color name="search_aroma_dot">#28C9A96E</color>
 </resources>

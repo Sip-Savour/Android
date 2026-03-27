@@ -119,11 +119,6 @@
     <color name="bottom_nav_inactive">#80F8F4EF</color>
     <color name="bottom_nav_indicator">#20C9A96E</color>
 
-    <!-- === HOME CARDS === -->
-    <color name="home_search_card_start">#F8F4EF</color>
-    <color name="home_search_card_center">#EDE6DC</color>
-    <color name="home_search_card_end">#D6CABC</color>
-
     <!-- === FAVORITES === -->
     <color name="favorite_pill_start">#6B1D32</color>
     <color name="favorite_pill_end">#8B6844</color>
@@ -161,4 +156,32 @@
     <color name="profile_logout">#B3261E</color>
     <color name="profile_bottom_bar">@color/surface_container_low</color>
 
+<!-- ═══ WEEKLY CARD — Plus dramatique & premium ═══ -->
+<color name="weekly_gradient_start">#3A0818</color>      <!-- Bordeaux très profond -->
+<color name="weekly_gradient_center">#5C1830</color>      <!-- Bordeaux dense -->
+<color name="weekly_gradient_end">#8C6838</color>         <!-- Or cuivré chaud -->
+<color name="weekly_overlay_start">#00180810</color>      <!-- Transparent teinté -->
+<color name="weekly_overlay_center">#4A1A0C14</color>     <!-- Bordeaux fumé -->
+<color name="weekly_overlay_end">#E82A0810</color>        <!-- Noir-bordeaux très profond -->
+
+<!-- Nouveau — Badge doré premium -->
+<color name="weekly_badge_bg_start">#C9A96E</color>
+<color name="weekly_badge_bg_end">#A07838</color>
+<color name="weekly_badge_shadow">#40A07838</color>
+
+<!-- ═══ HOME SEARCH CARD — Parchemin doré luxueux ═══ -->
+<color name="home_search_card_start">#FFFBF5</color>     <!-- Blanc crème chaud -->
+<color name="home_search_card_center">#F5EADB</color>    <!-- Champagne doux -->
+<color name="home_search_card_end">#E6D2B8</color>       <!-- Parchemin doré -->
+
+<!-- Nouveau — Éléments Search Card -->
+<color name="search_card_stroke">#18C9A96E</color>       <!-- Liseré or subtil -->
+<color name="search_icon_halo_start">#28C9A96E</color>   <!-- Halo doré -->
+<color name="search_icon_halo_end">#08C9A96E</color>
+<color name="search_icon_ring_color">#146B1D32</color>    <!-- Anneau bordeaux -->
+<color name="search_divider_start">#00C9A96E</color>
+<color name="search_divider_center">#60C9A96E</color>
+<color name="search_divider_end">#00C9A96E</color>
+<color name="search_cta_bg">#0C6B1D32</color>            <!-- Fond subtil CTA -->
+<color name="search_aroma_dot">#30C9A96E</color>
 </resources>
