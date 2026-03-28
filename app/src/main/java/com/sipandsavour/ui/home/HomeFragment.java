@@ -1,12 +1,16 @@
 package com.sipandsavour.ui.home;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -17,9 +21,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.sipandsavour.R;
 import com.sipandsavour.data.SessionManager;
+import com.sipandsavour.util.Constants;
 import com.sipandsavour.util.HapticUtil;
 import com.sipandsavour.util.ShakeDetector;
 
@@ -71,6 +77,79 @@ public class HomeFragment extends Fragment {
         loadAnimations();
         setupListeners();
         setupShakeDetection();
+
+        // 🆕 Afficher le popup de shake si jamais montré
+        showShakeHintIfNeeded();
+    }
+
+    /**
+     * 🆕 Affiche le popup d'onboarding pour le shake
+     */
+    private void showShakeHintIfNeeded() {
+        // Vérifier si déjà montré
+        boolean alreadyShown = requireContext()
+                .getSharedPreferences(Constants.PREF_SESSION, Context.MODE_PRIVATE)
+                .getBoolean(Constants.KEY_SHAKE_HINT_SHOWN, false);
+
+        if (alreadyShown) {
+            return;
+        }
+
+        // Créer le dialog
+        Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_shake_hint);
+        dialog.setCancelable(true);
+
+        // Rendre le fond transparent
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
+
+        // Animation de l'icône shake
+        View ivShakeIcon = dialog.findViewById(R.id.ivShakeIcon);
+        if (ivShakeIcon != null) {
+            Animation shakeAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.shake_icon);
+            ivShakeIcon.startAnimation(shakeAnim);
+        }
+
+        // Bouton "Compris !"
+        MaterialButton btnGotIt = dialog.findViewById(R.id.btnGotIt);
+        btnGotIt.setOnClickListener(v -> {
+            HapticUtil.playConfirm(v);
+            markShakeHintAsShown();
+            dialog.dismiss();
+        });
+
+        // Bouton "Ne plus afficher"
+        MaterialButton btnDontShowAgain = dialog.findViewById(R.id.btnDontShowAgain);
+        btnDontShowAgain.setOnClickListener(v -> {
+            HapticUtil.playLightClick(v);
+            markShakeHintAsShown();
+            dialog.dismiss();
+        });
+
+        // Afficher le dialog avec un léger délai pour une meilleure UX
+        requireView().postDelayed(() -> {
+            if (isAdded() && !dialog.isShowing()) {
+                dialog.show();
+            }
+        }, 500);
+    }
+
+    /**
+     * 🆕 Marque le popup comme déjà affiché
+     */
+    private void markShakeHintAsShown() {
+        requireContext()
+                .getSharedPreferences(Constants.PREF_SESSION, Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean(Constants.KEY_SHAKE_HINT_SHOWN, true)
+                .apply();
     }
 
     private void setupShakeDetection() {

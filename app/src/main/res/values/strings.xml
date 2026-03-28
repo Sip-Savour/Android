@@ -304,4 +304,10 @@
     <string name="see_recipe">Voir la recette</string>
     <string name="culinary_inspirations">Inspirations culinaires</string>
 
+    <!-- === SHAKE DIALOG === -->
+    <string name="shake_dialog_title">Secouez pour découvrir !</string>
+    <string name="shake_dialog_message">Secouez votre téléphone à tout moment sur cet écran pour recevoir 5 suggestions de vins aléatoires.</string>
+    <string name="shake_dialog_got_it">Compris !</string>
+    <string name="shake_dialog_dont_show">Ne plus afficher</string>
+
 </resources>

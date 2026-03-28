@@ -272,4 +272,10 @@
     <string name="culinary_inspirations">Culinary Inspirations</string>
 
 
+    <!-- === SHAKE DIALOG === -->
+    <string name="shake_dialog_title">Shake to discover!</string>
+    <string name="shake_dialog_message">Shake your phone anytime on this screen to receive 5 random wine suggestions.</string>
+    <string name="shake_dialog_got_it">Got it!</string>
+    <string name="shake_dialog_dont_show">Don\'t show again</string>
+
 </resources>
