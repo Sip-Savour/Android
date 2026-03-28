@@ -1,9 +1,13 @@
 package com.sipandsavour.data.dto;
 
+import java.io.Serializable;
+
 /**
  * DTO représentant un vin.
  */
-public class WineDto {
+public class WineDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int id;
     private String title;

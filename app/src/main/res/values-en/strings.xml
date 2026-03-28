@@ -268,5 +268,8 @@
     <string name="ingredients">Ingredients</string>
     <string name="instructions">Instructions</string>
     <string name="close">Close</string>
+    <string name="see_recipe">See recipe</string>
+    <string name="culinary_inspirations">Culinary Inspirations</string>
+
 
 </resources>

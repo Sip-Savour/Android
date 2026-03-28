@@ -1,34 +1,32 @@
 package com.sipandsavour.util;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
-import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
+import com.google.mlkit.common.model.DownloadConditions;
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.dto.meal.MealDto;
+import com.sipandsavour.util.translation.IngredientDictionary;
 
-/**
- * Gestionnaire de traduction pour les recettes TheMealDB
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class MealTranslationManager {
 
+    private static final String TAG = "MealTranslation";
     private static MealTranslationManager instance;
-    private final Translator englishFrenchTranslator;
-    private boolean isModelDownloaded = false;
 
-    private MealTranslationManager() {
-        // Configuration : On traduit de l'Anglais (API) vers le Français (App)
-        TranslatorOptions options = new TranslatorOptions.Builder()
-                .setSourceLanguage(TranslateLanguage.ENGLISH)
-                .setTargetLanguage(TranslateLanguage.FRENCH)
-                .build();
-
-        englishFrenchTranslator = Translation.getClient(options);
-        downloadModelIfNeeded();
-    }
+    private final Translator translator;
+    private final ExecutorService executorService;
+    private final Handler mainHandler;
 
     public static synchronized MealTranslationManager getInstance() {
         if (instance == null) {
@@ -37,105 +35,137 @@ public class MealTranslationManager {
         return instance;
     }
 
-    /**
-     * Télécharge le modèle de langue silencieusement si ce n'est pas déjà fait.
-     */
-    private void downloadModelIfNeeded() {
-        DownloadConditions conditions = new DownloadConditions.Builder()
-                .requireWifi() // Télécharge uniquement en Wifi pour économiser les données
+    private MealTranslationManager() {
+        TranslatorOptions options = new TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(TranslateLanguage.FRENCH)
                 .build();
 
-        englishFrenchTranslator.downloadModelIfNeeded(conditions)
-                .addOnSuccessListener(v -> {
-                    isModelDownloaded = true;
-                    Log.d("MealTranslation", "Modèle de traduction pour repas téléchargé avec succès.");
-                })
-                .addOnFailureListener(e -> Log.e("MealTranslation", "Erreur de téléchargement du modèle", e));
+        this.translator = Translation.getClient(options);
+        this.executorService = Executors.newSingleThreadExecutor();
+        this.mainHandler = new Handler(Looper.getMainLooper());
+
+        downloadModel();
     }
 
-    /**
-     * Interface pour le retour asynchrone
-     */
-    public interface MealTranslationCallback {
-        void onTranslationComplete(MealDto translatedMeal);
+    private void downloadModel() {
+        DownloadConditions conditions = new DownloadConditions.Builder()
+                .requireWifi()
+                .build();
+
+        translator.downloadModelIfNeeded(conditions)
+                .addOnSuccessListener(v -> Log.d(TAG, "✅ Modèle ML Kit prêt"))
+                .addOnFailureListener(e -> Log.e(TAG, "❌ Erreur téléchargement modèle", e));
     }
 
-    /**
-     * Traduit une recette complète si l'application est en Français.
-     * Sinon, renvoie la recette originale.
-     */
-    public void translateMealIfNeeded(MealDto meal, MealTranslationCallback callback) {
+    public interface TranslationCallback {
+        void onTranslated(MealDto translatedMeal);
+    }
+
+    public void translateMeal(MealDto meal, TranslationCallback callback) {
         if (meal == null) {
-            callback.onTranslationComplete(null);
+            mainHandler.post(() -> callback.onTranslated(null));
             return;
         }
 
-        // Si l'app est en anglais, on ne traduit rien (l'API est déjà en anglais)
-        String currentLang = SessionManager.getInstance().getLanguage();
-        if ("en".equals(currentLang)) {
-            callback.onTranslationComplete(meal);
+        String appLanguage = SessionManager.getInstance().getLanguage();
+
+        if (!appLanguage.equals("fr")) {
+            Log.d(TAG, "🌍 App en " + appLanguage + ", pas de traduction");
+            mainHandler.post(() -> callback.onTranslated(meal));
             return;
         }
 
-        // Traduction du nom et des instructions
-        String originalName = meal.getStrMeal() != null ? meal.getStrMeal() : "";
-        String originalInstructions = meal.getStrInstructions() != null ? meal.getStrInstructions() : "";
+        Log.d(TAG, "🌐 Traduction : " + meal.getName());
+        translateWithMLKit(meal, callback);
+    }
 
-        // On traduit d'abord le nom
-        englishFrenchTranslator.translate(originalName)
-                .addOnSuccessListener(translatedName -> {
-                    meal.setStrMeal(translatedName);
+    private void translateWithMLKit(MealDto meal, TranslationCallback callback) {
+        MealDto result = new MealDto();
+        result.setId(meal.getId());
+        result.setThumbnail(meal.getThumbnail());
+        result.setYoutubeUrl(meal.getYoutubeUrl());
 
-                    // Ensuite on traduit les instructions
-                    englishFrenchTranslator.translate(originalInstructions)
-                            .addOnSuccessListener(translatedInstructions -> {
-                                meal.setStrInstructions(translatedInstructions);
-                                // On renvoie la recette traduite
-                                callback.onTranslationComplete(meal);
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("MealTranslation", "Erreur de traduction des instructions", e);
-                                callback.onTranslationComplete(meal);
-                            });
-                })
+        AtomicInteger pending = new AtomicInteger(4); // 4 champs à traduire via ML Kit
+
+        Runnable checkComplete = () -> {
+            if (pending.decrementAndGet() == 0) {
+                mainHandler.post(() -> callback.onTranslated(result));
+                Log.d(TAG, "✅ Traduction complète : " + result.getName());
+            }
+        };
+
+        // 1. Nom (ML Kit)
+        translateText(meal.getName(), translated -> {
+            result.setName(translated);
+            Log.d(TAG, "   ✓ Nom : " + translated);
+            checkComplete.run();
+        });
+
+        // 2. Catégorie (ML Kit)
+        translateText(meal.getCategory(), translated -> {
+            result.setCategory(translated);
+            checkComplete.run();
+        });
+
+        // 3. Zone (ML Kit)
+        translateText(meal.getArea(), translated -> {
+            result.setArea(translated);
+            checkComplete.run();
+        });
+
+        // 4. Instructions (ML Kit)
+        translateText(meal.getInstructions(), translated -> {
+            result.setInstructions(translated);
+            checkComplete.run();
+        });
+
+        // 5. Ingrédients (Dictionnaire local - immédiat)
+        List<String> ingredients = meal.getIngredients();
+        if (ingredients != null && !ingredients.isEmpty()) {
+            List<String> translatedIngredients = new ArrayList<>();
+            for (String ingredient : ingredients) {
+                translatedIngredients.add(IngredientDictionary.translateIngredient(ingredient));
+            }
+            result.setIngredients(translatedIngredients);
+            Log.d(TAG, "   ✓ Ingrédients : " + translatedIngredients.size() + " items (dictionnaire)");
+        } else {
+            result.setIngredients(new ArrayList<>());
+        }
+
+        // 6. Mesures (Dictionnaire local - immédiat)
+        List<String> measures = meal.getMeasures();
+        if (measures != null && !measures.isEmpty()) {
+            List<String> translatedMeasures = new ArrayList<>();
+            for (String measure : measures) {
+                translatedMeasures.add(IngredientDictionary.translateMeasure(measure));
+            }
+            result.setMeasures(translatedMeasures);
+            Log.d(TAG, "   ✓ Mesures : " + translatedMeasures.size() + " items (dictionnaire)");
+        } else {
+            result.setMeasures(new ArrayList<>());
+        }
+    }
+
+    private void translateText(String text, OnTextTranslated callback) {
+        if (text == null || text.trim().isEmpty()) {
+            callback.onTranslated("");
+            return;
+        }
+
+        translator.translate(text)
+                .addOnSuccessListener(callback::onTranslated)
                 .addOnFailureListener(e -> {
-                    Log.e("MealTranslation", "Erreur de traduction du nom", e);
-                    callback.onTranslationComplete(meal);
+                    Log.e(TAG, "❌ Erreur ML Kit : " + e.getMessage());
+                    callback.onTranslated(text);
                 });
     }
 
-    /**
-     * Interface pour le retour asynchrone d'une liste
-     */
-    public interface MealTranslationListCallback {
-        void onTranslationComplete(java.util.List<MealDto> translatedMeals);
+    private interface OnTextTranslated {
+        void onTranslated(String text);
     }
 
-    /**
-     * Traduit une liste de recettes complète.
-     */
-    public void translateMealListIfNeeded(java.util.List<MealDto> meals, MealTranslationListCallback callback) {
-        if (meals == null || meals.isEmpty()) {
-            callback.onTranslationComplete(meals);
-            return;
-        }
-
-        String currentLang = SessionManager.getInstance().getLanguage();
-        if ("en".equals(currentLang)) {
-            callback.onTranslationComplete(meals);
-            return;
-        }
-
-        // On utilise un compteur pour savoir quand toutes les recettes de la liste sont traduites
-        int[] completedCount = {0};
-        for (MealDto meal : meals) {
-            translateMealIfNeeded(meal, translatedMeal -> {
-                completedCount[0]++;
-                if (completedCount[0] == meals.size()) {
-                    callback.onTranslationComplete(meals);
-                }
-            });
-        }
+    public void translateMealIfNeeded(MealDto meal, TranslationCallback callback) {
+        translateMeal(meal, callback);
     }
 }
-

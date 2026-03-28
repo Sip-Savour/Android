@@ -20,6 +20,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.util.HapticUtil;
+import com.sipandsavour.util.MealTranslationManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlavorFragment extends Fragment implements
         CategoryAdapter.OnFlavorSelectionListener,
@@ -175,14 +179,41 @@ public class FlavorFragment extends Fragment implements
     }
 
     /**
-     * Charge les suggestions de repas depuis l'API
+     * Charge les suggestions de repas depuis l'API et les traduit
      */
     private void loadMealSuggestions() {
         viewModel.getMealSuggestions().observe(getViewLifecycleOwner(), state -> {
             if (state.isSuccess() && state.getData() != null && state.getData().getMeals() != null) {
-                mealSuggestionAdapter.setMeals(state.getData().getMeals());
+                List<MealDto> meals = state.getData().getMeals();
+                
+                // Traduire les repas avant d'afficher
+                translateAndDisplayMeals(meals);
             }
         });
+    }
+
+    /**
+     * Traduit les recettes puis les affiche dans l'adapter
+     */
+    private void translateAndDisplayMeals(List<MealDto> meals) {
+        if (meals.isEmpty()) {
+            mealSuggestionAdapter.setMeals(meals);
+            return;
+        }
+
+        // Compter les recettes à traduire
+        int[] completedCount = {0};
+        final int totalMeals = meals.size();
+
+        for (MealDto meal : meals) {
+            MealTranslationManager.getInstance().translateMealIfNeeded(meal, translatedMeal -> {
+                completedCount[0]++;
+                if (completedCount[0] == totalMeals) {
+                    // Toutes les traductions sont terminées, afficher l'adapter
+                    mealSuggestionAdapter.setMeals(meals);
+                }
+            });
+        }
     }
 
     /**

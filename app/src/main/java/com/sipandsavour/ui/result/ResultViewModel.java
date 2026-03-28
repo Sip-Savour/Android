@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.dto.WineDto;
-import com.sipandsavour.data.dto.meal.MealFilterResponse;
 import com.sipandsavour.ui.common.UiState;
 import com.sipandsavour.util.TranslationManager;
 
@@ -31,25 +30,24 @@ public class ResultViewModel extends ViewModel {
     }
 
     public void setCurrentWine(WineDto wine) {
-        isFavorite.setValue(false); // Par défaut, on met à false en attendant la réponse de l'API
+        isFavorite.setValue(false);
 
         if (wine != null) {
             SessionManager.getInstance().addWineToHistory(wine.getId());
-            checkIfFavorite(wine); // Vérifie si le vin est dans les favoris
+            checkIfFavorite(wine);
 
             if (wineList != null) {
                 currentIndex = -1;
-                // Recherche de la position du vin actuel dans la liste
                 for (int i = 0; i < wineList.size(); i++) {
                     if (wineList.get(i).getId() == wine.getId() ||
-                            (wineList.get(i).getTitle() != null && wineList.get(i).getTitle().equals(wine.getTitle()))) {
+                            (wineList.get(i).getTitle() != null &&
+                                    wineList.get(i).getTitle().equals(wine.getTitle()))) {
                         currentIndex = i;
                         break;
                     }
                 }
             }
 
-            // Traduction avant affichage
             TranslationManager.getInstance().translateWineIfNeeded(wine, translatedWine -> {
                 currentWine.setValue(translatedWine);
             });
@@ -64,7 +62,7 @@ public class ResultViewModel extends ViewModel {
             @Override
             public void onChanged(UiState<List<WineDto>> state) {
                 if (!state.isLoading()) {
-                    source.removeObserver(this); // On se désabonne pour ne pas boucler
+                    source.removeObserver(this);
                     if (state.isSuccess() && state.getData() != null) {
                         boolean found = false;
                         for (WineDto fav : state.getData()) {
@@ -109,11 +107,4 @@ public class ResultViewModel extends ViewModel {
         }
     }
 
-    public LiveData<UiState<MealFilterResponse>> getMealsForCategory(String category) {
-        return Repository.getInstance().getMealsByCategory(category);
-    }
-
-    public LiveData<UiState<MealFilterResponse>> getMealDetails(String id) {
-        return Repository.getInstance().getMealDetails(id);
-    }
 }

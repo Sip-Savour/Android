@@ -301,5 +301,7 @@
     <string name="ingredients">Ingrédients</string>
     <string name="instructions">Instructions</string>
     <string name="close">Fermer</string>
+    <string name="see_recipe">Voir la recette</string>
+    <string name="culinary_inspirations">Inspirations culinaires</string>
 
 </resources>

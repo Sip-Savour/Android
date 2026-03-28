@@ -1,9 +1,7 @@
 package com.sipandsavour.ui.result;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -13,33 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
-import com.sipandsavour.data.dto.meal.MealDto;
-import com.sipandsavour.ui.selection.MealDetailsBottomSheetFragment;
 import com.sipandsavour.util.HapticUtil;
 
 public class ResultFragment extends Fragment {
 
     private ResultViewModel viewModel;
-    private NavController navController;
 
-    // Views
+    // Wine card views
     private TextView tvTitle;
     private TextView tvCepage;
     private TextView tvDescription;
     private TextView tvType;
     private ImageButton fabFavorite;
-    private TextView tvMealName;
-    private TextView tvMealInstructions;
-    private View mealCard;
-
-    // State
-    private MealDto currentMeal;
+    private View wineCard;
 
     @Nullable
     @Override
@@ -53,184 +40,149 @@ public class ResultFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = NavHostFragment.findNavController(this);
-        viewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
 
-        bindViews(view);
-        setupFavoriteButton();
+        initViews(view);
+        setupListeners();
         observeViewModel();
-
-        setupSwipeGesture(view);
+        handleArguments();
     }
 
-    private void bindViews(View view) {
+    private void initViews(View view) {
+        wineCard = view.findViewById(R.id.wineCard);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvCepage = view.findViewById(R.id.tvCepage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvType = view.findViewById(R.id.tvType);
         fabFavorite = view.findViewById(R.id.fabFavorite);
-        tvMealName = view.findViewById(R.id.tvMealName);
-        tvMealInstructions = view.findViewById(R.id.tvMealInstructions);
-        mealCard = view.findViewById(R.id.mealCard);
-        
-        // Setup meal card click listener
-        if (mealCard != null) {
-            mealCard.setOnClickListener(v -> {
-                if (currentMeal != null) {
-                    showMealDetailsBottomSheet(currentMeal);
-                }
-            });
-        }
     }
 
-    private void setupFavoriteButton() {
+    private void setupListeners() {
         if (fabFavorite != null) {
             fabFavorite.setOnClickListener(v -> {
-                HapticUtil.playConfirm(v);
                 viewModel.toggleFavorite();
+                // Utiliser playConfirm au lieu de lightTap
+                HapticUtil.playConfirm(v);
+                animateFavoriteButton();
             });
         }
     }
 
     private void observeViewModel() {
-        viewModel.getCurrentWine().observe(getViewLifecycleOwner(), this::displayWine);
-        viewModel.getIsFavorite().observe(getViewLifecycleOwner(), this::updateFavoriteIcon);
+        // Observer le vin actuel
+        viewModel.getCurrentWine().observe(getViewLifecycleOwner(), wine -> {
+            if (wine != null) {
+                displayWine(wine);
+            }
+        });
+
+        // Observer l'état favori
+        viewModel.getIsFavorite().observe(getViewLifecycleOwner(), isFavorite -> {
+            updateFavoriteIcon(isFavorite != null && isFavorite);
+        });
+    }
+
+    private void handleArguments() {
+        if (getArguments() != null) {
+            WineDto wine = (WineDto) getArguments().getSerializable("wine");
+            if (wine != null) {
+                viewModel.setCurrentWine(wine);
+            }
+        }
     }
 
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
-        View card = getView() != null ? getView().findViewById(R.id.wineCard) : null;
-        if (card != null) {
-            card.setAlpha(0f);
-            card.setTranslationX(150f);
-            card.animate().alpha(1f).translationX(0f).setDuration(250).start();
+        // Titre
+        if (tvTitle != null) {
+            String title = wine.getTitle() != null ? wine.getTitle() : getString(R.string.result_unknown_wine);
+            tvTitle.setText(title);
         }
 
-        // CORRECTION: getString pour le titre et les valeurs par défaut
-        if (tvTitle != null) tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : getString(R.string.result_unknown_wine));
-        tvCepage.setText(wine.getVariety() != null ? wine.getVariety() : "-");
-        tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : "-");
-        tvType.setText(wine.getColorDisplayName());
-
-        // Fetch meal suggestions
-        fetchMealSuggestions();
-    }
-
-    private void fetchMealSuggestions() {
-        // For demonstration, use "Beef" category
-        viewModel.getMealsForCategory("Beef").observe(getViewLifecycleOwner(), state -> {
-            if (state.isSuccess() && state.getData() != null && state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
-                // Get the first meal and fetch its details
-                String mealId = state.getData().getMeals().get(0).getIdMeal();
-                fetchMealDetails(mealId);
-            } else if (state.isError()) {
-                tvMealInstructions.setText("Impossible de charger les suggestions culinaires.");
-            }
-        });
-    }
-
-    private void fetchMealDetails(String mealId) {
-        viewModel.getMealDetails(mealId).observe(getViewLifecycleOwner(), state -> {
-            if (state.isSuccess() && state.getData() != null && state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
-                MealDto meal = state.getData().getMeals().get(0);
-                currentMeal = meal;
-                
-                tvMealName.setText(meal.getStrMeal());
-                String instructions = meal.getStrInstructions();
-                if (instructions != null && !instructions.isEmpty()) {
-                    tvMealInstructions.setText(instructions);
-                } else {
-                    tvMealInstructions.setText("Aucune instruction disponible.");
-                }
+        // Cépage (variety au lieu de cepage)
+        if (tvCepage != null) {
+            String variety = wine.getVariety();
+            if (variety != null && !variety.isEmpty()) {
+                tvCepage.setText(variety);
             } else {
-                tvMealInstructions.setText("Impossible de charger les détails du repas.");
+                tvCepage.setText("Non spécifié");
             }
-        });
+        }
+
+        // Description
+        if (tvDescription != null) {
+            String description = wine.getDescription();
+            if (description != null && !description.isEmpty()) {
+                tvDescription.setText(description);
+            } else {
+                tvDescription.setText(getString(R.string.result_no_description));
+            }
+        }
+
+        // Type (color au lieu de type)
+        if (tvType != null) {
+            String colorDisplay = wine.getColorDisplayName();
+            tvType.setText(colorDisplay);
+        }
+
+        // Mise à jour du background selon la couleur
+        updateCardBackground(wine.getColor());
+    }
+
+    private void updateCardBackground(String wineColor) {
+        if (wineCard == null || wineColor == null) return;
+
+        switch (wineColor.toLowerCase()) {
+            case "red":
+            case "rouge":
+                wineCard.setBackgroundResource(R.drawable.bg_card_gradient_rouge);
+                break;
+            case "white":
+            case "blanc":
+                wineCard.setBackgroundResource(R.drawable.bg_card_gradient_blanc);
+                break;
+            case "rose":
+            case "rosé":
+            default:
+                wineCard.setBackgroundResource(R.drawable.bg_card_gradient_rose);
+                break;
+        }
     }
 
     private void updateFavoriteIcon(boolean isFavorite) {
         if (fabFavorite != null) {
             fabFavorite.setImageResource(
-                    isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
+                isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
             );
-
-            if (isFavorite) {
-                fabFavorite.setColorFilter(android.graphics.Color.parseColor("#E53935"));
-            } else {
-                fabFavorite.setColorFilter(android.graphics.Color.parseColor("#FFFFFF"));
-            }
         }
     }
 
-    private void showSnackbar(String message) {
-        if (getView() != null) {
-            Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
+    private void animateFavoriteButton() {
+        if (fabFavorite != null) {
+            fabFavorite.animate()
+                    .scaleX(1.3f)
+                    .scaleY(1.3f)
+                    .setDuration(100)
+                    .withEndAction(() ->
+                            fabFavorite.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(100)
+                                    .start()
+                    )
+                    .start();
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void setupSwipeGesture(View view) {
-        View.OnTouchListener invincibleSwipeListener = new View.OnTouchListener() {
-            private float startX = 0;
-            private float startY = 0;
-            private boolean isSwiping = false;
-            private static final int SWIPE_THRESHOLD = 120;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = event.getRawX();
-                        startY = event.getRawY();
-                        isSwiping = false;
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        float diffX = event.getRawX() - startX;
-                        float diffY = event.getRawY() - startY;
-
-                        if (!isSwiping && Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
-                            isSwiping = true;
-                            v.getParent().requestDisallowInterceptTouchEvent(true);
-                        }
-
-                        if (isSwiping) return true;
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        if (isSwiping) {
-                            float finalDiffX = event.getRawX() - startX;
-                            if (Math.abs(finalDiffX) > SWIPE_THRESHOLD) {
-                                if (finalDiffX > 0) {
-                                    navController.popBackStack();
-                                } else {
-                                    boolean hasNext = viewModel.nextWine();
-                                    if (!hasNext) {
-                                        // CORRECTION: On prévient avec la bonne langue
-                                        showSnackbar(getString(R.string.result_last_wine));
-                                    }
-                                }
-                            }
-                            isSwiping = false;
-                            return true;
-                        }
-                        break;
-                }
-                return false;
-            }
-        };
-
-        View scrollView = view.findViewById(R.id.scrollView);
-        if (scrollView != null) scrollView.setOnTouchListener(invincibleSwipeListener);
-        view.setOnTouchListener(invincibleSwipeListener);
-    }
-
-    /**
-     * Affiche les détails complets d'une recette dans un bottom sheet
-     */
-    private void showMealDetailsBottomSheet(MealDto meal) {
-        MealDetailsBottomSheetFragment bottomSheet = MealDetailsBottomSheetFragment.newInstance(meal);
-        bottomSheet.show(getChildFragmentManager(), "MealDetails");
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        tvTitle = null;
+        tvCepage = null;
+        tvDescription = null;
+        tvType = null;
+        fabFavorite = null;
+        wineCard = null;
     }
 }

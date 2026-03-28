@@ -163,55 +163,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_xlarge" />
 
-            <!-- Meal Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mealCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="@dimen/elevation_high"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@drawable/bg_card_gradient_rose"
-                    android:padding="@dimen/padding_large">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Inspirations culinaires"
-                        android:textStyle="bold"
-                        style="@style/TextAppearance.SipSavour.WineLabel" />
-
-                    <TextView
-                        android:id="@+id/tvMealName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        style="@style/TextAppearance.SipSavour.WineTitle" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Étapes de préparation :"
-                        style="@style/TextAppearance.SipSavour.WineLabel" />
-
-                    <TextView
-                        android:id="@+id/tvMealInstructions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:text="Chargement..."
-                        style="@style/TextAppearance.SipSavour.WineBody" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

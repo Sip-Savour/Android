@@ -14,10 +14,13 @@ import com.sipandsavour.util.Constants;
 public class SipSavourApp extends Application {
 
     private static final String TAG = "SipSavourApp";
+    private static SipSavourApp instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        instance = this;
 
         // Initialiser SessionManager
         SessionManager.init(this);
@@ -42,5 +45,9 @@ public class SipSavourApp extends Application {
         } catch (Exception e) {
             Log.e(TAG, "Failed to initialize MealApiClient", e);
         }
+    }
+
+    public static SipSavourApp getInstance() {
+        return instance;
     }
 }

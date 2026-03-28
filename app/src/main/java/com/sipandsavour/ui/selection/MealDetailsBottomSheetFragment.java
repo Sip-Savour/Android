@@ -1,6 +1,12 @@
 package com.sipandsavour.ui.selection;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,26 +16,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.util.MealTranslationManager;
 
-/**
- * Bottom Sheet pour afficher les détails complètes d'une recette
- */
-public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
+import java.util.List;
 
-    private static final String ARG_MEAL_ID = "meal_id";
+public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
+    private static final String TAG = "MealDetails";
     private static final String ARG_MEAL = "meal";
+    private MealDto meal;
 
     private TextView tvMealDetailTitle;
+    private TextView tvMealDetailCategory;
     private TextView tvMealDetailInstructions;
     private LinearLayout ingredientsContainer;
     private ImageButton btnCloseModal;
-
-    private MealDto meal;
 
     public static MealDetailsBottomSheetFragment newInstance(MealDto meal) {
         MealDetailsBottomSheetFragment fragment = new MealDetailsBottomSheetFragment();
@@ -37,6 +42,14 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         args.putSerializable(ARG_MEAL, meal);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            meal = (MealDto) getArguments().getSerializable(ARG_MEAL);
+        }
     }
 
     @Nullable
@@ -50,79 +63,201 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        displayMealDetails();
+    }
 
+    private void initViews(View view) {
         tvMealDetailTitle = view.findViewById(R.id.tvMealDetailTitle);
+        tvMealDetailCategory = view.findViewById(R.id.tvMealDetailCategory);
         tvMealDetailInstructions = view.findViewById(R.id.tvMealDetailInstructions);
         ingredientsContainer = view.findViewById(R.id.ingredientsContainer);
         btnCloseModal = view.findViewById(R.id.btnCloseModal);
 
-        btnCloseModal.setOnClickListener(v -> dismiss());
-
-        // Récupérer la recette depuis les arguments
-        if (getArguments() != null) {
-            meal = (MealDto) getArguments().getSerializable(ARG_MEAL);
-        }
-
-        if (meal != null) {
-            displayMealDetails();
+        if (btnCloseModal != null) {
+            btnCloseModal.setOnClickListener(v -> dismiss());
         }
     }
 
     private void displayMealDetails() {
-        // Traduire la recette si nécessaire
+        if (meal == null) {
+            Log.e(TAG, "Meal is null!");
+            dismiss();
+            return;
+        }
+
+        Log.d(TAG, "Displaying meal: " + meal.getStrMeal());
+
+        // Afficher les données originales immédiatement
+        showMealData(meal);
+
+        // Puis traduire et mettre à jour
         MealTranslationManager.getInstance().translateMealIfNeeded(meal, translatedMeal -> {
-            if (translatedMeal != null) {
-                tvMealDetailTitle.setText(translatedMeal.getStrMeal());
-                tvMealDetailInstructions.setText(translatedMeal.getStrInstructions());
-                displayIngredients(translatedMeal);
+            if (translatedMeal == null || !isAdded() || getContext() == null) {
+                return;
             }
+
+            Log.d(TAG, "Translation received: " + translatedMeal.getName());
+            showMealData(translatedMeal);
         });
     }
 
-    private void displayIngredients(MealDto meal) {
+    private void showMealData(MealDto mealToDisplay) {
+        // Titre
+        if (tvMealDetailTitle != null) {
+            tvMealDetailTitle.setText(mealToDisplay.getName());
+        }
+
+        // Catégorie et Zone
+        if (tvMealDetailCategory != null) {
+            String category = mealToDisplay.getCategory();
+            String area = mealToDisplay.getArea();
+            StringBuilder subtitle = new StringBuilder();
+
+            if (category != null && !category.isEmpty()) {
+                subtitle.append(category);
+            }
+            if (area != null && !area.isEmpty()) {
+                if (subtitle.length() > 0) subtitle.append(" • ");
+                subtitle.append(area);
+            }
+
+            tvMealDetailCategory.setText(subtitle.toString());
+            tvMealDetailCategory.setVisibility(subtitle.length() > 0 ? View.VISIBLE : View.GONE);
+        }
+
+        // Instructions formatées
+        if (tvMealDetailInstructions != null) {
+            String instructions = mealToDisplay.getInstructions();
+            tvMealDetailInstructions.setText(formatInstructions(instructions));
+        }
+
+        // Ingrédients formatés
+        displayFormattedIngredients(mealToDisplay);
+    }
+
+    /**
+     * Formate les instructions en étapes numérotées
+     */
+    private String formatInstructions(String instructions) {
+        if (instructions == null || instructions.trim().isEmpty()) {
+            return "Aucune instruction disponible.";
+        }
+
+        // Nettoyer le texte
+        instructions = instructions.trim();
+
+        // Vérifier si déjà formaté avec des numéros
+        if (instructions.matches("^1\\..*")) {
+            return instructions;
+        }
+
+        // Diviser par phrases ou retours à la ligne
+        String[] sentences = instructions.split("(?<=[.!?])\\s+|\\r\\n\\r\\n|\\n\\n");
+
+        StringBuilder formatted = new StringBuilder();
+        int step = 1;
+
+        for (String sentence : sentences) {
+            sentence = sentence.trim();
+
+            // Ignorer les lignes vides ou trop courtes
+            if (sentence.isEmpty() || sentence.length() < 10) continue;
+
+            // Ignorer si c'est déjà un numéro de step
+            if (sentence.matches("^\\d+\\.?\\s*$")) continue;
+
+            // Nettoyer les numéros existants au début
+            sentence = sentence.replaceFirst("^\\d+\\.?\\s*", "");
+
+            // Capitaliser la première lettre
+            if (sentence.length() > 0) {
+                sentence = Character.toUpperCase(sentence.charAt(0)) + sentence.substring(1);
+            }
+
+            // Ajouter le point si nécessaire
+            if (!sentence.endsWith(".") && !sentence.endsWith("!") && !sentence.endsWith("?")) {
+                sentence += ".";
+            }
+
+            formatted.append(step).append(". ").append(sentence).append("\n\n");
+            step++;
+        }
+
+        return formatted.toString().trim();
+    }
+
+    /**
+     * Affiche les ingrédients formatés avec quantités
+     */
+    private void displayFormattedIngredients(MealDto mealToDisplay) {
+        if (ingredientsContainer == null) return;
+
+        List<String> ingredients = mealToDisplay.getIngredients();
+        List<String> measures = mealToDisplay.getMeasures();
+
+        // Clear previous ingredients
         ingredientsContainer.removeAllViews();
 
-        // Les ingrédients sont dans strIngredient1-20 et strMeasure1-20
-        String[] ingredients = {
-                meal.getStrIngredient1(), meal.getStrIngredient2(), meal.getStrIngredient3(),
-                meal.getStrIngredient4(), meal.getStrIngredient5(), meal.getStrIngredient6(),
-                meal.getStrIngredient7(), meal.getStrIngredient8(), meal.getStrIngredient9(),
-                meal.getStrIngredient10(), meal.getStrIngredient11(), meal.getStrIngredient12(),
-                meal.getStrIngredient13(), meal.getStrIngredient14(), meal.getStrIngredient15(),
-                meal.getStrIngredient16(), meal.getStrIngredient17(), meal.getStrIngredient18(),
-                meal.getStrIngredient19(), meal.getStrIngredient20()
-        };
+        if (ingredients == null || ingredients.isEmpty()) {
+            TextView noIngredients = new TextView(requireContext());
+            noIngredients.setText("Aucun ingrédient disponible.");
+            noIngredients.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.darker_gray));
+            ingredientsContainer.addView(noIngredients);
+            return;
+        }
 
-        String[] measures = {
-                meal.getStrMeasure1(), meal.getStrMeasure2(), meal.getStrMeasure3(),
-                meal.getStrMeasure4(), meal.getStrMeasure5(), meal.getStrMeasure6(),
-                meal.getStrMeasure7(), meal.getStrMeasure8(), meal.getStrMeasure9(),
-                meal.getStrMeasure10(), meal.getStrMeasure11(), meal.getStrMeasure12(),
-                meal.getStrMeasure13(), meal.getStrMeasure14(), meal.getStrMeasure15(),
-                meal.getStrMeasure16(), meal.getStrMeasure17(), meal.getStrMeasure18(),
-                meal.getStrMeasure19(), meal.getStrMeasure20()
-        };
+        for (int i = 0; i < ingredients.size(); i++) {
+            String ingredient = ingredients.get(i);
+            String measure = (measures != null && i < measures.size()) ? measures.get(i) : "";
 
-        // On affiche que si l'ingrédient n'est pas vide
-        for (int i = 0; i < ingredients.length; i++) {
-            String ingredient = ingredients[i];
-            String measure = measures[i];
+            if (ingredient == null || ingredient.trim().isEmpty()) continue;
 
-            if (ingredient != null && !ingredient.isEmpty() && !ingredient.equals("null")) {
-                addIngredientRow(ingredient, measure);
+            // Créer une ligne horizontale pour chaque ingrédient
+            LinearLayout row = new LinearLayout(requireContext());
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setPadding(0, 12, 0, 12);
+            row.setGravity(Gravity.CENTER_VERTICAL);
+
+            // Bullet point
+            TextView bullet = new TextView(requireContext());
+            bullet.setText("•  ");
+            bullet.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary));
+            bullet.setTextSize(16f);
+            row.addView(bullet);
+
+            // Quantité (en gras)
+            if (measure != null && !measure.trim().isEmpty()) {
+                TextView tvMeasure = new TextView(requireContext());
+                tvMeasure.setText(measure.trim() + " ");
+                tvMeasure.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white));
+                tvMeasure.setTextSize(14f);
+                tvMeasure.setTypeface(null, Typeface.BOLD);
+                row.addView(tvMeasure);
+            }
+
+            // Ingrédient
+            TextView tvIngredient = new TextView(requireContext());
+            tvIngredient.setText(ingredient.trim());
+            tvIngredient.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white));
+            tvIngredient.setTextSize(14f);
+            row.addView(tvIngredient);
+
+            ingredientsContainer.addView(row);
+
+            // Ligne de séparation (sauf pour le dernier)
+            if (i < ingredients.size() - 1) {
+                View divider = new View(requireContext());
+                divider.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.darker_gray));
+                divider.setAlpha(0.3f);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                params.setMargins(32, 0, 0, 0);
+                divider.setLayoutParams(params);
+                ingredientsContainer.addView(divider);
             }
         }
-    }
 
-    private void addIngredientRow(String ingredient, String measure) {
-        TextView ingredientView = new TextView(requireContext());
-        ingredientView.setText("• " + ingredient + (measure != null && !measure.isEmpty() && !measure.equals("null") ? " - " + measure : ""));
-        ingredientView.setTextColor(requireContext().getColor(android.R.color.white));
-        ingredientView.setTextSize(14);
-        ingredientView.setPadding(0, 8, 0, 8);
-
-        ingredientsContainer.addView(ingredientView);
+        Log.d(TAG, "Ingredients displayed: " + ingredients.size());
     }
 }
-
-

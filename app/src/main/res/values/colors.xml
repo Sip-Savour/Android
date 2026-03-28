@@ -112,6 +112,11 @@
     <color name="wine_card_value">#E0CFA0</color>
     <color name="wine_card_body">#E8DDD0</color>
 
+    <!-- === TEXT COLORS === -->
+    <color name="text_primary">#1A1214</color>
+    <color name="text_secondary">#6E5E56</color>
+    <color name="text_tertiary">#B5A598</color>
+
     <!-- === BOTTOM NAV === -->
     <color name="bottom_nav_bg_start">#471425</color>
     <color name="bottom_nav_bg_end">#6B1D32</color>
