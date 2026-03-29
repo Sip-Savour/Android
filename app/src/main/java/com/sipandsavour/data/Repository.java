@@ -479,5 +479,114 @@ public final class Repository {
     public String getEmail() {
         return sessionManager.getEmail();
     }
+
+    /// =======================================================
+    //  ACCORD METS-VINS HEBDOMADAIRE
+    // =======================================================
+
+    /**
+     * Récupère la recommandation hebdomadaire AVEC un plat accordé
+     */
+    public LiveData<UiState<WeeklyPairingResult>> getWeeklyPairing() {
+        MutableLiveData<UiState<WeeklyPairingResult>> finalResult = new MutableLiveData<>();
+        finalResult.setValue(UiState.loading());
+
+        // 1. Récupérer le vin de la semaine
+        LiveData<UiState<WineDto>> wineSource = getWeeklyRecommendation();
+
+        wineSource.observeForever(new androidx.lifecycle.Observer<UiState<WineDto>>() {
+            @Override
+            public void onChanged(UiState<WineDto> wineState) {
+                if (wineState.isLoading()) return;
+
+                wineSource.removeObserver(this);
+
+                if (wineState.isSuccess() && wineState.getData() != null) {
+                    WineDto wine = wineState.getData();
+
+                    // 2. Déterminer la catégorie de plat compatible
+                    String category = com.sipandsavour.util.WineFoodPairingUtil.getWeeklyCategory(wine);
+                    android.util.Log.d("WeeklyPairing", "🍷 Vin: " + wine.getTitle() + " | Couleur: " + wine.getColor() + " → Catégorie: " + category);
+
+                    // 3. Récupérer les plats de cette catégorie
+                    LiveData<UiState<MealFilterResponse>> mealsSource = getMealsByCategory(category);
+
+                    mealsSource.observeForever(new androidx.lifecycle.Observer<UiState<MealFilterResponse>>() {
+                        @Override
+                        public void onChanged(UiState<MealFilterResponse> mealsState) {
+                            if (mealsState.isLoading()) return;
+
+                            mealsSource.removeObserver(this);
+
+                            if (mealsState.isSuccess() && mealsState.getData() != null &&
+                                mealsState.getData().getMeals() != null && !mealsState.getData().getMeals().isEmpty()) {
+
+                                java.util.List<com.sipandsavour.data.dto.meal.MealDto> meals = mealsState.getData().getMeals();
+
+                                // 4. Choisir un plat avec seed hebdomadaire
+                                java.util.Calendar calendar = java.util.Calendar.getInstance();
+                                int year = calendar.get(java.util.Calendar.YEAR);
+                                int week = calendar.get(java.util.Calendar.WEEK_OF_YEAR);
+                                java.util.Random random = new java.util.Random(year * 1000L + week + 2);
+                                int mealIndex = random.nextInt(meals.size());
+
+                                com.sipandsavour.data.dto.meal.MealDto selectedMeal = meals.get(mealIndex);
+                                android.util.Log.d("WeeklyPairing", "🍽️ Plat sélectionné: " + selectedMeal.getStrMeal());
+
+                                // 5. Récupérer les détails complets du plat
+                                LiveData<UiState<MealFilterResponse>> detailsSource = getMealDetails(selectedMeal.getIdMeal());
+
+                                detailsSource.observeForever(new androidx.lifecycle.Observer<UiState<MealFilterResponse>>() {
+                                    @Override
+                                    public void onChanged(UiState<MealFilterResponse> detailsState) {
+                                        if (detailsState.isLoading()) return;
+
+                                        detailsSource.removeObserver(this);
+
+                                        com.sipandsavour.data.dto.meal.MealDto fullMeal = selectedMeal;
+                                        if (detailsState.isSuccess() && detailsState.getData() != null &&
+                                            detailsState.getData().getMeals() != null && !detailsState.getData().getMeals().isEmpty()) {
+                                            fullMeal = detailsState.getData().getMeals().get(0);
+                                        }
+
+                                        // 6. Créer le résultat final
+                                        WeeklyPairingResult result = new WeeklyPairingResult(wine, fullMeal);
+                                        finalResult.setValue(UiState.success(result));
+                                    }
+                                });
+
+                            } else {
+                                // Pas de plat trouvé, on renvoie juste le vin
+                                WeeklyPairingResult result = new WeeklyPairingResult(wine, null);
+                                finalResult.setValue(UiState.success(result));
+                            }
+                        }
+                    });
+
+                } else {
+                    finalResult.setValue(UiState.error(wineState.getMessage() != null ? wineState.getMessage() : "Erreur"));
+                }
+            }
+        });
+
+        return finalResult;
+    }
+
+    /**
+     * Classe pour le résultat de l'accord hebdomadaire
+     */
+    public static class WeeklyPairingResult {
+        private final WineDto wine;
+        private final com.sipandsavour.data.dto.meal.MealDto meal;
+
+        public WeeklyPairingResult(WineDto wine, com.sipandsavour.data.dto.meal.MealDto meal) {
+            this.wine = wine;
+            this.meal = meal;
+        }
+
+        public WineDto getWine() { return wine; }
+        public com.sipandsavour.data.dto.meal.MealDto getMeal() { return meal; }
+    }
+
 }
 

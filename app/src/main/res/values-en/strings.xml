@@ -278,4 +278,11 @@
     <string name="shake_dialog_got_it">Got it!</string>
     <string name="shake_dialog_dont_show">Don\'t show again</string>
 
+    <!-- === WEEKLY DETAILS === -->
+    <string name="weekly_tap_for_details">View details</string>
+    <string name="weekly_tap_for_recipe">View recipe</string>
+    <string name="weekly_no_meal">No suggested dish</string>
+    <string name="weekly_no_ingredients">Ingredients not available</string>
+    <string name="info_variety_label">Variety</string>
+
 </resources>

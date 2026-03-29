@@ -310,4 +310,11 @@
     <string name="shake_dialog_got_it">Compris !</string>
     <string name="shake_dialog_dont_show">Ne plus afficher</string>
 
+    <!-- === WEEKLY DETAILS === -->
+    <string name="weekly_tap_for_details">Voir détails</string>
+    <string name="weekly_tap_for_recipe">Voir recette</string>
+    <string name="weekly_no_meal">Aucun plat suggéré</string>
+    <string name="weekly_no_ingredients">Ingrédients non disponibles</string>
+    <string name="info_variety_label">Cépage</string>
+
 </resources>
