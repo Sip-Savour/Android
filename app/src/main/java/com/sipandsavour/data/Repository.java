@@ -1,16 +1,15 @@
 package com.sipandsavour.data;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.sipandsavour.data.api.ApiClient;
 import com.sipandsavour.data.api.AuthApi;
-import com.sipandsavour.data.api.WineApi;
 import com.sipandsavour.data.api.MealApi;
 import com.sipandsavour.data.api.MealApiClient;
+import com.sipandsavour.data.api.WineApi;
+import com.sipandsavour.data.dto.AddFavoriteRequest;
 import com.sipandsavour.data.dto.AuthResponse;
 import com.sipandsavour.data.dto.DailySuggestionResponse;
 import com.sipandsavour.data.dto.LoginRequest;
@@ -18,7 +17,6 @@ import com.sipandsavour.data.dto.PredictRequest;
 import com.sipandsavour.data.dto.PredictResponse;
 import com.sipandsavour.data.dto.RegisterRequest;
 import com.sipandsavour.data.dto.WineDto;
-import com.sipandsavour.data.dto.AddFavoriteRequest;
 import com.sipandsavour.data.dto.meal.MealFilterResponse;
 import com.sipandsavour.ui.common.UiState;
 

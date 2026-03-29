@@ -15,10 +15,6 @@
 -dontwarn okhttp3.**
 -dontwarn okio.**
 
-# --- Room ---
--keep class * extends androidx.room.RoomDatabase
--dontwarn androidx.room.paging.**
-
 # --- Glide ---
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {

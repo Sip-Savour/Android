@@ -45,11 +45,6 @@
         <item name="postSplashScreenTheme">@style/Theme.SipSavour</item>
     </style>
 
-    <style name="Theme.SipSavour.NoActionBar" parent="Theme.SipSavour">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="Theme.SipSavour.Jinx" parent="Theme.SipSavour">
 
         <item name="colorPrimary">#FF007F</item>

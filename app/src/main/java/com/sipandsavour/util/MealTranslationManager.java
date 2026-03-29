@@ -4,11 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
-import com.google.mlkit.common.model.DownloadConditions;
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.util.translation.IngredientDictionary;

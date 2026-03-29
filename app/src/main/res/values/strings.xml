@@ -14,7 +14,6 @@
     <string name="nav_profile">Profil</string>
 
     <!-- === SPLASH === -->
-    <string name="splash_loading">Chargement…</string>
 
     <!-- === AUTH — LOGIN === -->
     <string name="login_title">Connexion</string>
@@ -23,7 +22,6 @@
     <string name="login_password_hint">Mot de passe</string>
     <string name="login_button">Se connecter</string>
     <string name="login_no_account">Pas de compte ?</string>
-    <string name="login_register_link">Inscris-toi !</string>
     <string name="login_forgot_password">Mot de passe oublié ?</string>
 
     <!-- === AUTH — REGISTER === -->
@@ -32,14 +30,11 @@
     <string name="register_name_hint">Prénom</string>
     <string name="register_email_hint">E-Mail</string>
     <string name="register_password_hint">Mot de passe</string>
-    <string name="register_confirm_password_hint">Confirmer le mot de passe</string>
     <!--
         Corrigé : bouton = "Inscription" pour correspondre à la maquette
         (était "S'inscrire")
     -->
     <string name="register_button">Inscription</string>
-    <string name="register_has_account">Déjà un compte ?</string>
-    <string name="register_login_link">Connecte-toi !</string>
     <string name="register_dob_hint">Date de Naissance</string>
     <string name="register_already_account">Déjà un compte ? Connectez-vous</string>
 
@@ -49,13 +44,8 @@
         ou via un TextView séparé pour éviter les problèmes
         sur anciens devices
     -->
-    <string name="home_greeting">Bonjour %1$s</string>
     <string name="home_greeting_default">Bonjour</string>
-    <string name="home_greeting_emoji">&#127863;</string>
-    <string name="home_daily_title">Suggestion du jour</string>
     <string name="home_daily_subtitle">Notre sélection pour vous</string>
-    <string name="home_discover_button">Découvrir</string>
-    <string name="home_start_search">Trouver mon vin</string>
     <string name="home_weekly_title">Sélection hebdomadaire</string>
     <string name="home_search_title">Choisissez vos saveurs</string>
     <string name="home_search_subtitle">&amp;\nRecevez vos vins recommandés</string>
@@ -65,36 +55,8 @@
     <!-- === SÉLECTION — CATÉGORIE === -->
     <string name="category_title">Que mangez-vous ?</string>
     <string name="category_subtitle">Choisissez votre catégorie de plat</string>
-    <string name="category_meat">Viande</string>
-    <string name="category_fish">Poisson</string>
-    <string name="category_veggie">Végétarien</string>
-    <string name="category_cheese">Fromage</string>
-    <string name="category_fruits">Fruits</string>
-    <string name="category_structure">Structure &amp; Corps</string>
-    <string name="category_wood">Bois, Fumée &amp; Épices</string>
-    <string name="category_vegetal">Végétal &amp; Floral</string>
-    <string name="category_terroir">Terroir &amp; Complexité</string>
-    <string name="category_color">Couleur</string>
 
     <!-- === SÉLECTION — SOUS-CATÉGORIES === -->
-    <string name="subcategory_title">Précisez votre plat</string>
-    <string name="subcategory_beef">Bœuf</string>
-    <string name="subcategory_lamb">Agneau</string>
-    <string name="subcategory_pork">Porc</string>
-    <string name="subcategory_poultry">Volaille</string>
-    <string name="subcategory_game">Gibier</string>
-    <string name="subcategory_white_fish">Poisson blanc</string>
-    <string name="subcategory_oily_fish">Poisson gras</string>
-    <string name="subcategory_seafood">Fruits de mer</string>
-    <string name="subcategory_shellfish">Crustacés</string>
-    <string name="subcategory_grilled_veggies">Légumes grillés</string>
-    <string name="subcategory_salad">Salade</string>
-    <string name="subcategory_pasta">Pâtes</string>
-    <string name="subcategory_risotto">Risotto</string>
-    <string name="subcategory_soft_cheese">Fromage doux</string>
-    <string name="subcategory_aged_cheese">Fromage affiné</string>
-    <string name="subcategory_blue_cheese">Fromage bleu</string>
-    <string name="subcategory_goat_cheese">Chèvre</string>
 
     <!-- === SÉLECTION — SAVEURS === -->
     <!--
@@ -105,49 +67,24 @@
     <string name="flavor_title">Choix des saveurs</string>
     <string name="flavor_title_search">Recherche Avancée</string>
     <string name="flavor_subtitle">Sélectionnez les saveurs de votre plat</string>
-    <string name="flavor_grilled">Grillé</string>
     <string name="flavor_smoked">Fumé</string>
     <string name="flavor_spicy">Épicé</string>
-    <string name="flavor_creamy">Crémeux</string>
-    <string name="flavor_herbal">Herbacé</string>
-    <string name="flavor_acidic">Acide</string>
-    <string name="flavor_sweet">Sucré</string>
-    <string name="flavor_rich">Riche</string>
-    <string name="flavor_light">Léger</string>
     <string name="flavor_buttery">Beurré</string>
-    <string name="flavor_roasted">Rôti</string>
-    <string name="flavor_braised">Mijoté</string>
-    <string name="flavor_caramelized">Caramélisé</string>
-    <string name="flavor_peppery">Poivré</string>
-    <string name="flavor_next_button">Suivant</string>
 
     <!-- === SÉLECTION — COULEUR VIN === -->
-    <string name="color_title">Préférence de vin</string>
-    <string name="color_subtitle">Quel type de vin préférez-vous ?</string>
     <string name="color_red">Rouge</string>
     <string name="color_white">Blanc</string>
     <string name="color_rose">Rosé</string>
-    <string name="color_no_preference">Pas de préférence</string>
-    <string name="color_search_button">Trouver mon vin</string>
 
     <!-- === CHARGEMENT === -->
     <string name="loading">Chargement…</string>
-    <string name="loading_title">Recherche en cours…</string>
-    <string name="loading_subtitle">Nous cherchons le vin parfait pour vous</string>
 
     <!-- === RÉSULTAT === -->
     <string name="result_title">Votre vin</string>
-    <string name="result_type_label">Type :</string>
-    <string name="result_keywords_label">Mots clefs :</string>
-    <string name="result_description_label">Description</string>
-    <string name="result_winery_label">Domaine :</string>
-    <string name="result_region_label">Région :</string>
-    <string name="result_country_label">Pays :</string>
     <string name="result_add_favorite">Ajouter aux favoris</string>
     <string name="result_remove_favorite">Retirer des favoris</string>
     <string name="result_added_snackbar">Vin ajouté aux favoris</string>
     <string name="result_removed_snackbar">Vin retiré des favoris</string>
-    <string name="result_search_again">Nouvelle recherche</string>
 
     <!-- === WEEKLY CHOICE === -->
     <string name="weekly_title">Choix de la semaine</string>
@@ -164,10 +101,8 @@
     <string name="info_cepage_label">Cépage :</string>
     <string name="info_description_label">Description :</string>
     <string name="info_type_label">Type :</string>
-    <string name="info_keywords_label">Mots-clefs :</string>
 
     <!-- === SEARCH === -->
-    <string name="search_title">Recherche Avancée</string>
     <string name="search_filter_button">Filtrer</string>
     <string name="search_match_button">Match</string>
 
@@ -180,12 +115,9 @@
     <string name="favorites_swipe_hint">Glissez pour supprimer</string>
 
     <!-- === PROFIL === -->
-    <string name="profile_title">Mon profil</string>
     <string name="profile_account_title">Compte</string>
     <string name="profile_preferences">Préférences</string>
     <string name="profile_history">Historique</string>
-    <string name="profile_dob">Date de naissance</string>
-    <string name="profile_dob_hint">Date de Naissance</string>
     <string name="profile_logout">Se déconnecter</string>
     <string name="profile_logout_confirm_title">Déconnexion</string>
     <string name="profile_logout_confirm_message">Voulez-vous vraiment vous déconnecter ?</string>
@@ -193,34 +125,21 @@
 
     <!-- === ERREURS === -->
     <string name="error_title">Oups !</string>
-    <string name="error_network">Vérifiez votre connexion internet</string>
-    <string name="error_server">Erreur serveur, réessayez plus tard</string>
     <string name="error_unknown">Une erreur inattendue est survenue</string>
-    <string name="error_retry">Réessayer</string>
-    <string name="error_ok">OK</string>
     <string name="error_cancel">Annuler</string>
 
     <!-- === VALIDATION === -->
-    <string name="validation_email_invalid">Adresse e-mail invalide</string>
     <string name="validation_email_required">L\'e-mail est requis</string>
     <string name="validation_password_short">Le mot de passe doit contenir au moins 6 caractères</string>
     <string name="validation_password_required">Le mot de passe est requis</string>
     <string name="validation_name_required">Le prénom est requis</string>
-    <string name="validation_passwords_mismatch">Les mots de passe ne correspondent pas</string>
 
     <!-- === NOTIFICATIONS === -->
-    <string name="notification_channel_name">Suggestion du jour</string>
-    <string name="notification_channel_description">Recevez une suggestion de vin chaque jour</string>
-    <string name="notification_daily_title">Suggestion du jour</string>
-    <string name="notification_daily_text">Découvrez le vin idéal pour aujourd\'hui</string>
 
     <!-- === ACCESSIBILITÉ === -->
     <string name="cd_logo">Logo Sip and Savour</string>
     <string name="cd_wine_image">Image du vin recommandé</string>
-    <string name="cd_category_icon">Icône catégorie %1$s</string>
     <string name="cd_favorite_button">Bouton favori</string>
-    <string name="cd_back_button">Retour</string>
-    <string name="cd_wine_color">Couleur du vin %1$s</string>
     <string name="profile_settings">Paramètres</string>
 
     <string name="preferences_color_title">Ma couleur préférée</string>
@@ -232,14 +151,11 @@
 
     <string name="settings_language_title">Changer la langue</string>
     <string name="result_unknown_wine">Vin Inconnu</string>
-    <string name="result_last_wine">C\'est le dernier vin de la liste !</string>
 
     <string name="validation_dob_required">Date de naissance requise</string>
     <string name="weekly_loading_title">Recherche de la meilleure bouteille...</string>
     <string name="weekly_loading_desc">Nous interrogeons notre sommelier virtuel pour vous...</string>
     <string name="result_no_description">Aucune description disponible pour ce vin.</string>
-    <string name="weekly_pairing">Accords Mets-Vins</string>
-    <string name="weekly_coming_soon">Bientôt disponible...</string>
 
     <string name="settings_title">Paramètres</string>
 
@@ -316,5 +232,7 @@
     <string name="weekly_no_meal">Aucun plat suggéré</string>
     <string name="weekly_no_ingredients">Ingrédients non disponibles</string>
     <string name="info_variety_label">Cépage</string>
+
+    <string name="result_pairing_label">Plat suggéré :</string>
 
 </resources>

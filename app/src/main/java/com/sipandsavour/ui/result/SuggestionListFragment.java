@@ -1,6 +1,10 @@
 package com.sipandsavour.ui.result;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +20,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-
 import com.sipandsavour.R;
-import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.data.dto.BottleResponse;
+import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.ui.selection.SelectionViewModel;
 import com.sipandsavour.util.SlideBackUtil;
-import com.sipandsavour.util.TranslationManager; // <-- NOUVEL IMPORT
+import com.sipandsavour.util.TranslationManager;
 
 import java.util.ArrayList;
 import java.util.List;

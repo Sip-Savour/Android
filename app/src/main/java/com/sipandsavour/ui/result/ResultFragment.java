@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sipandsavour.R;
+import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.data.dto.meal.MealDto;
+import com.sipandsavour.ui.selection.MealDetailsBottomSheetFragment;
 import com.sipandsavour.util.HapticUtil;
+import com.sipandsavour.util.MealTranslationManager;
+import com.sipandsavour.util.WineFoodPairingUtil;
+
+import java.util.List;
+import java.util.Random;
 
 public class ResultFragment extends Fragment {
 
@@ -26,7 +35,14 @@ public class ResultFragment extends Fragment {
     private TextView tvDescription;
     private TextView tvType;
     private ImageButton fabFavorite;
-    private View wineCard;
+
+    // Meal pairing views
+    private LinearLayout layoutMealPairing;
+    private TextView tvMealPairingName;
+    private TextView tvMealPairingIngredients;
+
+    // Données actuelles
+    private MealDto currentPairedMeal;
 
     @Nullable
     @Override
@@ -40,7 +56,7 @@ public class ResultFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
 
         initViews(view);
         setupListeners();
@@ -49,34 +65,51 @@ public class ResultFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        wineCard = view.findViewById(R.id.wineCard);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvCepage = view.findViewById(R.id.tvCepage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvType = view.findViewById(R.id.tvType);
         fabFavorite = view.findViewById(R.id.fabFavorite);
+
+        // Meal pairing
+        layoutMealPairing = view.findViewById(R.id.layoutMealPairing);
+        tvMealPairingName = view.findViewById(R.id.tvMealPairingName);
+        tvMealPairingIngredients = view.findViewById(R.id.tvMealPairingIngredients);
     }
 
     private void setupListeners() {
         if (fabFavorite != null) {
             fabFavorite.setOnClickListener(v -> {
                 viewModel.toggleFavorite();
-                // Utiliser playConfirm au lieu de lightTap
                 HapticUtil.playConfirm(v);
                 animateFavoriteButton();
             });
         }
+
+        // Clic sur la section plat
+        if (layoutMealPairing != null) {
+            layoutMealPairing.setOnClickListener(v -> {
+                HapticUtil.playLightClick(v);
+                openMealDetails();
+            });
+        }
+    }
+
+    private void openMealDetails() {
+        if (currentPairedMeal == null) return;
+
+        MealDetailsBottomSheetFragment bottomSheet = MealDetailsBottomSheetFragment.newInstance(currentPairedMeal);
+        bottomSheet.show(getParentFragmentManager(), "MealDetails");
     }
 
     private void observeViewModel() {
-        // Observer le vin actuel
         viewModel.getCurrentWine().observe(getViewLifecycleOwner(), wine -> {
             if (wine != null) {
                 displayWine(wine);
+                loadPairedMeal(wine);
             }
         });
 
-        // Observer l'état favori
         viewModel.getIsFavorite().observe(getViewLifecycleOwner(), isFavorite -> {
             updateFavoriteIcon(isFavorite != null && isFavorite);
         });
@@ -91,86 +124,135 @@ public class ResultFragment extends Fragment {
         }
     }
 
+    /**
+     * Charge un plat accordé avec le vin
+     */
+    private void loadPairedMeal(WineDto wine) {
+        if (layoutMealPairing == null) return;
+
+        // Afficher le loading
+        if (tvMealPairingName != null) tvMealPairingName.setText(getString(R.string.loading));
+        if (tvMealPairingIngredients != null) tvMealPairingIngredients.setText("");
+        layoutMealPairing.setVisibility(View.VISIBLE);
+
+        // Trouver la catégorie compatible
+        String category = WineFoodPairingUtil.getWeeklyCategory(wine);
+
+        // Charger les plats de cette catégorie
+        Repository.getInstance().getMealsByCategory(category).observe(getViewLifecycleOwner(), state -> {
+            if (state.isSuccess() && state.getData() != null &&
+                state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
+
+                List<MealDto> meals = state.getData().getMeals();
+
+                // Choisir un plat aléatoire basé sur l'ID du vin
+                Random random = new Random(wine.getId());
+                int index = random.nextInt(meals.size());
+                MealDto selectedMeal = meals.get(index);
+
+                // Charger les détails du plat
+                Repository.getInstance().getMealDetails(selectedMeal.getIdMeal()).observe(getViewLifecycleOwner(), detailState -> {
+                    if (detailState.isSuccess() && detailState.getData() != null &&
+                        detailState.getData().getMeals() != null && !detailState.getData().getMeals().isEmpty()) {
+
+                        MealDto fullMeal = detailState.getData().getMeals().get(0);
+
+                        // Traduire le plat
+                        MealTranslationManager.getInstance().translateMeal(fullMeal, translatedMeal -> {
+                            if (!isAdded()) return;
+                            currentPairedMeal = translatedMeal;
+                            displayPairedMeal(translatedMeal);
+                        });
+
+                    } else {
+                        // Utiliser le plat sans détails
+                        currentPairedMeal = selectedMeal;
+                        displayPairedMeal(selectedMeal);
+                    }
+                });
+
+            } else if (state.isError()) {
+                layoutMealPairing.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void displayPairedMeal(MealDto meal) {
+        if (meal == null || layoutMealPairing == null) return;
+
+        layoutMealPairing.setVisibility(View.VISIBLE);
+
+        if (tvMealPairingName != null) {
+            tvMealPairingName.setText(meal.getName() != null ? meal.getName() : meal.getStrMeal());
+        }
+
+        if (tvMealPairingIngredients != null) {
+            List<String> ingredients = meal.getIngredients();
+            List<String> measures = meal.getMeasures();
+
+            if (ingredients != null && !ingredients.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                int max = Math.min(4, ingredients.size());
+
+                for (int i = 0; i < max; i++) {
+                    String ingredient = ingredients.get(i);
+                    String measure = (measures != null && i < measures.size()) ? measures.get(i) : "";
+
+                    if (ingredient == null || ingredient.trim().isEmpty()) continue;
+
+                    if (sb.length() > 0) sb.append("\n");
+                    sb.append("• ");
+                    if (measure != null && !measure.trim().isEmpty()) {
+                        sb.append(measure.trim()).append(" ");
+                    }
+                    sb.append(ingredient.trim());
+                }
+
+                if (ingredients.size() > 4) {
+                    sb.append("\n+ ").append(ingredients.size() - 4).append(" autres...");
+                }
+
+                tvMealPairingIngredients.setText(sb.toString());
+            } else {
+                tvMealPairingIngredients.setText(getString(R.string.weekly_no_ingredients));
+            }
+        }
+    }
+
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
-        // Titre
         if (tvTitle != null) {
-            String title = wine.getTitle() != null ? wine.getTitle() : getString(R.string.result_unknown_wine);
-            tvTitle.setText(title);
+            tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : getString(R.string.result_unknown_wine));
         }
 
-        // Cépage (variety au lieu de cepage)
         if (tvCepage != null) {
-            String variety = wine.getVariety();
-            if (variety != null && !variety.isEmpty()) {
-                tvCepage.setText(variety);
-            } else {
-                tvCepage.setText("Non spécifié");
-            }
+            tvCepage.setText(wine.getVariety() != null && !wine.getVariety().isEmpty() ? wine.getVariety() : "-");
         }
 
-        // Description
         if (tvDescription != null) {
-            String description = wine.getDescription();
-            if (description != null && !description.isEmpty()) {
-                tvDescription.setText(description);
-            } else {
-                tvDescription.setText(getString(R.string.result_no_description));
-            }
+            tvDescription.setText(wine.getDescription() != null && !wine.getDescription().isEmpty() ? wine.getDescription() : getString(R.string.result_no_description));
         }
 
-        // Type (color au lieu de type)
         if (tvType != null) {
-            String colorDisplay = wine.getColorDisplayName();
-            tvType.setText(colorDisplay);
+            tvType.setText(wine.getColorDisplayName());
         }
 
-        // Mise à jour du background selon la couleur
-        updateCardBackground(wine.getColor());
-    }
-
-    private void updateCardBackground(String wineColor) {
-        if (wineCard == null || wineColor == null) return;
-
-        switch (wineColor.toLowerCase()) {
-            case "red":
-            case "rouge":
-                wineCard.setBackgroundResource(R.drawable.bg_card_gradient_rouge);
-                break;
-            case "white":
-            case "blanc":
-                wineCard.setBackgroundResource(R.drawable.bg_card_gradient_blanc);
-                break;
-            case "rose":
-            case "rosé":
-            default:
-                wineCard.setBackgroundResource(R.drawable.bg_card_gradient_rose);
-                break;
-        }
+        // Le style reste le même pour tous les vins (défini dans le XML)
     }
 
     private void updateFavoriteIcon(boolean isFavorite) {
         if (fabFavorite != null) {
-            fabFavorite.setImageResource(
-                isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline
-            );
+            fabFavorite.setImageResource(isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
         }
     }
 
     private void animateFavoriteButton() {
         if (fabFavorite != null) {
             fabFavorite.animate()
-                    .scaleX(1.3f)
-                    .scaleY(1.3f)
+                    .scaleX(1.3f).scaleY(1.3f)
                     .setDuration(100)
-                    .withEndAction(() ->
-                            fabFavorite.animate()
-                                    .scaleX(1f)
-                                    .scaleY(1f)
-                                    .setDuration(100)
-                                    .start()
-                    )
+                    .withEndAction(() -> fabFavorite.animate().scaleX(1f).scaleY(1f).setDuration(100).start())
                     .start();
         }
     }
@@ -183,6 +265,8 @@ public class ResultFragment extends Fragment {
         tvDescription = null;
         tvType = null;
         fabFavorite = null;
-        wineCard = null;
+        layoutMealPairing = null;
+        tvMealPairingName = null;
+        tvMealPairingIngredients = null;
     }
 }

@@ -22,7 +22,6 @@ import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.util.HapticUtil;
 import com.sipandsavour.util.MealTranslationManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FlavorFragment extends Fragment implements

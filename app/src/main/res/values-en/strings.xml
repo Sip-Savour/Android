@@ -11,15 +11,12 @@
     <string name="nav_favorites">Favorites</string>
     <string name="nav_profile">Profile</string>
 
-    <string name="splash_loading">Loading…</string>
-
     <string name="login_title">Log in</string>
     <string name="login_subtitle">Welcome to Sip &amp; Savour</string>
     <string name="login_email_hint">E-Mail</string>
     <string name="login_password_hint">Password</string>
     <string name="login_button">Log in</string>
     <string name="login_no_account">No account?</string>
-    <string name="login_register_link">Register!</string>
     <string name="login_forgot_password">Forgot password?</string>
 
     <string name="register_title">Register</string>
@@ -27,20 +24,12 @@
     <string name="register_name_hint">First Name</string>
     <string name="register_email_hint">E-Mail</string>
     <string name="register_password_hint">Password</string>
-    <string name="register_confirm_password_hint">Confirm password</string>
     <string name="register_button">Register</string>
-    <string name="register_has_account">Already have an account?</string>
-    <string name="register_login_link">Log in!</string>
     <string name="register_dob_hint">Date of Birth</string>
     <string name="register_already_account">Already have an account? Log in</string>
 
-    <string name="home_greeting">Hello %1$s</string>
     <string name="home_greeting_default">Hello</string>
-    <string name="home_greeting_emoji">&#127863;</string>
-    <string name="home_daily_title">Daily Suggestion</string>
     <string name="home_daily_subtitle">Our pick for you</string>
-    <string name="home_discover_button">Discover</string>
-    <string name="home_start_search">Find my wine</string>
     <string name="home_weekly_title">Weekly Selection</string>
     <string name="home_search_title">Choose your flavors</string>
     <string name="home_search_subtitle">&amp;\nGet your recommended wines</string>
@@ -49,54 +38,13 @@
 
     <string name="category_title">What are you eating?</string>
     <string name="category_subtitle">Choose your meal category</string>
-    <string name="category_meat">Meat</string>
-    <string name="category_fish">Fish</string>
-    <string name="category_veggie">Vegetarian</string>
-    <string name="category_cheese">Cheese</string>
-    <string name="category_fruits">Fruits</string>
-    <string name="category_structure">Structure &amp; Body</string>
-    <string name="category_wood">Wood, Smoke &amp; Spices</string>
-    <string name="category_vegetal">Vegetal &amp; Floral</string>
-    <string name="category_terroir">Terroir &amp; Complexity</string>
-    <string name="category_color">Color</string>
-
-    <string name="subcategory_title">Specify your meal</string>
-    <string name="subcategory_beef">Beef</string>
-    <string name="subcategory_lamb">Lamb</string>
-    <string name="subcategory_pork">Pork</string>
-    <string name="subcategory_poultry">Poultry</string>
-    <string name="subcategory_game">Game</string>
-    <string name="subcategory_white_fish">White fish</string>
-    <string name="subcategory_oily_fish">Oily fish</string>
-    <string name="subcategory_seafood">Seafood</string>
-    <string name="subcategory_shellfish">Shellfish</string>
-    <string name="subcategory_grilled_veggies">Grilled veggies</string>
-    <string name="subcategory_salad">Salad</string>
-    <string name="subcategory_pasta">Pasta</string>
-    <string name="subcategory_risotto">Risotto</string>
-    <string name="subcategory_soft_cheese">Soft cheese</string>
-    <string name="subcategory_aged_cheese">Aged cheese</string>
-    <string name="subcategory_blue_cheese">Blue cheese</string>
-    <string name="subcategory_goat_cheese">Goat cheese</string>
 
     <string name="flavor_title">Flavor selection</string>
     <string name="flavor_title_search">Advanced Search</string>
     <string name="flavor_subtitle">Select the flavors of your dish</string>
-    <string name="flavor_grilled">Grilled</string>
     <string name="flavor_smoked">Smoked</string>
     <string name="flavor_spicy">Spicy</string>
-    <string name="flavor_creamy">Creamy</string>
-    <string name="flavor_herbal">Herbal</string>
-    <string name="flavor_acidic">Acidic</string>
-    <string name="flavor_sweet">Sweet</string>
-    <string name="flavor_rich">Rich</string>
-    <string name="flavor_light">Light</string>
     <string name="flavor_buttery">Buttery</string>
-    <string name="flavor_roasted">Roasted</string>
-    <string name="flavor_braised">Braised</string>
-    <string name="flavor_caramelized">Caramelized</string>
-    <string name="flavor_peppery">Peppery</string>
-    <string name="flavor_next_button">Next</string>
 
     <string name="flavor_fruity">Fruity</string>
     <string name="flavor_woody">Woody</string>
@@ -107,30 +55,17 @@
     <string name="flavor_vegetal">Vegetal</string>
     <string name="flavor_caramel">Caramel</string>
 
-    <string name="color_title">Wine preference</string>
-    <string name="color_subtitle">What type of wine do you prefer?</string>
     <string name="color_red">Red</string>
     <string name="color_white">White</string>
     <string name="color_rose">Rosé</string>
-    <string name="color_no_preference">No preference</string>
-    <string name="color_search_button">Find my wine</string>
 
     <string name="loading">Loading…</string>
-    <string name="loading_title">Searching…</string>
-    <string name="loading_subtitle">We are looking for the perfect wine for you</string>
 
     <string name="result_title">Your wine</string>
-    <string name="result_type_label">Type:</string>
-    <string name="result_keywords_label">Keywords:</string>
-    <string name="result_description_label">Description</string>
-    <string name="result_winery_label">Winery:</string>
-    <string name="result_region_label">Region:</string>
-    <string name="result_country_label">Country:</string>
     <string name="result_add_favorite">Add to favorites</string>
     <string name="result_remove_favorite">Remove from favorites</string>
     <string name="result_added_snackbar">Wine added to favorites</string>
     <string name="result_removed_snackbar">Wine removed from favorites</string>
-    <string name="result_search_again">New search</string>
 
     <string name="weekly_title">Pick of the week</string>
     <string name="weekly_meal_label">Meal:</string>
@@ -144,9 +79,7 @@
     <string name="info_cepage_label">Grape variety:</string>
     <string name="info_description_label">Description:</string>
     <string name="info_type_label">Type:</string>
-    <string name="info_keywords_label">Keywords:</string>
 
-    <string name="search_title">Advanced Search</string>
     <string name="search_filter_button">Filter</string>
     <string name="search_match_button">Match</string>
 
@@ -157,12 +90,9 @@
     <string name="favorites_undo">Undo</string>
     <string name="favorites_swipe_hint">Swipe to delete</string>
 
-    <string name="profile_title">My profile</string>
     <string name="profile_account_title">Account</string>
     <string name="profile_preferences">Preferences</string>
     <string name="profile_history">History</string>
-    <string name="profile_dob">Date of birth</string>
-    <string name="profile_dob_hint">Date of Birth</string>
     <string name="profile_logout">Log out</string>
     <string name="profile_logout_confirm_title">Log out</string>
     <string name="profile_logout_confirm_message">Do you really want to log out?</string>
@@ -178,42 +108,25 @@
     <string name="settings_language_title">Change language / Changer la langue</string>
 
     <string name="error_title">Oops!</string>
-    <string name="error_network">Check your internet connection</string>
-    <string name="error_server">Server error, try again later</string>
     <string name="error_unknown">An unexpected error occurred</string>
-    <string name="error_retry">Retry</string>
-    <string name="error_ok">OK</string>
     <string name="error_cancel">Cancel</string>
 
-    <string name="validation_email_invalid">Invalid email address</string>
     <string name="validation_email_required">Email is required</string>
     <string name="validation_password_short">Password must be at least 6 characters</string>
     <string name="validation_password_required">Password is required</string>
     <string name="validation_name_required">First name is required</string>
-    <string name="validation_passwords_mismatch">Passwords do not match</string>
-
-    <string name="notification_channel_name">Daily Suggestion</string>
-    <string name="notification_channel_description">Receive a wine suggestion every day</string>
-    <string name="notification_daily_title">Daily Suggestion</string>
-    <string name="notification_daily_text">Discover the perfect wine for today</string>
 
     <string name="cd_logo">Sip and Savour logo</string>
     <string name="cd_wine_image">Recommended wine image</string>
-    <string name="cd_category_icon">%1$s category icon</string>
     <string name="cd_favorite_button">Favorite button</string>
-    <string name="cd_back_button">Back</string>
-    <string name="cd_wine_color">%1$s wine color</string>
     <string name="profile_settings">Settings</string>
 
     <string name="result_unknown_wine">Unknown Wine</string>
-    <string name="result_last_wine">This is the last wine in the list!</string>
 
     <string name="validation_dob_required">Date of birth is required</string>
     <string name="weekly_loading_title">Searching for the best bottle...</string>
     <string name="weekly_loading_desc">Asking our virtual sommelier for you...</string>
     <string name="result_no_description">No description available for this wine.</string>
-    <string name="weekly_pairing">Wine &amp; Food Pairings</string>
-    <string name="weekly_coming_soon">Coming soon...</string>
     <string name="settings_title">Settings</string>
 
     <string name="meal_step_1">1. Meal base (1 choice)</string>
@@ -284,5 +197,7 @@
     <string name="weekly_no_meal">No suggested dish</string>
     <string name="weekly_no_ingredients">Ingredients not available</string>
     <string name="info_variety_label">Variety</string>
+
+    <string name="result_pairing_label">Suggested dish:</string>
 
 </resources>
