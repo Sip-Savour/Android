@@ -18,18 +18,23 @@ public class EasterEggDetector implements SensorEventListener {
     private final Sensor accelerometer;
     private final Sensor lightSensor;
     private final Sensor proximitySensor;
+    private final Sensor magneticSensor; // === NOUVEAU : Capteur magnétique ===
 
     private AudioRecord audioRecord;
     private volatile boolean isListeningAudio = false;
     private Thread audioThread;
 
-    // On passe cette variable en volatile car elle est lue/écrite par 2 threads différents
     private volatile long lastSnapTime = 0;
 
     private boolean isFlat = false;
     private boolean isDark = false;
     private boolean isCovered = false;
     private boolean isTriggered = false;
+
+    // === NOUVEAUTÉ : Variables pour la boussole ===
+    private float[] gravity;
+    private float[] geomagnetic;
+    private boolean isPointingNorth = false;
 
     private OnSecretUnlockedListener listener;
 
@@ -42,6 +47,7 @@ public class EasterEggDetector implements SensorEventListener {
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD); // Initialisation
     }
 
     public void setListener(OnSecretUnlockedListener listener) {
@@ -52,6 +58,7 @@ public class EasterEggDetector implements SensorEventListener {
         if (accelerometer != null) sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         if (lightSensor != null) sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_UI);
         if (proximitySensor != null) sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI);
+        if (magneticSensor != null) sensorManager.registerListener(this, magneticSensor, SensorManager.SENSOR_DELAY_UI); // NOUVEAU
 
         startAudioListening();
     }
@@ -94,11 +101,8 @@ public class EasterEggDetector implements SensorEventListener {
                                 }
                             }
 
-                            // Si un bruit très fort est détecté
                             if (maxAmplitude > 20000) {
                                 lastSnapTime = System.currentTimeMillis();
-
-                                // === NOUVEAUTÉ : On vérifie le rituel IMMÉDIATEMENT ===
                                 verifierLeRituel();
                             }
                         }
@@ -134,34 +138,47 @@ public class EasterEggDetector implements SensorEventListener {
         int type = event.sensor.getType();
 
         if (type == Sensor.TYPE_ACCELEROMETER) {
+            gravity = event.values.clone(); // Sauvegarde pour la boussole
             float z = event.values[2], x = event.values[0], y = event.values[1];
             isFlat = (z > 8.5f && Math.abs(x) < 2.0f && Math.abs(y) < 2.0f);
         } else if (type == Sensor.TYPE_LIGHT) {
             isDark = (event.values[0] < 10.0f);
         } else if (type == Sensor.TYPE_PROXIMITY) {
             isCovered = (event.values[0] < 3.0f);
+        } else if (type == Sensor.TYPE_MAGNETIC_FIELD) {
+            geomagnetic = event.values.clone(); // Sauvegarde pour la boussole
         }
 
-        // === NOUVEAUTÉ : On appelle la méthode centralisée ===
+        // === NOUVEAUTÉ : Calcul de l'orientation vers le Nord ===
+        if (gravity != null && geomagnetic != null) {
+            float[] R = new float[9];
+            float[] I = new float[9];
+            if (SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)) {
+                float[] orientation = new float[3];
+                SensorManager.getOrientation(R, orientation);
+
+                // L'azimut est en radians, on le convertit en degrés (0 à 360)
+                float azimuthInDegrees = (float)(Math.toDegrees(orientation[0]) + 360) % 360;
+
+                // Le Nord est à 0° (ou 360°). On prend une tolérance de 20 degrés.
+                isPointingNorth = (azimuthInDegrees < 20 || azimuthInDegrees > 340);
+            }
+        }
+
         verifierLeRituel();
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
-    /**
-     * Méthode centralisée qui peut être appelée à la fois par les capteurs de mouvement
-     * ET par le thread du microphone de manière sécurisée.
-     */
     private void verifierLeRituel() {
         boolean isSnappedRecently = (System.currentTimeMillis() - lastSnapTime) < 500;
 
-        if (isFlat && isDark && isCovered && isSnappedRecently) {
+        // === NOUVEAUTÉ : On ajoute isPointingNorth à la condition ===
+        if (isFlat && isDark && isCovered && isPointingNorth && isSnappedRecently) {
             if (!isTriggered && listener != null) {
                 isTriggered = true;
 
-                // On force l'exécution sur le Main Thread (UI Thread)
-                // Indispensable car cette méthode peut être appelée depuis le Thread Audio en arrière-plan !
                 new Handler(Looper.getMainLooper()).post(() -> {
                     listener.onSecretUnlocked();
                 });
