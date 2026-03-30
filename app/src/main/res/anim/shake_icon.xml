@@ -3,18 +3,18 @@
     android:interpolator="@android:anim/cycle_interpolator">
 
     <rotate
-        android:duration="100"
-        android:fromDegrees="-15"
-        android:toDegrees="15"
+        android:duration="300"
+        android:fromDegrees="-12"
+        android:toDegrees="12"
         android:pivotX="50%"
         android:pivotY="50%"
         android:repeatCount="infinite"
         android:repeatMode="reverse" />
 
     <translate
-        android:duration="100"
-        android:fromXDelta="-5"
-        android:toXDelta="5"
+        android:duration="300"
+        android:fromXDelta="-4"
+        android:toXDelta="4"
         android:repeatCount="infinite"
         android:repeatMode="reverse" />
 
