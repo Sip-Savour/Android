@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/padding_xlarge"
+    android:background="@drawable/bg_card_gradient_rose">
+
+    <!-- Animation Lottie ou Image -->
+    <ImageView
+        android:id="@+id/ivShakeIcon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_shake_phone"
+        android:contentDescription="@null"
+        app:tint="@color/secondary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/shake_dialog_title"
+        android:fontFamily="@font/playfair_display"
+        android:textSize="@dimen/text_title_large"
+        android:textColor="@android:color/white"
+        android:textStyle="bold|italic"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/shake_dialog_message"
+        android:fontFamily="@font/lato"
+        android:textSize="@dimen/text_body"
+        android:textColor="@android:color/white"
+        android:alpha="0.9"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.4" />
+
+    <!-- Ornement -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_medium">
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:background="@color/secondary" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:src="@drawable/ic_bottle"
+            app:tint="@color/secondary"
+            android:contentDescription="@null" />
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:background="@color/secondary" />
+
+    </LinearLayout>
+
+    <!-- Boutons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_medium">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDontShowAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shake_dialog_dont_show"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/transparent"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="1dp"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGotIt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:text="@string/shake_dialog_got_it"
+            android:textColor="@color/primary"
+            android:backgroundTint="@color/secondary"
+            style="@style/Widget.Material3.Button" />
+
+    </LinearLayout>
+
+</LinearLayout>

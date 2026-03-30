@@ -1,7 +1,8 @@
 package com.sipandsavour.data.api;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.when;
 
 import android.content.Context;
 

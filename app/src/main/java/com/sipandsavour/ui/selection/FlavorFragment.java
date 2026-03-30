@@ -18,7 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sipandsavour.R;
+import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.util.HapticUtil;
+import com.sipandsavour.util.MealTranslationManager;
+
+import java.util.List;
 
 public class FlavorFragment extends Fragment implements
         CategoryAdapter.OnFlavorSelectionListener,
@@ -29,9 +33,11 @@ public class FlavorFragment extends Fragment implements
 
     private TextView tvHeaderTitle;
     private RecyclerView rvAccordion;
+    private RecyclerView rvMealSuggestions;
     private MaterialButton btnMatch;
 
     private CategoryAdapter categoryAdapter;
+    private MealSuggestionAdapter mealSuggestionAdapter;
     private String mode = "match";
 
     @Override
@@ -59,17 +65,15 @@ public class FlavorFragment extends Fragment implements
         viewModel.setMode(mode);
         viewModel.clearSelections();
 
-        bindViews(view);
+        tvHeaderTitle = view.findViewById(R.id.tvHeaderTitle);
+        rvAccordion = view.findViewById(R.id.rvAccordion);
+        rvMealSuggestions = view.findViewById(R.id.rvMealSuggestions);
+        btnMatch = view.findViewById(R.id.btnMatch);
+
         setupHeader();
         setupRecyclerView();
         setupButton();
         observeViewModel();
-    }
-
-    private void bindViews(View view) {
-        tvHeaderTitle = view.findViewById(R.id.tvHeaderTitle);
-        rvAccordion = view.findViewById(R.id.rvAccordion);
-        btnMatch = view.findViewById(R.id.btnMatch);
     }
 
     private void setupHeader() {
@@ -88,6 +92,24 @@ public class FlavorFragment extends Fragment implements
         rvAccordion.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvAccordion.setAdapter(categoryAdapter);
         rvAccordion.setItemAnimator(null);
+
+        // Setup meal suggestions RecyclerView
+        mealSuggestionAdapter = new MealSuggestionAdapter();
+        mealSuggestionAdapter.setOnMealClickListener(meal -> {
+            // Afficher les détails de la recette dans un bottom sheet
+            showMealDetailsBottomSheet(meal);
+        });
+
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+        rvMealSuggestions.setLayoutManager(horizontalLayoutManager);
+        rvMealSuggestions.setAdapter(mealSuggestionAdapter);
+
+        // Load meal suggestions
+        loadMealSuggestions();
     }
 
     private void setupButton() {
@@ -153,5 +175,57 @@ public class FlavorFragment extends Fragment implements
     @Override
     public void onCategoryToggled(int position) {
         viewModel.toggleCategory(position);
+    }
+
+    /**
+     * Charge les suggestions de repas depuis l'API et les traduit
+     */
+    private void loadMealSuggestions() {
+        viewModel.getMealSuggestions().observe(getViewLifecycleOwner(), state -> {
+            if (state.isSuccess() && state.getData() != null && state.getData().getMeals() != null) {
+                List<MealDto> meals = state.getData().getMeals();
+                
+                // Traduire les repas avant d'afficher
+                translateAndDisplayMeals(meals);
+            }
+        });
+    }
+
+    /**
+     * Traduit les recettes puis les affiche dans l'adapter
+     */
+    private void translateAndDisplayMeals(List<MealDto> meals) {
+        if (meals.isEmpty()) {
+            mealSuggestionAdapter.setMeals(meals);
+            return;
+        }
+
+        // Compter les recettes à traduire
+        int[] completedCount = {0};
+        final int totalMeals = meals.size();
+
+        for (MealDto meal : meals) {
+            MealTranslationManager.getInstance().translateMealIfNeeded(meal, translatedMeal -> {
+                completedCount[0]++;
+                if (completedCount[0] == totalMeals) {
+                    // Toutes les traductions sont terminées, afficher l'adapter
+                    mealSuggestionAdapter.setMeals(meals);
+                }
+            });
+        }
+    }
+
+    /**
+     * Affiche les détails complets d'une recette dans un bottom sheet
+     */
+    private void showMealDetailsBottomSheet(MealDto meal) {
+        // Récupérer les détails complets de la recette (avec ingrédients et instructions)
+        viewModel.getMealDetails(meal.getIdMeal()).observe(getViewLifecycleOwner(), state -> {
+            if (state.isSuccess() && state.getData() != null && !state.getData().getMeals().isEmpty()) {
+                MealDto fullMeal = state.getData().getMeals().get(0);
+                MealDetailsBottomSheetFragment bottomSheet = MealDetailsBottomSheetFragment.newInstance(fullMeal);
+                bottomSheet.show(getChildFragmentManager(), "MealDetails");
+            }
+        });
     }
 }

@@ -65,4 +65,6 @@ public final class Constants {
     public static final String KEY_HISTORY = "history_ids";
 
     public static final String KEY_LANGUAGE = "app_language";
+
+    public static final String KEY_SHAKE_HINT_SHOWN = "shake_hint_shown";
 }

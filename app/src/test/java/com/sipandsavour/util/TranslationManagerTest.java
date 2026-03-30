@@ -1,11 +1,16 @@
 package com.sipandsavour.util;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.android.gms.tasks.Tasks;
-import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.dto.WineDto;
 

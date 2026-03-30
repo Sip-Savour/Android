@@ -186,4 +186,4 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
-}
+}// TestTranslation.testDictionary(); // Décommenter pour tester

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.sipandsavour.data.SessionManager;
 import com.sipandsavour.data.api.ApiClient;
+import com.sipandsavour.data.api.MealApiClient;
 import com.sipandsavour.util.Constants;
 
 /**
@@ -13,10 +14,13 @@ import com.sipandsavour.util.Constants;
 public class SipSavourApp extends Application {
 
     private static final String TAG = "SipSavourApp";
+    private static SipSavourApp instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        instance = this;
 
         // Initialiser SessionManager
         SessionManager.init(this);
@@ -33,5 +37,17 @@ public class SipSavourApp extends Application {
         } else {
             Log.w(TAG, "BASE_URL is empty, ApiClient not initialized");
         }
+
+        // Initialiser MealApiClient
+        try {
+            MealApiClient.init(this);
+            Log.d(TAG, "MealApiClient initialized");
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to initialize MealApiClient", e);
+        }
+    }
+
+    public static SipSavourApp getInstance() {
+        return instance;
     }
 }

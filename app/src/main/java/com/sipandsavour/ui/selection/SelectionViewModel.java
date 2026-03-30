@@ -2,10 +2,13 @@ package com.sipandsavour.ui.selection;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.dto.PredictResponse;
+import com.sipandsavour.data.dto.meal.MealDto;
+import com.sipandsavour.data.dto.meal.MealFilterResponse;
 import com.sipandsavour.logic.FlavorMapper;
 import com.sipandsavour.ui.common.UiState;
 
@@ -42,9 +45,11 @@ public class SelectionViewModel extends ViewModel {
     }
 
     public LiveData<Set<String>> getSelectedFlavors() { return selectedFlavorsLiveData; }
+
     public boolean hasSelection() {
         return !selectedFlavors.isEmpty();
     }
+
     public void toggleFlavor(String flavorKey) {
         if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
                 flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
@@ -88,6 +93,143 @@ public class SelectionViewModel extends ViewModel {
     public LiveData<UiState<PredictResponse>> getPredictionResult() { return predictionResult; }
     public void setMode(String mode) { this.mode = mode; }
     public String getMode() { return mode; }
+
+    // =======================================================
+    //  MÉTHODES PUBLIQUES POUR L'UI
+    // =======================================================
+
+    /**
+     * Récupère les suggestions de repas (TRADUIT)
+     */
+    public LiveData<UiState<MealFilterResponse>> getMealSuggestions() {
+        return getMealSuggestionsTranslated("Beef");
+    }
+
+    /**
+     * Récupère les détails complets d'une recette par son ID (TRADUIT)
+     */
+    public LiveData<UiState<MealFilterResponse>> getMealDetails(String mealId) {
+        return getMealDetailsTranslated(mealId);
+    }
+
+    // =======================================================
+    //  TRADUCTION DES REPAS
+    // =======================================================
+
+    /**
+     * Récupère et traduit les détails d'un repas
+     */
+    private LiveData<UiState<MealFilterResponse>> getMealDetailsTranslated(String mealId) {
+        MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
+        result.setValue(UiState.loading());
+
+        LiveData<UiState<MealFilterResponse>> sourceData = Repository.getInstance().getMealDetails(mealId);
+
+        sourceData.observeForever(new Observer<UiState<MealFilterResponse>>() {
+            @Override
+            public void onChanged(UiState<MealFilterResponse> state) {
+                if (state.isLoading()) return;
+
+                sourceData.removeObserver(this);
+
+                if (state.isSuccess() && state.getData() != null &&
+                    state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
+
+                    MealDto originalMeal = state.getData().getMeals().get(0);
+
+                    // Traduire le repas via LibreTranslate
+                    com.sipandsavour.util.MealTranslationManager.getInstance()
+                        .translateMeal(originalMeal, translatedMeal -> {
+                            if (translatedMeal != null) {
+                                MealFilterResponse translatedResponse = new MealFilterResponse();
+                                translatedResponse.setMeals(java.util.Collections.singletonList(translatedMeal));
+                                result.setValue(UiState.success(translatedResponse));
+                            } else {
+                                result.setValue(state); // Fallback sur l'original
+                            }
+                        });
+
+                } else {
+                    result.setValue(state);
+                }
+            }
+        });
+
+        return result;
+    }
+
+    /**
+ * Récupère 5 recettes aléatoires et les traduit
+ */
+private LiveData<UiState<MealFilterResponse>> getMealSuggestionsTranslated(String category) {
+    MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
+    result.setValue(UiState.loading());
+
+    LiveData<UiState<MealFilterResponse>> sourceData = Repository.getInstance().getMealsByCategory(category);
+
+    sourceData.observeForever(new Observer<UiState<MealFilterResponse>>() {
+        @Override
+        public void onChanged(UiState<MealFilterResponse> state) {
+            if (state.isLoading()) return;
+
+            sourceData.removeObserver(this);
+
+            if (state.isSuccess() && state.getData() != null &&
+                state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
+
+                List<MealDto> allMeals = state.getData().getMeals();
+
+                // 🆕 Sélectionner 5 recettes aléatoires
+                List<MealDto> randomMeals = getRandomMeals(allMeals, 5);
+
+                List<MealDto> translatedMeals = new java.util.ArrayList<>();
+
+                final int[] translatedCount = {0};
+                final int totalMeals = randomMeals.size();
+
+                for (MealDto meal : randomMeals) {
+                    com.sipandsavour.util.MealTranslationManager.getInstance()
+                        .translateMeal(meal, translatedMeal -> {
+                            synchronized (translatedMeals) {
+                                translatedMeals.add(translatedMeal != null ? translatedMeal : meal);
+                                translatedCount[0]++;
+
+                                if (translatedCount[0] == totalMeals) {
+                                    MealFilterResponse translatedResponse = new MealFilterResponse();
+                                    translatedResponse.setMeals(translatedMeals);
+                                    result.setValue(UiState.success(translatedResponse));
+                                }
+                            }
+                        });
+                }
+
+            } else {
+                result.setValue(state);
+            }
+        }
+    });
+
+    return result;
+}
+
+/**
+ * Sélectionne N recettes aléatoires depuis une liste
+ */
+private List<MealDto> getRandomMeals(List<MealDto> meals, int count) {
+    if (meals == null || meals.isEmpty()) {
+        return new java.util.ArrayList<>();
+    }
+
+    // Copier la liste pour ne pas modifier l'originale
+    List<MealDto> shuffled = new java.util.ArrayList<>(meals);
+
+    // Mélanger aléatoirement
+    java.util.Collections.shuffle(shuffled);
+
+    // Retourner les N premiers (ou moins si pas assez)
+    int limit = Math.min(count, shuffled.size());
+    return shuffled.subList(0, limit);
+}
 
     // =======================================================
     //  MAPPING INTELLIGENT AVEC GESTION DE LA COULEUR OPTIONNELLE
@@ -168,7 +310,6 @@ public class SelectionViewModel extends ViewModel {
         StringBuilder sb = new StringBuilder();
 
         // On s'assure de ne prendre QUE ce qui est actuellement dans le Set
-        // Si vous venez de l'écran avancé, selectedFlavors contient vos clics.
         for (String flavor : selectedFlavors) {
             if (sb.length() > 0) sb.append(" ");
             sb.append(flavor.replace("_", " "));
@@ -185,9 +326,6 @@ public class SelectionViewModel extends ViewModel {
             else if (lowerColor.equals("rosé") || lowerColor.equals("rose")) apiColor = "Rose";
         }
 
-        // ==========================================================
-        //  LOGGERS POUR LE LOGCAT (ENVOI)
-        // ==========================================================
         android.util.Log.d("API_TEST", "=======================================");
         android.util.Log.d("API_TEST", "🚀 ENVOI À L'API :");
         android.util.Log.d("API_TEST", "👉 Features : [" + features + "]");
@@ -195,7 +333,7 @@ public class SelectionViewModel extends ViewModel {
         android.util.Log.d("API_TEST", "=======================================");
 
         LiveData<UiState<PredictResponse>> repoResult = Repository.getInstance().predict(features, apiColor);
-        repoResult.observeForever(new androidx.lifecycle.Observer<>() {
+        repoResult.observeForever(new Observer<UiState<PredictResponse>>() {
             @Override
             public void onChanged(UiState<PredictResponse> state) {
                 predictionResult.setValue(state);
@@ -206,28 +344,21 @@ public class SelectionViewModel extends ViewModel {
                 else if (state.isSuccess()) {
                     android.util.Log.d("API_TEST", "✅ SUCCÈS : L'API a répondu correctement !");
 
-                    // ==========================================================
-                    //  NOUVEAUX LOGGERS POUR LE LOGCAT (RÉCEPTION)
-                    // ==========================================================
                     if (state.getData() != null && state.getData().getBottle() != null) {
                         int count = state.getData().getBottle().size();
                         android.util.Log.d("API_TEST", "🍷 Vins reçus : " + count);
 
                         for (int i = 0; i < count; i++) {
-                            // CORRECTION : On utilise BottleResponse !
                             com.sipandsavour.data.dto.BottleResponse bottle = state.getData().getBottle().get(i);
                             android.util.Log.d("API_TEST", "   > Vin #" + (i+1) + " | ID: " + bottle.getId() + " | Nom: " + bottle.getTitle());
                         }
 
-                        // ==========================================================
-                        //  NOUVEAU TEST : VÉRIFICATION DU GET PAR ID (Sur le 1er vin)
-                        // ==========================================================
                         if (count > 0) {
                             int idToTest = state.getData().getBottle().get(0).getId();
                             android.util.Log.d("API_TEST", "🔍 TEST DE RÉCUPÉRATION : On lance getWineById pour l'ID " + idToTest);
 
                             LiveData<UiState<com.sipandsavour.data.dto.WineDto>> getWineResult = Repository.getInstance().getWineById(idToTest);
-                            getWineResult.observeForever(new androidx.lifecycle.Observer<>() {
+                            getWineResult.observeForever(new Observer<UiState<com.sipandsavour.data.dto.WineDto>>() {
                                 @Override
                                 public void onChanged(UiState<com.sipandsavour.data.dto.WineDto> wineState) {
                                     if (wineState.isLoading()) {
@@ -235,7 +366,6 @@ public class SelectionViewModel extends ViewModel {
                                     } else if (wineState.isSuccess() && wineState.getData() != null) {
                                         com.sipandsavour.data.dto.WineDto fetchedWine = wineState.getData();
                                         android.util.Log.d("API_TEST", "   > ✅ SUCCÈS GET PAR ID ! Vin récupéré : [" + fetchedWine.getId() + "] " + fetchedWine.getTitle());
-                                        // On se désabonne pour ne pas laisser de fuite de mémoire
                                         getWineResult.removeObserver(this);
                                     } else if (wineState.isError()) {
                                         android.util.Log.e("API_TEST", "   > ❌ ERREUR GET PAR ID : " + wineState.getMessage());
@@ -249,7 +379,6 @@ public class SelectionViewModel extends ViewModel {
                         android.util.Log.d("API_TEST", "⚠️ L'API a répondu, mais la liste des vins est vide ou nulle.");
                     }
                     android.util.Log.d("API_TEST", "=======================================");
-                    // ==========================================================
 
                     repoResult.removeObserver(this);
                 }

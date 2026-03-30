@@ -14,21 +14,36 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.card.MaterialCardView;
 import com.sipandsavour.R;
+import com.sipandsavour.data.Repository;
 import com.sipandsavour.data.dto.WineDto;
+import com.sipandsavour.data.dto.meal.MealDto;
+import com.sipandsavour.ui.selection.MealDetailsBottomSheetFragment;
+import com.sipandsavour.util.HapticUtil;
 import com.sipandsavour.util.SlideBackUtil;
+
+import java.util.List;
 
 public class WeeklyChoiceFragment extends Fragment {
 
-    // Views
+    // Views Vin
+    private MaterialCardView cardWine;
     private TextView tvCepage;
     private TextView tvDescription;
     private TextView tvType;
+
+    // Views Plat
+    private MaterialCardView cardMeal;
     private TextView tvMealName;
     private TextView tvIngredients;
 
     private NavController navController;
     private WeeklyChoiceViewModel viewModel;
+
+    // Données actuelles pour les clics
+    private WineDto currentWine;
+    private MealDto currentMeal;
 
     @Nullable
     @Override
@@ -46,6 +61,7 @@ public class WeeklyChoiceFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(WeeklyChoiceViewModel.class);
 
         bindViews(view);
+        setupListeners();
         observeViewModel();
 
         viewModel.loadRecommendation();
@@ -55,33 +71,96 @@ public class WeeklyChoiceFragment extends Fragment {
     }
 
     private void bindViews(View view) {
+        cardWine = view.findViewById(R.id.cardWine);
         tvCepage = view.findViewById(R.id.tvCepage);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvType = view.findViewById(R.id.tvType);
+
+        cardMeal = view.findViewById(R.id.cardMeal);
         tvMealName = view.findViewById(R.id.tvMealName);
         tvIngredients = view.findViewById(R.id.tvIngredients);
     }
 
+    private void setupListeners() {
+        // Clic sur la carte du vin
+        if (cardWine != null) {
+            cardWine.setOnClickListener(v -> {
+                HapticUtil.playLightClick(v);
+                openWineDetails();
+            });
+        }
+
+        // Clic sur la carte du plat
+        if (cardMeal != null) {
+            cardMeal.setOnClickListener(v -> {
+                HapticUtil.playLightClick(v);
+                openMealDetails();
+            });
+        }
+    }
+
+    private void openWineDetails() {
+        if (currentWine == null) {
+            Toast.makeText(requireContext(), getString(R.string.loading), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        WineDetailsBottomSheetFragment bottomSheet = WineDetailsBottomSheetFragment.newInstance(currentWine);
+        bottomSheet.show(getParentFragmentManager(), "WineDetails");
+    }
+
+    private void openMealDetails() {
+        if (currentMeal == null) {
+            Toast.makeText(requireContext(), getString(R.string.loading), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        MealDetailsBottomSheetFragment bottomSheet = MealDetailsBottomSheetFragment.newInstance(currentMeal);
+        bottomSheet.show(getParentFragmentManager(), "MealDetails");
+    }
+
     private void observeViewModel() {
-        viewModel.getRecommendationState().observe(getViewLifecycleOwner(), state -> {
+        // Observer le résultat principal
+        viewModel.getPairingState().observe(getViewLifecycleOwner(), state -> {
             if (state.isLoading()) {
-                // CORRECTION: Textes de chargement traduits
-                if (tvCepage != null) tvCepage.setText(getString(R.string.weekly_loading_title));
-                if (tvDescription != null) tvDescription.setText(getString(R.string.weekly_loading_desc));
-                if (tvType != null) tvType.setText("");
+                showLoading();
             } else if (state.isSuccess() && state.getData() != null) {
-                displayWine(state.getData());
+                Repository.WeeklyPairingResult result = state.getData();
+                currentWine = result.getWine();
+                currentMeal = result.getMeal();
+                displayWine(currentWine);
+                displayMeal(currentMeal);
             } else if (state.isError()) {
-                Toast.makeText(requireContext(), state.getMessage(), Toast.LENGTH_LONG).show();
-                // CORRECTION: Utilisation de error_title ("Oups !")
-                if (tvCepage != null) tvCepage.setText(getString(R.string.error_title));
-                if (tvDescription != null) tvDescription.setText(state.getMessage());
+                showError(state.getMessage());
+            }
+        });
+
+        // Observer le plat traduit
+        viewModel.getTranslatedMeal().observe(getViewLifecycleOwner(), translatedMeal -> {
+            if (translatedMeal != null) {
+                currentMeal = translatedMeal;
+                displayMealTranslated(translatedMeal);
             }
         });
     }
 
+    private void showLoading() {
+        if (tvCepage != null) tvCepage.setText(getString(R.string.weekly_loading_title));
+        if (tvDescription != null) tvDescription.setText(getString(R.string.weekly_loading_desc));
+        if (tvType != null) tvType.setText("");
+        if (tvMealName != null) tvMealName.setText(getString(R.string.loading));
+        if (tvIngredients != null) tvIngredients.setText("");
+    }
+
+    private void showError(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+        if (tvCepage != null) tvCepage.setText(getString(R.string.error_title));
+        if (tvDescription != null) tvDescription.setText(message);
+    }
+
     private void displayWine(WineDto wine) {
-        // CORRECTION: Remplacements par getString() pour les inconnus
+        if (wine == null) return;
+
         if (tvCepage != null) {
             tvCepage.setText(wine.getTitle() != null ? wine.getTitle() :
                     (wine.getVariety() != null ? wine.getVariety() : getString(R.string.result_unknown_wine)));
@@ -91,10 +170,67 @@ public class WeeklyChoiceFragment extends Fragment {
             tvDescription.setText(wine.getDescription() != null ? wine.getDescription() : getString(R.string.result_no_description));
         }
 
-        if (tvType != null) tvType.setText(wine.getColorDisplayName());
+        if (tvType != null) {
+            tvType.setText(wine.getColorDisplayName());
+        }
+    }
 
-        // CORRECTION: Textes par défaut des recettes
-        if (tvMealName != null) tvMealName.setText(getString(R.string.weekly_pairing));
-        if (tvIngredients != null) tvIngredients.setText(getString(R.string.weekly_coming_soon));
+    private void displayMeal(MealDto meal) {
+        if (meal == null) {
+            if (tvMealName != null) tvMealName.setText(getString(R.string.weekly_no_meal));
+            if (tvIngredients != null) tvIngredients.setText("");
+            return;
+        }
+
+        if (tvMealName != null) {
+            tvMealName.setText(meal.getName() != null ? meal.getName() : meal.getStrMeal());
+        }
+
+        displayIngredients(meal);
+    }
+
+    private void displayMealTranslated(MealDto meal) {
+        if (meal == null) return;
+
+        if (tvMealName != null) {
+            tvMealName.setText(meal.getName());
+        }
+
+        displayIngredients(meal);
+    }
+
+    private void displayIngredients(MealDto meal) {
+        if (tvIngredients == null) return;
+
+        List<String> ingredients = meal.getIngredients();
+        List<String> measures = meal.getMeasures();
+
+        if (ingredients == null || ingredients.isEmpty()) {
+            tvIngredients.setText(getString(R.string.weekly_no_ingredients));
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int max = Math.min(6, ingredients.size());
+
+        for (int i = 0; i < max; i++) {
+            String ingredient = ingredients.get(i);
+            String measure = (measures != null && i < measures.size()) ? measures.get(i) : "";
+
+            if (ingredient == null || ingredient.trim().isEmpty()) continue;
+
+            if (sb.length() > 0) sb.append("\n");
+            sb.append("• ");
+            if (measure != null && !measure.trim().isEmpty()) {
+                sb.append(measure.trim()).append(" ");
+            }
+            sb.append(ingredient.trim());
+        }
+
+        if (ingredients.size() > 6) {
+            sb.append("\n+ ").append(ingredients.size() - 6).append(" autres...");
+        }
+
+        tvIngredients.setText(sb.toString());
     }
 }

@@ -68,11 +68,9 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="@dimen/elevation_high"
-                app:strokeWidth="0dp"
-                android:transitionName="wine_detail_card">
+                app:strokeWidth="0dp">
 
                 <FrameLayout
-                    android:id="@+id/wineCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_card_gradient_rose"
@@ -156,6 +154,118 @@
                     </LinearLayout>
 
                 </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Ornement doré -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large">
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+                <View
+                    android:layout_width="@dimen/ornament_dot_size"
+                    android:layout_height="@dimen/ornament_dot_size"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:background="@drawable/bg_ornament_dot" />
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_gold" />
+
+            </LinearLayout>
+
+            <!-- Meal Pairing Card (CLIQUABLE) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="@dimen/elevation_medium"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:id="@+id/layoutMealPairing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_gradient_rose"
+                    android:padding="@dimen/padding_large"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/wine_fork_icon_size"
+                            android:layout_height="@dimen/wine_fork_icon_size"
+                            android:src="@drawable/ic_wine_fork"
+                            android:alpha="0.5"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:text="@string/result_pairing_label"
+                            style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weekly_tap_for_recipe"
+                            android:fontFamily="@font/lato"
+                            android:textSize="11sp"
+                            android:textColor="@color/secondary"
+                            android:alpha="0.8"
+                            android:drawableEnd="@drawable/ic_arrow_right_small"
+                            android:drawablePadding="4dp"
+                            app:drawableTint="@color/secondary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvMealPairingName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        style="@style/TextAppearance.SipSavour.WineValue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/weekly_ingredient_label"
+                        style="@style/TextAppearance.SipSavour.WineLabel" />
+
+                    <TextView
+                        android:id="@+id/tvMealPairingIngredients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        style="@style/TextAppearance.SipSavour.WineBody" />
+
+                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

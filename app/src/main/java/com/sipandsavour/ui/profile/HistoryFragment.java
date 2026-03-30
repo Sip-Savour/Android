@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.sipandsavour.R;
 import com.sipandsavour.data.dto.WineDto;
 import com.sipandsavour.ui.favorites.FavoritesAdapter;
-import com.sipandsavour.ui.profile.HistoryViewModel;
 import com.sipandsavour.ui.result.ResultViewModel;
 import com.sipandsavour.util.SlideBackUtil;
 

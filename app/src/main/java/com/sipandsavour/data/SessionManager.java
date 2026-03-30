@@ -240,12 +240,21 @@ public final class SessionManager {
         prefs.edit().putString(Constants.KEY_LANGUAGE, langCode).apply();
     }
 
-    /**
-     * Récupère la langue (par défaut le français pour votre app)
-     */
-    public String getLanguage() {
-        return prefs.getString(Constants.KEY_LANGUAGE, "fr");
+/**
+ * Récupère la langue (détecte automatiquement si non définie)
+ */
+public String getLanguage() {
+    String saved = prefs.getString(Constants.KEY_LANGUAGE, null);
+
+    // Si l'utilisateur n'a jamais choisi de langue, on utilise celle du système
+    if (saved == null) {
+        String systemLang = java.util.Locale.getDefault().getLanguage();
+        // On supporte uniquement fr/en
+        return (systemLang.equals("fr")) ? "fr" : "en";
     }
+
+    return saved;
+}
 
     // --- GESTION DU THÈME ---
     public void setTheme(int themeMode) {
@@ -255,5 +264,23 @@ public final class SessionManager {
     public int getTheme() {
         // Par défaut, on suit le thème du système
         return prefs.getInt("theme_mode", androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    }
+
+    // =======================================================
+    //  SÉLECTION ALIMENTAIRE
+    // =======================================================
+
+    /**
+     * Sauvegarde la dernière sous-catégorie sélectionnée
+     */
+    public void setLastSelectedSubcategory(String subcategory) {
+        prefs.edit().putString("last_subcategory", subcategory).apply();
+    }
+
+    /**
+     * Récupère la dernière sous-catégorie sélectionnée
+     */
+    public String getLastSelectedSubcategory() {
+        return prefs.getString("last_subcategory", null);
     }
 }
