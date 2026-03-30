@@ -1,54 +1,118 @@
-package com.sipandsavour.ui.profile;
+package com.sipandsavour.ui.profile; 
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer; 
+import android.os.Bundle; 
+import android.view.LayoutInflater; 
+import android.view.View; 
+import android.view.ViewGroup; 
+import android.widget.SeekBar; 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull; 
+import androidx.annotation.Nullable; 
+import androidx.appcompat.app.AppCompatDelegate; 
+import androidx.fragment.app.Fragment; 
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.sipandsavour.R;
-import com.sipandsavour.data.SessionManager;
-import com.sipandsavour.util.HapticUtil;
+import com.sipandsavour.R; 
+import com.sipandsavour.data.SessionManager; 
+import com.sipandsavour.util.HapticUtil; 
 
-public class SecretFragment extends Fragment {
+public class SecretFragment extends Fragment { 
 
-    // On utilise 100 comme code pour le thème Jinx
-    private static final int THEME_JINX_CODE = 100;
+    private static final int THEME_JINX_CODE = 100; 
+    private MediaPlayer mediaPlayer; 
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_secret, container, false);
+    @Nullable 
+    @Override 
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) { 
+        return inflater.inflate(R.layout.fragment_secret, container, false); 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Override 
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) { 
+        super.onViewCreated(view, savedInstanceState); 
 
-        SwitchMaterial switchJinx = view.findViewById(R.id.switchJinxTheme);
+        // === JOUER LE SON ===
+        if (savedInstanceState == null) { 
+            mediaPlayer = MediaPlayer.create(requireContext(), R.raw.secret_unlocked); 
+            if (mediaPlayer != null) { 
+                mediaPlayer.start(); 
+                mediaPlayer.setOnCompletionListener(mp -> { 
+                    mp.release(); 
+                    mediaPlayer = null; 
+                }); 
+            } 
+        }
 
-        // On vérifie si le thème enregistré dans la session est le 100
-        boolean isJinxActive = SessionManager.getInstance().getTheme() == THEME_JINX_CODE;
-        switchJinx.setChecked(isJinxActive);
+        SeekBar slideButtonJinx = view.findViewById(R.id.slideButtonJinx); 
 
-        switchJinx.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            HapticUtil.playConfirm(view);
+        boolean isJinxActive = SessionManager.getInstance().getTheme() == THEME_JINX_CODE; 
+        slideButtonJinx.setProgress(isJinxActive ? 100 : 0); 
 
-            if (isChecked) {
-                // On écrase le thème par défaut avec le code 100
-                SessionManager.getInstance().setTheme(THEME_JINX_CODE);
-            } else {
-                // On remet le thème système par défaut si on désactive
-                SessionManager.getInstance().setTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-            }
+        // === LANCER L'ANIMATION DU SINGE JINX ===
+        Drawable thumb = slideButtonJinx.getThumb();
+        if (thumb instanceof AnimationDrawable) {
+            AnimationDrawable monkeyAnim = (AnimationDrawable) thumb;
+            monkeyAnim.start();
+        }
 
-            // On redémarre l'activité pour appliquer les nouvelles couleurs !
-            requireActivity().recreate();
-        });
+        // === EFFET "SLIDE TO ACTIVATE" AVEC RESSORT ===
+        slideButtonJinx.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { 
+            @Override 
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { 
+            } 
+
+            @Override 
+            public void onStartTrackingTouch(SeekBar seekBar) { 
+            } 
+
+            @Override 
+            public void onStopTrackingTouch(SeekBar seekBar) { 
+                int progress = seekBar.getProgress(); 
+                boolean currentlyActive = SessionManager.getInstance().getTheme() == THEME_JINX_CODE; 
+
+                if (!currentlyActive) { 
+                    if (progress >= 95) { 
+                        seekBar.setProgress(100); 
+                        activateJinx(view); 
+                    } else { 
+                        seekBar.setProgress(0); 
+                    } 
+                } else { 
+                    if (progress <= 5) { 
+                        seekBar.setProgress(0); 
+                        deactivateJinx(view); 
+                    } else { 
+                        seekBar.setProgress(100); 
+                    } 
+                } 
+            } 
+        }); 
     }
-}
+
+    private void activateJinx(View view) { 
+        HapticUtil.playConfirm(view); 
+        SessionManager.getInstance().setTheme(THEME_JINX_CODE); 
+        requireActivity().recreate(); 
+    } 
+
+    private void deactivateJinx(View view) { 
+        HapticUtil.playConfirm(view); 
+        SessionManager.getInstance().setTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM); 
+        requireActivity().recreate(); 
+    } 
+
+    @Override 
+    public void onDestroyView() { 
+        super.onDestroyView(); 
+
+        if (mediaPlayer != null) { 
+            if (mediaPlayer.isPlaying()) { 
+                mediaPlayer.stop(); 
+            } 
+            mediaPlayer.release(); 
+            mediaPlayer = null; 
+        } 
+    } 
+} 

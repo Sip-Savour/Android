@@ -1,5 +1,6 @@
 package com.sipandsavour;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     // ExecutorService pour opérations en arrière-plan
     private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    // Lecteur audio pour le son de lancement
+    private MediaPlayer mediaPlayer;
 
     // Destinations où la bottom nav doit être CACHÉE
     private static final Set<Integer> HIDE_BOTTOM_NAV = new HashSet<>(Arrays.asList(
@@ -76,6 +80,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d(TAG, "setContentView() in " + (System.currentTimeMillis() - startTime) + "ms");
+
+        // === JOUER LE SON DE LANCEMENT ===
+        // Uniquement au premier lancement (pas lors d'une rotation d'écran)
+        if (savedInstanceState == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.launch);
+            if (mediaPlayer != null) {
+                mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(mp -> {
+                    mp.release();
+                    mediaPlayer = null;
+                });
+            }
+        }
 
         // 5. Opérations lourdes en ARRIÈRE-PLAN
         initializeHeavyOperationsInBackground();
@@ -180,10 +197,19 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         // Nettoyer l'executor
         backgroundExecutor.shutdown();
+
+        // Nettoyer le lecteur audio s'il est encore en cours
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
-}// TestTranslation.testDictionary(); // Décommenter pour tester
+}

@@ -44,6 +44,8 @@ public class EasterEggDetectorTest {
         addMockSensor(Sensor.TYPE_ACCELEROMETER);
         addMockSensor(Sensor.TYPE_LIGHT);
         addMockSensor(Sensor.TYPE_PROXIMITY);
+        // NOUVEAU : Ajout du capteur magnétique requis par le détecteur
+        addMockSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         detector = new EasterEggDetector(context);
         mockListener = mock(EasterEggDetector.OnSecretUnlockedListener.class);
@@ -62,6 +64,9 @@ public class EasterEggDetectorTest {
 
         // 1. Simule "Téléphone à plat"
         sendSensorEvent(Sensor.TYPE_ACCELEROMETER, new float[]{0, 0, 9.8f});
+
+        // NOUVEAU : Simule "Pointé vers le Nord" (Le champ magnétique est aligné sur l'axe Y)
+        sendSensorEvent(Sensor.TYPE_MAGNETIC_FIELD, new float[]{0.0f, 50.0f, 0.0f});
 
         // 2. Simule "Dans le noir"
         sendSensorEvent(Sensor.TYPE_LIGHT, new float[]{5.0f});
@@ -86,7 +91,8 @@ public class EasterEggDetectorTest {
         detector.start();
 
         sendSensorEvent(Sensor.TYPE_ACCELEROMETER, new float[]{0, 0, 9.8f});
-        sendSensorEvent(Sensor.TYPE_LIGHT, new float[]{100.0f}); // Trop de lumière !
+        sendSensorEvent(Sensor.TYPE_MAGNETIC_FIELD, new float[]{0.0f, 50.0f, 0.0f}); // Pointé vers le Nord
+        sendSensorEvent(Sensor.TYPE_LIGHT, new float[]{100.0f}); // Trop de lumière ! (C'est la condition qui échoue)
         sendSensorEvent(Sensor.TYPE_PROXIMITY, new float[]{1.0f});
         setLastSnapTime(System.currentTimeMillis());
 
@@ -101,6 +107,7 @@ public class EasterEggDetectorTest {
         detector.start();
 
         sendSensorEvent(Sensor.TYPE_ACCELEROMETER, new float[]{0, 0, 9.8f});
+        sendSensorEvent(Sensor.TYPE_MAGNETIC_FIELD, new float[]{0.0f, 50.0f, 0.0f}); // Pointé vers le Nord
         sendSensorEvent(Sensor.TYPE_LIGHT, new float[]{5.0f});
         sendSensorEvent(Sensor.TYPE_PROXIMITY, new float[]{1.0f});
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
+
+    <item android:duration="100">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#00E5FF"/>
+                    <stroke android:width="3dp" android:color="#FFFFFF"/>
+                    <size android:width="60dp" android:height="60dp"/>
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/monkey_jinx_frame1"
+                android:width="48dp"
+                android:height="48dp"
+                android:gravity="center" />
+        </layer-list>
+    </item>
+
+    <item android:duration="100">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#00E5FF"/>
+                    <stroke android:width="3dp" android:color="#FFFFFF"/>
+                    <size android:width="60dp" android:height="60dp"/>
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/monkey_jinx_frame2"
+                android:width="48dp"
+                android:height="48dp"
+                android:gravity="center" />
+        </layer-list>
+    </item>
+
+    <item android:duration="100">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#00E5FF"/>
+                    <stroke android:width="3dp" android:color="#FFFFFF"/>
+                    <size android:width="60dp" android:height="60dp"/>
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/monkey_jinx_frame3"
+                android:width="48dp"
+                android:height="48dp"
+                android:gravity="center" />
+        </layer-list>
+    </item>
+
+    <item android:duration="100">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#00E5FF"/>
+                    <stroke android:width="3dp" android:color="#FFFFFF"/>
+                    <size android:width="60dp" android:height="60dp"/>
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/monkey_jinx_frame4"
+                android:width="48dp"
+                android:height="48dp"
+                android:gravity="center" />
+        </layer-list>
+    </item>
+
+    <item android:duration="100">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#00E5FF"/>
+                    <stroke android:width="3dp" android:color="#FFFFFF"/>
+                    <size android:width="60dp" android:height="60dp"/>
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/monkey_jinx_frame5"
+                android:width="48dp"
+                android:height="48dp"
+                android:gravity="center" />
+        </layer-list>
+    </item>
+
+    <item android:duration="100">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#00E5FF"/>
+                    <stroke android:width="3dp" android:color="#FFFFFF"/>
+                    <size android:width="60dp" android:height="60dp"/>
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/monkey_jinx_frame6"
+                android:width="48dp"
+                android:height="48dp"
+                android:gravity="center" />
+        </layer-list>
+    </item>
+
+</animation-list>
