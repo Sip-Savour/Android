@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sipandsavour.data.api.ApiClient;
+// We can remove the import for ApiClient since we don't need it here anymore
+// import com.sipandsavour.data.api.ApiClient;
 import com.sipandsavour.util.Constants;
 
 import java.util.Set;
@@ -57,7 +58,7 @@ public final class SessionManager {
      */
     public void saveToken(@NonNull String token) {
         prefs.edit().putString(Constants.KEY_TOKEN, token).apply();
-        ApiClient.getInstance().setAuthToken(token);
+        // REMOVED: ApiClient.getInstance().setAuthToken(token);
     }
 
     /**
@@ -215,7 +216,7 @@ public final class SessionManager {
      */
     public void logout() {
         prefs.edit().clear().apply();
-        ApiClient.getInstance().clearAuthToken();
+        // REMOVED: ApiClient.getInstance().clearAuthToken();
     }
 
     /**
@@ -223,10 +224,9 @@ public final class SessionManager {
      * (appeler dans Application.onCreate après ApiClient.init)
      */
     public void restoreSession() {
-        String token = getToken();
-        if (token != null && !token.isEmpty()) {
-            ApiClient.getInstance().setAuthToken(token);
-        }
+        // We can completely empty this method, or remove it entirely
+        // since ApiClient grabs the token directly from SharedPreferences now.
+        // I will leave it empty so you don't have to change your Application class.
     }
 
     // =======================================================
@@ -240,21 +240,21 @@ public final class SessionManager {
         prefs.edit().putString(Constants.KEY_LANGUAGE, langCode).apply();
     }
 
-/**
- * Récupère la langue (détecte automatiquement si non définie)
- */
-public String getLanguage() {
-    String saved = prefs.getString(Constants.KEY_LANGUAGE, null);
+    /**
+     * Récupère la langue (détecte automatiquement si non définie)
+     */
+    public String getLanguage() {
+        String saved = prefs.getString(Constants.KEY_LANGUAGE, null);
 
-    // Si l'utilisateur n'a jamais choisi de langue, on utilise celle du système
-    if (saved == null) {
-        String systemLang = java.util.Locale.getDefault().getLanguage();
-        // On supporte uniquement fr/en
-        return (systemLang.equals("fr")) ? "fr" : "en";
+        // Si l'utilisateur n'a jamais choisi de langue, on utilise celle du système
+        if (saved == null) {
+            String systemLang = java.util.Locale.getDefault().getLanguage();
+            // On supporte uniquement fr/en
+            return (systemLang.equals("fr")) ? "fr" : "en";
+        }
+
+        return saved;
     }
-
-    return saved;
-}
 
     // --- GESTION DU THÈME ---
     public void setTheme(int themeMode) {
@@ -268,7 +268,7 @@ public String getLanguage() {
 
     // =======================================================
     //  SÉLECTION ALIMENTAIRE
-    // =======================================================
+    // =======================================================@
 
     /**
      * Sauvegarde la dernière sous-catégorie sélectionnée

@@ -2,6 +2,7 @@ package com.sipandsavour.data.api;
 
 import android.content.Context;
 
+import com.sipandsavour.data.SessionManager; // <-- Import ajouté
 import com.sipandsavour.util.Constants;
 
 import java.io.File;
@@ -22,21 +23,26 @@ public final class ApiClient {
 
     private static volatile ApiClient instance;
     private final Retrofit retrofit;
-    private String authToken = null;
+
+    // On retire "private String authToken = null;" car le SessionManager gère déjà ça !
 
     private ApiClient(Context context) {
         // Logging
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        // Auth interceptor
+        // Auth interceptor : Va chercher le token dynamiquement à chaque requête !
         Interceptor authInterceptor = chain -> {
             Request original = chain.request();
             Request.Builder builder = original.newBuilder()
                     .header(Constants.HEADER_CONTENT, Constants.CONTENT_JSON);
 
-            if (authToken != null && !authToken.isEmpty()) {
-                builder.header(Constants.HEADER_AUTH, Constants.HEADER_BEARER + authToken);
+            // 1. Récupération dynamique depuis la session
+            String token = SessionManager.getInstance().getToken();
+
+            // 2. Ajout dans le Header si le token existe
+            if (token != null && !token.isEmpty()) {
+                builder.header(Constants.HEADER_AUTH, Constants.HEADER_BEARER + token);
             }
 
             return chain.proceed(builder.build());
@@ -79,14 +85,6 @@ public final class ApiClient {
             throw new IllegalStateException("ApiClient not initialized. Call init() first.");
         }
         return instance;
-    }
-
-    public void setAuthToken(String token) {
-        this.authToken = token;
-    }
-
-    public void clearAuthToken() {
-        this.authToken = null;
     }
 
     public AuthApi getAuthApi() {

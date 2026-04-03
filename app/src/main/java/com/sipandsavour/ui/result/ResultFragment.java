@@ -1,5 +1,6 @@
 package com.sipandsavour.ui.result;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.sipandsavour.R;
 import com.sipandsavour.data.Repository;
@@ -20,6 +23,7 @@ import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.ui.selection.MealDetailsBottomSheetFragment;
 import com.sipandsavour.util.HapticUtil;
 import com.sipandsavour.util.MealTranslationManager;
+import com.sipandsavour.util.SlideBackUtil;
 import com.sipandsavour.util.WineFoodPairingUtil;
 
 import java.util.List;
@@ -36,7 +40,7 @@ public class ResultFragment extends Fragment {
     private TextView tvType;
     private ImageButton fabFavorite;
 
-    // Meal pairing views
+    private NavController navController;
     private LinearLayout layoutMealPairing;
     private TextView tvMealPairingName;
     private TextView tvMealPairingIngredients;
@@ -52,16 +56,66 @@ public class ResultFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_result, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
 
         initViews(view);
         setupListeners();
         observeViewModel();
         handleArguments();
+
+        // On utilise le bon ID du XML (scrollView)
+        View scrollView = view.findViewById(R.id.scrollView);
+
+        // Détecteur local spécifique au carrousel des résultats
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            private float startX = 0;
+            private float startY = 0;
+            private boolean isSwiping = false;
+
+            @Override
+            public boolean onTouch(View v, android.view.MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case android.view.MotionEvent.ACTION_DOWN:
+                        startX = event.getRawX();
+                        startY = event.getRawY();
+                        isSwiping = false;
+                        break;
+
+                    case android.view.MotionEvent.ACTION_MOVE:
+                        float diffX = event.getRawX() - startX;
+                        float diffY = event.getRawY() - startY;
+                        if (!isSwiping && Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+                            isSwiping = true;
+                            if (v.getParent() != null) v.getParent().requestDisallowInterceptTouchEvent(true);
+                        }
+                        if (isSwiping) return true;
+                        break;
+
+                    case android.view.MotionEvent.ACTION_UP:
+                        if (isSwiping) {
+                            float finalDiffX = event.getRawX() - startX;
+                            if (finalDiffX > 120) {
+                                // Slide vers la DROITE : Retour à l'écran précédent
+                                navController.popBackStack();
+                            } else if (finalDiffX < -120) {
+                                // Slide vers la GAUCHE : Vin suivant
+                                if (viewModel.nextWine()) {
+                                    HapticUtil.playConfirm(requireView());
+                                }
+                            }
+                            isSwiping = false;
+                            return true;
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     private void initViews(View view) {
@@ -238,14 +292,20 @@ public class ResultFragment extends Fragment {
             tvType.setText(wine.getColorDisplayName());
         }
 
-        // Le style reste le même pour tous les vins (défini dans le XML)
     }
 
     private void updateFavoriteIcon(boolean isFavorite) {
-        if (fabFavorite != null) {
+        if (fabFavorite != null && isAdded()) {
             fabFavorite.setImageResource(isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
+            if (isFavorite) {
+                fabFavorite.setImageTintList(null);
+            } else {
+                fabFavorite.setImageTintList(androidx.core.content.ContextCompat.getColorStateList(requireContext(), R.color.secondary));
+            }
         }
     }
+
+
 
     private void animateFavoriteButton() {
         if (fabFavorite != null) {
