@@ -23,6 +23,8 @@ public interface WineApi {
     /**
      * Prédit le meilleur vin selon les features et la couleur
      * POST /predict
+     * Body: { "features": [feature1, feature2, ...], "color": "red" }
+     * Response: { "wine": { ... } }
      */
     @POST("predict")
     Call<PredictResponse> predict(@Body PredictRequest request);
@@ -30,6 +32,7 @@ public interface WineApi {
     /**
      * Récupère la suggestion hebdomadaire
      * GET /weekly
+     * Response: { "wine": { ... } }
      */
     @GET("wines/weekly")
     Call<DailySuggestionResponse> getWeeklySuggestion();
@@ -44,6 +47,8 @@ public interface WineApi {
     /**
      * Ajoute un vin aux favoris
      * POST /favorites
+     * Body: { "wineId": 123 }
+     * Response: 200 OK si ajouté avec succès
      */
     @POST("favorites")
     Call<Void> addFavorite(@Body AddFavoriteRequest request);
@@ -51,6 +56,7 @@ public interface WineApi {
     /**
      * Supprime un vin des favoris
      * DELETE /favorites/{wineId}
+     * Response: 200 OK si supprimé avec succès
      */
     @DELETE("favorites/{wineId}")
     Call<Void> removeFavorite(@Path("wineId") int wineId);
@@ -58,10 +64,16 @@ public interface WineApi {
     /**
      * Récupère les détails d'un vin
      * GET /wines/{wineId}
+     * Response: { "wine": { ... } }
      */
     @GET("wines/{wineId}")
     Call<WineDto> getWineById(@Path("wineId") int wineId);
 
+    /**
+     * Récupère des vins aléatoires
+     * GET /wines/random
+     * Response: [ { ... }, { ... }, ... ]
+     */
     @GET("wines/random")
     Call<List<WineDto>> getRandomWines();
 }

@@ -29,7 +29,7 @@ import retrofit2.Response;
 /**
  * Repository central pour toutes les opérations data.
  * Abstraction entre les ViewModels et les sources de données (API, cache, DB).
- */
+ */ 
 public final class Repository {
 
     private static volatile Repository instance;
@@ -65,6 +65,9 @@ public final class Repository {
 
     /**
      * Connexion utilisateur
+     * @param email Email de l'utilisateur
+     * @param password Mot de passe de l'utilisateur
+     * @return LiveData contenant l'état de l'UI avec la réponse d'authentification ou une erreur
      */
     public static LiveData<UiState<AuthResponse>> login(String email, String password) {
         MutableLiveData<UiState<AuthResponse>> result = new MutableLiveData<>();
@@ -94,6 +97,11 @@ public final class Repository {
 
     /**
      * Inscription utilisateur
+     * @param username Nom d'utilisateur choisi
+     * @param email Email de l'utilisateur
+     * @param password Mot de passe choisi
+     * @param dob Date de naissance au format "YYYY-MM-DD"
+     * @return LiveData contenant l'état de l'UI avec la réponse d'authentification ou une erreur
      */
     public LiveData<UiState<AuthResponse>> register(String username, String email, String password, String dob) {
         MutableLiveData<UiState<AuthResponse>> result = new MutableLiveData<>();
@@ -134,6 +142,9 @@ public final class Repository {
 
     /**
      * Prédit les meilleurs vins selon les features et la couleur
+     * @param features Caractéristiques de saveur (ex: "fruity spicy")
+     * @param color Couleur du vin ("red", "white", "rose")
+     * @return LiveData contenant l'état de l'UI avec la liste des vins prédits ou une erreur
      */
     public LiveData<UiState<PredictResponse>> predict(String features, String color) {
         MutableLiveData<UiState<PredictResponse>> result = new MutableLiveData<>();
@@ -162,6 +173,10 @@ public final class Repository {
     //  SUGGESTION HEBDOMADAIRE
     // =======================================================
 
+    /** Récupère la suggestion hebdomadaire
+     * @param wineId ID du vin pour lequel trouver une suggestion hebdomadaire
+     * @return LiveData contenant l'état de l'UI avec la suggestion hebdomadaire
+     */
     public LiveData<UiState<DailySuggestionResponse>> getWeeklySuggestion() {
         MutableLiveData<UiState<DailySuggestionResponse>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
@@ -189,6 +204,11 @@ public final class Repository {
     //  FAVORIS
     // =======================================================
 
+    /**
+     * Récupère la liste des vins favoris
+     * @param userId ID de l'utilisateur
+     * @return LiveData contenant l'état de l'UI avec la liste des vins favoris ou une erreur
+     */
     public LiveData<UiState<List<WineDto>>> getFavorites() {
         MutableLiveData<UiState<List<WineDto>>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
@@ -212,6 +232,12 @@ public final class Repository {
         return result;
     }
 
+
+    /**
+     * Ajoute un vin aux favoris
+     * @param wineId ID du vin à ajouter
+     * @return LiveData contenant l'état de l'UI avec le résultat de l'opération ou une erreur
+     */
     public LiveData<UiState<Boolean>> addFavorite(int wineId) {
         MutableLiveData<UiState<Boolean>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
@@ -235,6 +261,11 @@ public final class Repository {
         return result;
     }
 
+    /**
+     * Supprime un vin des favoris
+     * @param wineId ID du vin à supprimer
+     * @return LiveData contenant l'état de l'UI avec le résultat de l'opération ou une erreur
+     */
     public LiveData<UiState<Boolean>> removeFavorite(int wineId) {
         MutableLiveData<UiState<Boolean>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
@@ -262,6 +293,11 @@ public final class Repository {
     //  RÉCUPÉRATION D'UN VIN PAR SON ID
     // =======================================================
 
+    /**
+     * Récupère un vin par son ID
+     * @param wineId ID du vin à récupérer
+     * @return LiveData contenant l'état de l'UI avec le vin ou une erreur
+     */
     public LiveData<UiState<WineDto>> getWineById(int wineId) {
         MutableLiveData<UiState<WineDto>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
@@ -285,6 +321,12 @@ public final class Repository {
         return result;
     }
 
+
+    /**
+     * Récupère la recommandation hebdomadaire
+     * @param wineId ID du vin pour lequel trouver une recommandation hebdomadaire
+     * @return LiveData contenant l'état de l'UI avec le vin recommandé ou une erreur
+     */
     public LiveData<UiState<WineDto>> getWeeklyRecommendation() {
         MutableLiveData<UiState<WineDto>> finalResult = new MutableLiveData<>();
         finalResult.setValue(UiState.loading());
@@ -360,6 +402,8 @@ public final class Repository {
 
     /**
      * Récupère les repas filtrés par catégorie
+     * @param category Catégorie de repas (ex: "Seafood", "Vegetarian", etc.)
+     * @return LiveData contenant l'état de l'UI avec la liste des repas 
      */
     public LiveData<UiState<MealFilterResponse>> getMealsByCategory(String category) {
         MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
@@ -386,6 +430,8 @@ public final class Repository {
 
     /**
      * Recherche un repas par nom
+     * @param name Nom du repas à rechercher
+     * @return LiveData contenant l'état de l'UI avec la liste des repas correspond
      */
     public LiveData<UiState<MealFilterResponse>> searchMeal(String name) {
         MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
@@ -412,6 +458,8 @@ public final class Repository {
 
     /**
      * Récupère un repas aléatoire
+     * @param category (optionnel) Catégorie de repas pour filtrer le random (ex: "Seafood"). Si null, tous les repas sont considérés.
+     * @return LiveData contenant l'état de l'UI avec un repas aléatoire ou une erreur
      */
     public LiveData<UiState<MealFilterResponse>> getRandomMeal() {
         MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
@@ -438,6 +486,8 @@ public final class Repository {
 
     /**
      * Récupère les détails complets d'un repas
+     * @param id ID du repas à récupérer
+     * @return LiveData contenant l'état de l'UI avec les détails du repas ou une erreur
      */
     public LiveData<UiState<MealFilterResponse>> getMealDetails(String id) {
         MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
@@ -484,6 +534,8 @@ public final class Repository {
 
     /**
      * Récupère la recommandation hebdomadaire AVEC un plat accordé
+     * @param wineId ID du vin pour lequel trouver un accord
+     * @return LiveData contenant l'état de l'UI avec le vin et son plat accordé ou une erreur
      */
     public LiveData<UiState<WeeklyPairingResult>> getWeeklyPairing() {
         MutableLiveData<UiState<WeeklyPairingResult>> finalResult = new MutableLiveData<>();
@@ -572,6 +624,9 @@ public final class Repository {
 
     /**
      * Classe pour le résultat de l'accord hebdomadaire
+     * @param wine Le vin recommandé
+     * @param meal Le plat recommandé (peut être null si aucun plat trouvé)
+     * @return Un objet contenant à la fois le vin et le plat pour l'accord de la semaine
      */
     public static class WeeklyPairingResult {
         private final WineDto wine;

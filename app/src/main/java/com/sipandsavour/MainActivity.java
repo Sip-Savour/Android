@@ -128,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Configure la navigation dans l'application.
+     */
     private void setupNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navHostFragment);
@@ -145,6 +148,12 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(this::onDestinationChanged);
     }
 
+    /**
+     * Appelé lorsque la destination de la navigation change.
+     * @param controller Le contrôleur de navigation.
+     * @param destination La nouvelle destination.
+     * @param arguments Les arguments de la destination.
+     */
     private void onDestinationChanged(
             @NonNull NavController controller,
             @NonNull NavDestination destination,
@@ -159,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Affiche la barre de navigation en bas.
+     */
     private void showBottomNav() {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)
                 navHostFragmentView.getLayoutParams();
@@ -176,6 +188,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Cache la barre de navigation en bas.
+     */
     private void hideBottomNav() {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)
                 navHostFragmentView.getLayoutParams();
@@ -192,6 +207,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Appelé lorsque l'activité est détruite. Permet de nettoyer les ressources utilisées.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -208,6 +226,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gère la navigation "up" (flèche de retour dans la barre d'action).
+     * @return true si la navigation a été gérée, sinon false.
+     */
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
