@@ -53,7 +53,7 @@ public class SipSavourApp extends Application {
         }
     }
 
-    :** Fournit une instance de SipSavourApp.
+    /** Fournit une instance de SipSavourApp.
      * @return L'instance de SipSavourApp.
      */
     public static SipSavourApp getInstance() {

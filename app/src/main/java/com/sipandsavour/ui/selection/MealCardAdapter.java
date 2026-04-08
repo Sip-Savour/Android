@@ -27,22 +27,37 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
     private final Set<String> selectedItems = new HashSet<>();
     private final OnSelectionChangeListener listener;
 
+    /** Interface for listening to selection changes in the adapter.
+     */
     public interface OnSelectionChangeListener {
         void onSelectionChanged(Set<String> selectedItems);
     }
 
+    /** Constructor for the MealCardAdapter.
+     * @param items List of items to display in the adapter.
+     * @param isSingleSelection If true, only one item can be selected at a time. If false, multiple items can be selected.
+     * @param listener Listener for selection changes. Can be null if no listener is needed.
+     */
     public MealCardAdapter(List<String> items, boolean isSingleSelection, OnSelectionChangeListener listener) {
         this.items = items;
         this.isSingleSelection = isSingleSelection;
         this.listener = listener;
     }
 
+    /** Get the set of selected items.
+     * @return The set of selected items.
+     */
     public Set<String> getSelectedItems() {
         return selectedItems;
     }
 
     @NonNull
     @Override
+    /** Create a new view holder for the adapter.
+     * @param parent The parent view group.
+     * @param viewType The view type.
+     * @return The created view holder.
+     */
     public CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_meal_card, parent, false);
@@ -50,6 +65,10 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
     }
 
     @Override
+    /** Bind the view holder with the data for the given position.
+     * @param holder The view holder to bind.
+     * @param position The position of the item to bind.
+     */
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         String item = items.get(position);
         boolean isSelected = selectedItems.contains(item);
@@ -57,6 +76,9 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
     }
 
     @Override
+    /** Get the number of items in the adapter.
+     * @return The number of items in the adapter.
+     */
     public int getItemCount() {
         return items.size();
     }
@@ -66,6 +88,9 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
         private final ImageView ivMealIcon;
         private final TextView tvOptionName;
 
+        /** Constructor for the CardViewHolder.
+         * @param itemView The view for the card item.
+         */
         CardViewHolder(@NonNull View itemView) {
             super(itemView);
             cardItem = itemView.findViewById(R.id.cardItem);
@@ -73,6 +98,10 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
             tvOptionName = itemView.findViewById(R.id.tvOptionName);
         }
 
+        /** Bind the view holder with the data for the given position.
+         * @param item The item to bind.
+         * @param isSelected Whether the item is selected.
+         */
         void bind(String item, boolean isSelected) {
             tvOptionName.setText(item);
             Context context = itemView.getContext();
@@ -93,7 +122,6 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
                     ivMealIcon.setColorFilter(ContextCompat.getColor(context, R.color.primary));
                 }
             } else {
-                // --- CORRECTION ICI ---
                 cardItem.setStrokeColor(Color.TRANSPARENT);
                 cardItem.setCardBackgroundColor(ContextCompat.getColor(context, R.color.surface));
 
@@ -130,6 +158,10 @@ public class MealCardAdapter extends RecyclerView.Adapter<MealCardAdapter.CardVi
             });
         }
 
+        /** Get the icon resource for the given base name.
+         * @param baseName The name of the base.
+         * @return The icon resource for the base, or 0 if not found.
+         */
         private int getIconForBase(String baseName) {
             switch (baseName) {
                 //case "Viande Rouge": return R.drawable.ic_meal_red_meat;

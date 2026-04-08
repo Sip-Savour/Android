@@ -38,6 +38,7 @@ public class LoginFragment extends Fragment {
 
     @Nullable
     @Override
+ */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class LoginFragment extends Fragment {
         observeViewModel();
     }
 
+    /**
+     * Lie les vues du fragment à leurs références Java.
+     * @param view La vue racine du fragment
+     */
     private void bindViews(View view) {
         // Header title is already set in XML, no need to bind
 
@@ -70,23 +75,34 @@ public class LoginFragment extends Fragment {
         btnGoToRegister = view.findViewById(R.id.btnGoToRegister);
     }
 
+    /**
+     * Configure les écouteurs d'événements pour les vues.
+     */
     private void setupListeners() {
         btnLogin.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
             onLoginClicked();
         });
 
+        /**
+         * Gère le clic sur le lien "Mot de passe oublié".
+         */
         tvForgotPassword.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
-            // TODO: Naviguer vers l'écran de mot de passe oublié
         });
 
+        /**
+         * Gère le clic sur le bouton "S'inscrire".
+         */
         btnGoToRegister.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
             navController.navigate(R.id.action_login_to_register);
         });
     }
 
+    /**
+     * Observe les LiveData du ViewModel pour mettre à jour l'interface utilisateur en conséquence.
+     */
     private void observeViewModel() {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             btnLogin.setEnabled(!isLoading);
@@ -109,6 +125,9 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    /**
+     * Gère le clic sur le bouton de connexion.
+     */
     private void onLoginClicked() {
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
         String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
@@ -129,6 +148,9 @@ public class LoginFragment extends Fragment {
         viewModel.login(email, password);
     }
 
+    /**
+     * Navigue vers l'écran d'accueil après une connexion réussie.
+     */
     private void navigateToHome() {
         navController.navigate(R.id.action_login_to_home);
     }

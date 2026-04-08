@@ -8,7 +8,6 @@ public class SlideBackUtil {
 
     /**
      * Attache un écouteur de balayage (swipe) pour gérer le retour en arrière.
-     *
      * @param onSwipeRight L'action à exécuter lors d'un glissement vers la droite (ex: popBackStack).
      * @param views        Les vues sur lesquelles écouter le balayage (ex: layout racine, RecyclerView, ScrollView...).
      */

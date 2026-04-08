@@ -176,27 +176,94 @@ public class MealDto implements java.io.Serializable {
 
     // ==================== ALIAS HELPERS (pour MealTranslationManager) ====================
 
+    /**
+     * Récupère l'ID du repas.
+     * @return L'ID du repas
+     */
     public String getId() { return idMeal; }
+
+    /**
+     * Définit l'ID du repas.
+     * @param id L'ID à définir
+     */
     public void setId(String id) { this.idMeal = id; }
 
+
+    /**
+     * Récupère le nom du repas.
+     * @return Le nom du repas
+     */
     public String getName() { return strMeal; }
+    /**
+     * Définit le nom du repas.
+     * @param name Le nom à définir
+     */
     public void setName(String name) { this.strMeal = name; }
 
+
+    /**
+     * Récupère la catégorie du repas.
+     * @return La catégorie du repas
+     */
+
     public String getCategory() { return strCategory; }
+    /**
+     * Définit la catégorie du repas.
+     * @param category La catégorie à définir
+     */
     public void setCategory(String category) { this.strCategory = category; }
 
+    /**
+     * Récupère la région du repas.
+     * @return La région du repas
+     */
     public String getArea() { return strArea; }
+    /**
+     * Définit la région du repas.
+     * @param area La région à définir
+     */
     public void setArea(String area) { this.strArea = area; }
 
+    /**
+     * Récupère les instructions de préparation du repas.
+     * @return Les instructions de préparation
+     */
     public String getInstructions() { return strInstructions; }
+
+    /**
+     * Définit les instructions de préparation du repas.
+     * @param instructions Les instructions à définir
+     */
     public void setInstructions(String instructions) { this.strInstructions = instructions; }
 
+    /**
+     * Récupère l'URL de la miniature du repas.
+     * @return L'URL de la miniature
+     */
     public String getThumbnail() { return strMealThumb; }
+
+    /**
+     * Définit l'URL de la miniature du repas.
+     * @param thumbnail L'URL de la miniature à définir
+     */
     public void setThumbnail(String thumbnail) { this.strMealThumb = thumbnail; }
 
+
+    /**
+     * Récupère l'URL de la vidéo YouTube du repas.
+     * @return L'URL de la vidéo YouTube
+     */
     public String getYoutubeUrl() { return strYoutube; }
+    /**
+     * Définit l'URL de la vidéo YouTube du repas.
+     * @param url L'URL de la vidéo YouTube à définir
+     */
     public void setYoutubeUrl(String url) { this.strYoutube = url; }
 
+    /**
+     * Récupère la liste des ingrédients du repas.
+     * @return La liste des ingrédients
+     */
     public List<String> getIngredients() {
         List<String> list = new ArrayList<>();
         addIfNotEmpty(list, strIngredient1);
@@ -222,6 +289,10 @@ public class MealDto implements java.io.Serializable {
         return list;
     }
 
+    /**
+     * Définit la liste des ingrédients du repas.
+     * @param ing La liste des ingrédients à définir
+     */
     public void setIngredients(List<String> ing) {
         if (ing == null) return;
         strIngredient1 = ing.size() > 0 ? ing.get(0) : null;
@@ -246,6 +317,10 @@ public class MealDto implements java.io.Serializable {
         strIngredient20 = ing.size() > 19 ? ing.get(19) : null;
     }
 
+    /**
+     * Récupère la liste des mesures du repas.
+     * @return La liste des mesures
+     */
     public List<String> getMeasures() {
         List<String> list = new ArrayList<>();
         addIfNotEmpty(list, strMeasure1);
@@ -271,6 +346,10 @@ public class MealDto implements java.io.Serializable {
         return list;
     }
 
+    /**
+     * Définit la liste des mesures du repas.
+     * @param m La liste des mesures à définir
+     */
     public void setMeasures(List<String> m) {
         if (m == null) return;
         strMeasure1 = m.size() > 0 ? m.get(0) : null;
@@ -295,6 +374,11 @@ public class MealDto implements java.io.Serializable {
         strMeasure20 = m.size() > 19 ? m.get(19) : null;
     }
 
+    /**
+     * Ajoute une valeur à la liste si elle n'est pas vide.
+     * @param list La liste à laquelle ajouter
+     * @param value La valeur à vérifier et ajouter
+     */
     private void addIfNotEmpty(List<String> list, String value) {
         if (value != null && !value.trim().isEmpty()) {
             list.add(value);

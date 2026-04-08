@@ -16,6 +16,9 @@ import java.util.concurrent.Executors;
 
 import retrofit2.Response;
 
+/**
+ * ViewModel pour gérer les données de l'historique des vins.
+ */
 public class HistoryViewModel extends ViewModel {
 
     private final MutableLiveData<List<WineDto>> historyList = new MutableLiveData<>();
@@ -26,6 +29,9 @@ public class HistoryViewModel extends ViewModel {
     public LiveData<List<WineDto>> getHistoryList() { return historyList; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
 
+    /**
+     * Charge la liste des vins de l'historique.
+     */
     public void loadHistory() {
         isLoading.setValue(true);
         List<Integer> ids = SessionManager.getInstance().getHistoryIds();
@@ -35,7 +41,7 @@ public class HistoryViewModel extends ViewModel {
             isLoading.setValue(false);
             return;
         }
-
+    // Récupération des détails de chaque vin en arrière-plan
         executor.execute(() -> {
             List<WineDto> fetchedWines = new ArrayList<>();
             for (Integer id : ids) {

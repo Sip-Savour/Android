@@ -42,6 +42,9 @@ public class SettingsFragment extends Fragment {
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
     @Override
+    /**
+     * Appelé lors de la création du fragment.
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -55,11 +58,17 @@ public class SettingsFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -92,6 +101,9 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Appelé lorsque le fragment est mis à jour.
+     */
     public void onResume() {
         super.onResume();
         // Vérification de la permission Micro
@@ -107,6 +119,9 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Appelé lorsque le fragment est mis en pause.
+     */
     public void onPause() {
         if (easterEggDetector != null) {
             easterEggDetector.stop();
@@ -114,6 +129,9 @@ public class SettingsFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Observe les LiveData du ViewModel pour mettre à jour l'interface utilisateur en fonction des préférences actuelles.
+     */
     private void observeViewModel() {
         viewModel.getCurrentLanguage().observe(getViewLifecycleOwner(), lang -> {
             if ("en".equals(lang)) {
@@ -134,6 +152,9 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    /**
+     * Configure les listeners pour les interactions utilisateur, notamment les changements de langue, de thème et le bouton de sauvegarde.
+     */
     private void setupListeners() {
         rgLanguage.setOnCheckedChangeListener((group, checkedId) -> {
             HapticUtil.playLightClick(group);

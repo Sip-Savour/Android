@@ -15,25 +15,39 @@ public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<String> userEmail = new MutableLiveData<>();
     private final MutableLiveData<String> userDob = new MutableLiveData<>();
 
+    /**
+     * Retourne les données du nom d'utilisateur.
+     */
     public LiveData<String> getUserName() {
         return userName;
     }
 
+    /**
+     * Retourne les données de l'email de l'utilisateur.
+     */
     public LiveData<String> getUserEmail() {
         return userEmail;
     }
 
+    /**
+     * Retourne les données de la date de naissance de l'utilisateur.
+     */
     public LiveData<String> getUserDob() {
         return userDob;
     }
 
+    /**
+     * Charge les données de l'utilisateur.
+     */
     public void loadUserData() {
         userName.setValue(SessionManager.getInstance().getUsername());
         userEmail.setValue(SessionManager.getInstance().getEmail());
     }
 
+    /**
+     * Effectue la déconnexion de l'utilisateur.
+     */
     public void logout() {
-        // C'est ICI que se passe la vraie déconnexion sans faire planter l'application !
         SessionManager.getInstance().logout();
     }
 }

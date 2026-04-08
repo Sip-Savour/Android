@@ -119,6 +119,7 @@ public final class ApiClient {
     }
 
     /**
+     * Récupère une instance de MealApi pour effectuer des appels liés aux repas.
      * @return Une instance de WineApi pour les opérations liées aux vins
       */
     public WineApi getWineApi() {

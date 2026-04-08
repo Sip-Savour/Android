@@ -18,18 +18,28 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
 
     private OnSuggestionClickListener listener;
 
+    /**
+     * Interface pour gérer les clics sur les suggestions de vins.
+     */
     public interface OnSuggestionClickListener {
         void onSuggestionClick(WineDto wine);
     }
-
+    /** Constructeur par défaut. */
     public SuggestionAdapter() {
         super(DIFF_CALLBACK);
     }
 
+    /**
+     * Définit le listener pour les clics sur les suggestions.
+     * @param listener Le listener à définir.
+     */
     public void setOnSuggestionClickListener(OnSuggestionClickListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Callback pour calculer les différences entre les éléments de la liste.
+     */
     private static final DiffUtil.ItemCallback<WineDto> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<>() {
                 @Override
@@ -46,6 +56,9 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
 
     @NonNull
     @Override
+    /**
+     * Inflate le layout pour chaque élément de la liste et crée un ViewHolder.
+     */
     public SuggestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_suggestion_wine, parent, false);
@@ -53,6 +66,9 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
     }
 
     @Override
+    /**
+     * Lie les données du vin à la vue du ViewHolder.
+     */
     public void onBindViewHolder(@NonNull SuggestionViewHolder holder, int position) {
         WineDto wine = getItem(position);
         holder.bind(wine);
@@ -65,6 +81,10 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
         private final TextView tvDescription;
         private final TextView tvType;
 
+        /**
+         * Constructeur du ViewHolder.
+         * @param itemView La vue de l'élément.
+         */
         SuggestionViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
@@ -73,8 +93,11 @@ public class SuggestionAdapter extends ListAdapter<WineDto, SuggestionAdapter.Su
             tvType = itemView.findViewById(R.id.tvType);
         }
 
+        /**
+         * Lie les données du vin aux vues correspondantes.
+         * @param wine Le vin à afficher.
+         */
         void bind(WineDto wine) {
-            // --- CORRECTION : Appel dynamique aux ressources ---
             if (tvTitle != null) {
                 tvTitle.setText(wine.getTitle() != null ? wine.getTitle() : itemView.getContext().getString(R.string.result_unknown_wine));
             }

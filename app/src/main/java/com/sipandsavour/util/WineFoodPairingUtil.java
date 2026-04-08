@@ -21,15 +21,24 @@ public class WineFoodPairingUtil {
     private static final String CAT_VEGETARIAN = "Vegetarian";
     private static final String CAT_GOAT = "Goat";
 
+    /**
+     * Liste des cépages de vins rouges corsés
+     */
     private static final List<String> BOLD_RED_VARIETIES = Arrays.asList(
             "cabernet", "shiraz", "syrah", "malbec", "tempranillo",
             "nebbiolo", "sangiovese", "zinfandel", "petite sirah"
     );
 
+    /**
+     * Liste des cépages de vins rouges légers
+     */
     private static final List<String> LIGHT_RED_VARIETIES = Arrays.asList(
             "pinot noir", "merlot", "grenache", "gamay", "barbera"
     );
 
+    /**
+     * Liste des cépages de vins blancs secs
+     */
     private static final List<String> DRY_WHITE_VARIETIES = Arrays.asList(
             "chardonnay", "sauvignon blanc", "pinot grigio", "pinot gris",
             "albariño", "vermentino", "grüner veltliner", "chablis"
@@ -37,6 +46,8 @@ public class WineFoodPairingUtil {
 
     /**
      * Détermine les catégories MealDB compatibles avec un vin
+     * @param wine Le vin pour lequel déterminer les catégories compatibles
+     * @return La liste des catégories compatibles (ex: Beef, Chicken, Pasta...)
      */
     public static List<String> getCompatibleCategories(WineDto wine) {
         if (wine == null) {
@@ -90,6 +101,8 @@ public class WineFoodPairingUtil {
 
     /**
      * Choisit UNE catégorie aléatoire compatible (avec seed hebdomadaire)
+     * @param wine Le vin pour lequel choisir une catégorie
+     * @return La catégorie choisie
      */
     public static String getWeeklyCategory(WineDto wine) {
         List<String> categories = getCompatibleCategories(wine);
@@ -104,6 +117,12 @@ public class WineFoodPairingUtil {
         return categories.get(index);
     }
 
+    /**
+     * Détermine si un vin est un vin rouge corsé
+     * @param variety Le cépage du vin
+     * @param description La description du vin
+     * @return true si le vin est un vin rouge corsé, false sinon
+     */
     private static boolean isBoldRed(String variety, String description) {
         for (String boldVariety : BOLD_RED_VARIETIES) {
             if (variety.contains(boldVariety)) {
@@ -122,6 +141,12 @@ public class WineFoodPairingUtil {
                description.contains("robust");
     }
 
+    /**
+     * Détermine si un vin est un vin blanc sec
+     * @param variety Le cépage du vin
+     * @param description La description du vin
+     * @return true si le vin est un vin blanc sec, false sinon
+     */
     private static boolean isDryWhite(String variety, String description) {
         for (String dryVariety : DRY_WHITE_VARIETIES) {
             if (variety.contains(dryVariety)) {

@@ -42,7 +42,7 @@ public class PreferencesFragment extends Fragment {
         }
     }
 
-    // Méthode pour générer la liste dynamiquement avec la bonne langue
+    // Méthode pour obtenir la liste des saveurs disponibles avec leurs traductions
     private List<FlavorOption> getAvailableFlavors() {
         List<FlavorOption> flavors = new ArrayList<>();
         flavors.add(new FlavorOption(getString(R.string.flavor_fruity), "Fruity"));
@@ -61,11 +61,17 @@ public class PreferencesFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_preferences, container, false);
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -91,6 +97,9 @@ public class PreferencesFragment extends Fragment {
         SlideBackUtil.attach(() -> navController.popBackStack(), view, scrollView);
     }
 
+    /**
+     * Configure les chips de couleur.
+     */
     private void setupColorChips() {
         cgColor.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.chipRed) viewModel.setColor("Red");
@@ -100,6 +109,9 @@ public class PreferencesFragment extends Fragment {
         });
     }
 
+    /**
+     * Configure les chips de saveur.
+     */
     private void setupFlavorChips() {
         // Utilisation de la liste dynamique traduite
         for (FlavorOption flavor : getAvailableFlavors()) {
@@ -117,6 +129,9 @@ public class PreferencesFragment extends Fragment {
         }
     }
 
+    /**
+     * Observe les LiveData du ViewModel pour mettre à jour l'interface utilisateur en conséquence.
+     */
     private void observeViewModel() {
         viewModel.getSelectedColor().observe(getViewLifecycleOwner(), color -> {
             if (color == null) {

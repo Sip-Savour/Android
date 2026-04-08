@@ -33,6 +33,10 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     private LinearLayout ingredientsContainer;
     private ImageButton btnCloseModal;
 
+    /** Create a new instance of the fragment with the specified meal.
+     * @param meal The meal for which to display details.
+     * @return The created fragment instance.
+     */
     public static MealDetailsBottomSheetFragment newInstance(MealDto meal) {
         MealDetailsBottomSheetFragment fragment = new MealDetailsBottomSheetFragment();
         Bundle args = new Bundle();
@@ -42,6 +46,9 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     @Override
+    /** Called to initialize the fragment's creation.
+     * @param savedInstanceState The saved instance state.
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -51,6 +58,12 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
+    /** Called to create the view for the fragment.
+     * @param inflater The layout inflater.
+     * @param container The parent view group.
+     * @param savedInstanceState The saved instance state.
+     * @return The created view.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -58,12 +71,19 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     @Override
+    /** Called after the view for the fragment has been created.
+     * @param view The view for the fragment.
+     * @param savedInstanceState The saved instance state.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         displayMealDetails();
     }
 
+    /** Initialize the views in the fragment.
+     * @param view The view for the fragment.
+     */
     private void initViews(View view) {
         tvMealDetailTitle = view.findViewById(R.id.tvMealDetailTitle);
         tvMealDetailCategory = view.findViewById(R.id.tvMealDetailCategory);
@@ -76,6 +96,8 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         }
     }
 
+    /** Display the details of the selected meal.
+     */
     private void displayMealDetails() {
         if (meal == null) {
             Log.e(TAG, "Meal is null!");
@@ -99,6 +121,10 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         });
     }
 
+    /**
+     * Show the data for the specified meal.
+     * @param mealToDisplay The meal for which to display data.
+     */
     private void showMealData(MealDto mealToDisplay) {
         // Titre
         if (tvMealDetailTitle != null) {
@@ -135,6 +161,7 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
 
     /**
      * Formate les instructions en étapes numérotées
+     * @param instructions Les instructions brutes à formater
      */
     private String formatInstructions(String instructions) {
         if (instructions == null || instructions.trim().isEmpty()) {
@@ -186,6 +213,7 @@ public class MealDetailsBottomSheetFragment extends BottomSheetDialogFragment {
 
     /**
      * Affiche les ingrédients formatés avec quantités
+     * @param mealToDisplay Le repas dont les ingrédients doivent être affichés
      */
     private void displayFormattedIngredients(MealDto mealToDisplay) {
         if (ingredientsContainer == null) return;

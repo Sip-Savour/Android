@@ -15,17 +15,30 @@ import java.util.List;
 
 public class FavoritesViewModel extends ViewModel {
 
+    /**
+     * LiveData pour la liste des vins favoris, l'état de chargement et si la liste est vide.
+     */
     private final MutableLiveData<List<WineDto>> favorites = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> isEmpty = new MutableLiveData<>(true);
 
+    /** 
+     * Variables pour stocker temporairement le dernier vin supprimé et sa position, afin de permettre l'annulation de la suppression.
+     */
     private WineDto lastRemovedWine;
     private int lastRemovedPosition;
 
+    /**
+     * Getters pour les LiveData afin que la vue puisse les observer.
+     */
     public LiveData<List<WineDto>> getFavorites() { return favorites; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
     public LiveData<Boolean> getIsEmpty() { return isEmpty; }
 
+
+    /**
+     * Charge les vins favoris depuis le Repository, gère l'état de chargement et traduit la liste si nécessaire.
+     */
     public void loadFavorites() {
         isLoading.setValue(true);
 
@@ -52,10 +65,17 @@ public class FavoritesViewModel extends ViewModel {
         });
     }
 
+    /**
+     * Rafraîchit la liste des vins favoris.
+     */
     public void refresh() {
         loadFavorites();
     }
 
+    /**
+     * Supprime un vin des favoris.
+     * @param position La position du vin à supprimer dans la liste actuelle des favoris.
+     */
     public void removeFavorite(int position) {
         List<WineDto> currentList = favorites.getValue();
         if (currentList == null || position < 0 || position >= currentList.size()) return;
@@ -73,6 +93,9 @@ public class FavoritesViewModel extends ViewModel {
         Repository.getInstance().removeFavorite(wine.getId());
     }
 
+    /**
+     * Annule la suppression d'un vin des favoris.
+     */
     public void undoRemove() {
         if (lastRemovedWine == null) return;
 

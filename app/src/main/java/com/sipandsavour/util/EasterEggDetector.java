@@ -31,17 +31,23 @@ public class EasterEggDetector implements SensorEventListener {
     private boolean isCovered = false;
     private boolean isTriggered = false;
 
-    // === NOUVEAUTÉ : Variables pour la boussole ===
     private float[] gravity;
     private float[] geomagnetic;
     private boolean isPointingNorth = false;
 
     private OnSecretUnlockedListener listener;
 
+    /**
+     * Interface pour écouter les événements de déblocage du secret.
+     */
     public interface OnSecretUnlockedListener {
         void onSecretUnlocked();
     }
 
+    /**
+     * Constructeur de la classe EasterEggDetector.
+     * @param context Le contexte de l'application.
+     */
     public EasterEggDetector(Context context) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -50,10 +56,17 @@ public class EasterEggDetector implements SensorEventListener {
         magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD); // Initialisation
     }
 
+    /**
+     * Définit le listener pour détecter le déblocage du secret.
+     * @param listener Le listener à définir.
+     */
     public void setListener(OnSecretUnlockedListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Démarre la détection des easter eggs.
+     */
     public void start() {
         if (accelerometer != null) sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         if (lightSensor != null) sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_UI);
@@ -63,11 +76,17 @@ public class EasterEggDetector implements SensorEventListener {
         startAudioListening();
     }
 
+    /**
+     * Arrête l'écoute des capteurs.
+     */
     public void stop() {
         sensorManager.unregisterListener(this);
         stopAudioListening();
     }
 
+    /**
+     * Démarre l'écoute audio.
+     */
     @SuppressLint("MissingPermission")
     private void startAudioListening() {
         if (isListeningAudio) return;
@@ -128,12 +147,18 @@ public class EasterEggDetector implements SensorEventListener {
         }
     }
 
+    /**
+     * Arrête l'écoute audio.
+     */
     private void stopAudioListening() {
         isListeningAudio = false;
         audioRecord = null;
     }
 
     @Override
+    /**
+     * Gère les changements de capteurs pour détecter les conditions du rituel secret.
+     */
     public void onSensorChanged(SensorEvent event) {
         int type = event.sensor.getType();
 
@@ -149,7 +174,6 @@ public class EasterEggDetector implements SensorEventListener {
             geomagnetic = event.values.clone(); // Sauvegarde pour la boussole
         }
 
-        // === NOUVEAUTÉ : Calcul de l'orientation vers le Nord ===
         if (gravity != null && geomagnetic != null) {
             float[] R = new float[9];
             float[] I = new float[9];
@@ -169,12 +193,17 @@ public class EasterEggDetector implements SensorEventListener {
     }
 
     @Override
+    /**
+     * Non utilisé, mais nécessaire pour implémenter SensorEventListener
+     */
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
+    /**
+     * Vérifie si le rituel secret est débloqué.
+     */
     private void verifierLeRituel() {
         boolean isSnappedRecently = (System.currentTimeMillis() - lastSnapTime) < 500;
 
-        // === NOUVEAUTÉ : On ajoute isPointingNorth à la condition ===
         if (isFlat && isDark && isCovered && isPointingNorth && isSnappedRecently) {
             if (!isTriggered && listener != null) {
                 isTriggered = true;

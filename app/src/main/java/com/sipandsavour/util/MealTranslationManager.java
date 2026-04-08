@@ -28,6 +28,10 @@ public class MealTranslationManager {
     private final ExecutorService executorService;
     private final Handler mainHandler;
 
+    /**
+     * Retourne l'instance singleton de MealTranslationManager.
+     * @return L'instance singleton.
+     */
     public static synchronized MealTranslationManager getInstance() {
         if (instance == null) {
             instance = new MealTranslationManager();
@@ -35,6 +39,9 @@ public class MealTranslationManager {
         return instance;
     }
 
+    /**
+     * Constructeur de la classe MealTranslationManager.
+     */
     private MealTranslationManager() {
         TranslatorOptions options = new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -48,20 +55,31 @@ public class MealTranslationManager {
         downloadModel();
     }
 
+    /**
+     * Télécharge le modèle de traduction si nécessaire.
+     */
     private void downloadModel() {
         DownloadConditions conditions = new DownloadConditions.Builder()
                 .requireWifi()
                 .build();
 
         translator.downloadModelIfNeeded(conditions)
-                .addOnSuccessListener(v -> Log.d(TAG, "✅ Modèle ML Kit prêt"))
-                .addOnFailureListener(e -> Log.e(TAG, "❌ Erreur téléchargement modèle", e));
+                .addOnSuccessListener(v -> Log.d(TAG, " Modèle ML Kit prêt"))
+                .addOnFailureListener(e -> Log.e(TAG, " Erreur téléchargement modèle", e));
     }
 
+    /**
+     * Interface pour écouter les événements de traduction.
+     */
     public interface TranslationCallback {
         void onTranslated(MealDto translatedMeal);
     }
 
+    /**
+     * Traduit un repas.
+     * @param meal Le repas à traduire.
+     * @param callback Le callback pour recevoir le résultat de la traduction.
+     */
     public void translateMeal(MealDto meal, TranslationCallback callback) {
         if (meal == null) {
             mainHandler.post(() -> callback.onTranslated(null));
@@ -71,15 +89,20 @@ public class MealTranslationManager {
         String appLanguage = SessionManager.getInstance().getLanguage();
 
         if (!appLanguage.equals("fr")) {
-            Log.d(TAG, "🌍 App en " + appLanguage + ", pas de traduction");
+            Log.d(TAG, " App en " + appLanguage + ", pas de traduction");
             mainHandler.post(() -> callback.onTranslated(meal));
             return;
         }
 
-        Log.d(TAG, "🌐 Traduction : " + meal.getName());
+        Log.d(TAG, " Traduction : " + meal.getName());
         translateWithMLKit(meal, callback);
     }
 
+    /**
+     * Traduit un repas en utilisant ML Kit pour les champs principaux et un dictionnaire local pour les ingrédients et mesures.
+     * @param meal Le repas à traduire.
+     * @param callback Le callback pour recevoir le résultat de la traduction.
+     */
     private void translateWithMLKit(MealDto meal, TranslationCallback callback) {
         MealDto result = new MealDto();
         result.setId(meal.getId());
@@ -91,14 +114,14 @@ public class MealTranslationManager {
         Runnable checkComplete = () -> {
             if (pending.decrementAndGet() == 0) {
                 mainHandler.post(() -> callback.onTranslated(result));
-                Log.d(TAG, "✅ Traduction complète : " + result.getName());
+                Log.d(TAG, " Traduction complète : " + result.getName());
             }
         };
 
         // 1. Nom (ML Kit)
         translateText(meal.getName(), translated -> {
             result.setName(translated);
-            Log.d(TAG, "   ✓ Nom : " + translated);
+            Log.d(TAG, "    Nom : " + translated);
             checkComplete.run();
         });
 
@@ -128,7 +151,7 @@ public class MealTranslationManager {
                 translatedIngredients.add(IngredientDictionary.translateIngredient(ingredient));
             }
             result.setIngredients(translatedIngredients);
-            Log.d(TAG, "   ✓ Ingrédients : " + translatedIngredients.size() + " items (dictionnaire)");
+            Log.d(TAG, "    Ingrédients : " + translatedIngredients.size() + " items (dictionnaire)");
         } else {
             result.setIngredients(new ArrayList<>());
         }
@@ -141,12 +164,17 @@ public class MealTranslationManager {
                 translatedMeasures.add(IngredientDictionary.translateMeasure(measure));
             }
             result.setMeasures(translatedMeasures);
-            Log.d(TAG, "   ✓ Mesures : " + translatedMeasures.size() + " items (dictionnaire)");
+            Log.d(TAG, "    Mesures : " + translatedMeasures.size() + " items (dictionnaire)");
         } else {
             result.setMeasures(new ArrayList<>());
         }
     }
 
+    /**
+     * Traduit un texte en utilisant ML Kit.
+     * @param text Le texte à traduire.
+     * @param callback Le callback pour recevoir le résultat de la traduction.
+     */
     private void translateText(String text, OnTextTranslated callback) {
         if (text == null || text.trim().isEmpty()) {
             callback.onTranslated("");
@@ -156,15 +184,23 @@ public class MealTranslationManager {
         translator.translate(text)
                 .addOnSuccessListener(callback::onTranslated)
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "❌ Erreur ML Kit : " + e.getMessage());
+                    Log.e(TAG, " Erreur ML Kit : " + e.getMessage());
                     callback.onTranslated(text);
                 });
     }
 
+    /**
+     * Interface pour gérer le callback de traduction de texte.
+     */
     private interface OnTextTranslated {
         void onTranslated(String text);
     }
 
+    /**
+     * Traduit un repas si nécessaire.
+     * @param meal Le repas à traduire.
+     * @param callback Le callback pour recevoir le résultat de la traduction.
+     */
     public void translateMealIfNeeded(MealDto meal, TranslationCallback callback) {
         translateMeal(meal, callback);
     }
