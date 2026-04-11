@@ -325,7 +325,7 @@ public String getLanguage() {
         prefs.edit().putInt("theme_mode", themeMode).apply();
     }
 
-    //* Récupère le mode de thème choisi, ou suit le système par défaut
+    /** Récupère le mode de thème choisi, ou suit le système par défaut
      * @return Le mode de thème (ex: MODE_NIGHT_NO, MODE_NIGHT_YES, MODE_NIGHT_FOLLOW_SYSTEM)
      * @throws IllegalStateException si non initialisé
      */
