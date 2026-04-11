@@ -10,13 +10,15 @@ public class AddFavoriteRequestTest {
     @Test
     public void testConstructorAndGetters() {
         // 1. Préparation des données
-        int expectedId = 42;
+        int expectedWineId = 42;
+        int expectedUserId = 7;
 
-        // 2. Exécution : Utilisation du constructeur avec paramètres
-        AddFavoriteRequest request = new AddFavoriteRequest(expectedId);
+        // 2. Exécution : Utilisation du constructeur avec les deux paramètres
+        AddFavoriteRequest request = new AddFavoriteRequest(expectedWineId, expectedUserId);
 
-        // 3. Vérification : Le getter doit renvoyer la même valeur
-        assertEquals(expectedId, request.getWineId());
+        // 3. Vérification : Les getters doivent renvoyer les bonnes valeurs
+        assertEquals("Le wineId doit correspondre à la valeur passée au constructeur", expectedWineId, request.getWineId());
+        assertEquals("Le userId doit correspondre à la valeur passée au constructeur", expectedUserId, request.getUserId());
     }
 
     @Test

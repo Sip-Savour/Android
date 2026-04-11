@@ -76,12 +76,13 @@ public class ApiClientTest {
     }
 
     @Test
-    public void setAuthToken_doesNotCrash() {
+    public void apiClient_initialization_doesNotCrash() {
         ApiClient.init(mockContext);
+
         ApiClient client = ApiClient.getInstance();
 
-        // On vérifie juste que l'appel ne lève pas d'erreur
-        client.setAuthToken("fake_token");
-        client.clearAuthToken();
+        assertNotNull("L'instance de ApiClient ne devrait pas être nulle après init()", client);
+        assertNotNull("L'API d'authentification doit être générée", client.getAuthApi());
+        assertNotNull("L'API des vins doit être générée", client.getWineApi());
     }
 }

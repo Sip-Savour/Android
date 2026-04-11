@@ -61,19 +61,14 @@ public class SessionManagerTest {
     }
 
     @Test
-    public void saveToken_updatesPrefsAndApiClient() {
-        try (MockedStatic<ApiClient> mockedApiClient = mockStatic(ApiClient.class)) {
-            mockedApiClient.when(ApiClient::getInstance).thenReturn(mockApiClient);
+    public void saveToken_updatesPrefs() {
+        // Exécution : On sauvegarde le token
+        sessionManager.saveToken("my_secret_token");
 
-            sessionManager.saveToken("my_secret_token");
+        verify(mockEditor).putString(Constants.KEY_TOKEN, "my_secret_token");
 
-            // Vérifie que c'est sauvé en local
-            verify(mockEditor).putString(Constants.KEY_TOKEN, "my_secret_token");
-            verify(mockEditor).apply();
+        verify(mockEditor).apply();
 
-            // Vérifie que le client API est mis à jour immédiatement
-            verify(mockApiClient).setAuthToken("my_secret_token");
-        }
     }
 
     @Test
@@ -103,9 +98,6 @@ public class SessionManagerTest {
             // Vérifie le clear des prefs
             verify(mockEditor).clear();
             verify(mockEditor).apply();
-
-            // Vérifie la réinitialisation du token dans l'API
-            verify(mockApiClient).clearAuthToken();
         }
     }
 

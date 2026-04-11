@@ -242,12 +242,25 @@ public final class Repository {
         MutableLiveData<UiState<Boolean>> result = new MutableLiveData<>();
         result.setValue(UiState.loading());
 
-        wineApi.addFavorite(new AddFavoriteRequest(wineId)).enqueue(new Callback<Void>() {
+        // NOUVEAU : On récupère l'ID de l'utilisateur connecté depuis le SessionManager
+        int userId = sessionManager.getUserId();
+
+        // NOUVEAU : On envoie le wineId ET le userId
+        wineApi.addFavorite(new AddFavoriteRequest(wineId, userId)).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     result.setValue(UiState.success(true));
                 } else {
+                    // === NOUVEAU : ON LIT L'ERREUR EXACTE DE FASTAPI ===
+                    try {
+                        String errorDetails = response.errorBody() != null ? response.errorBody().string() : "Pas de détails";
+                        android.util.Log.e("FASTAPI_ERROR", "Erreur 422 reçue : " + errorDetails);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // ====================================================
+
                     result.setValue(UiState.error("Erreur lors de l'ajout"));
                 }
             }
