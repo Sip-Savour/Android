@@ -34,6 +34,9 @@ public class SplashFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -41,6 +44,9 @@ public class SplashFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -50,11 +56,17 @@ public class SplashFragment extends Fragment {
         new Handler(Looper.getMainLooper()).postDelayed(this::navigateToNextScreen, SPLASH_DELAY);
     }
 
+    /**
+     * Lie les vues du layout au fragment.
+     */
     private void bindViews(View view) {
         ivLogo = view.findViewById(R.id.ivSplashLogo);
         tvAppName = view.findViewById(R.id.tvSplashName);
     }
 
+    /**
+     * Démarre l'animation du splash screen.
+     */
     private void startSplashAnimation() {
         // État initial
         ivLogo.setScaleX(0f);
@@ -86,6 +98,9 @@ public class SplashFragment extends Fragment {
         textAnimator.start();
     }
 
+    /**
+     * Navigue vers l'écran suivant.
+     */
     private void navigateToNextScreen() {
         if (!isAdded()) return;
 

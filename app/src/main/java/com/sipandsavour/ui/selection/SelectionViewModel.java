@@ -25,17 +25,32 @@ public class SelectionViewModel extends ViewModel {
     private final MutableLiveData<UiState<PredictResponse>> predictionResult = new MutableLiveData<>();
     private String mode = "match";
 
+    /**
+     * Constructeur de la classe SelectionViewModel.
+     */
     public SelectionViewModel() {
         loadCategories();
     }
 
+    /**
+     * Charge les catégories de saveurs.
+     */
     private void loadCategories() {
         List<FlavorMapper.AccordionCategory> cats = FlavorMapper.getAccordionCategories();
         categories.setValue(cats);
     }
 
+    /**
+     * Retourne la liste des catégories de saveurs.
+     * @return La liste des catégories.
+     */
     public LiveData<List<FlavorMapper.AccordionCategory>> getCategories() { return categories; }
 
+
+    /**
+     * Bascule l'état d'expansion d'une catégorie.
+     * @param position La position de la catégorie.
+     */
     public void toggleCategory(int position) {
         List<FlavorMapper.AccordionCategory> cats = categories.getValue();
         if (cats != null && position >= 0 && position < cats.size()) {
@@ -44,12 +59,24 @@ public class SelectionViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Retourne la liste des saveurs sélectionnées.
+     * @return La liste des saveurs sélectionnées.
+     */
     public LiveData<Set<String>> getSelectedFlavors() { return selectedFlavorsLiveData; }
 
+    /**
+     * Vérifie si des saveurs sont sélectionnées.
+     * @return true si des saveurs sont sélectionnées, false sinon.
+     */
     public boolean hasSelection() {
         return !selectedFlavors.isEmpty();
     }
 
+    /**
+     * Bascule l'état de sélection d'une saveur.
+     * @param flavorKey La clé de la saveur.
+     */
     public void toggleFlavor(String flavorKey) {
         if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
                 flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
@@ -68,6 +95,11 @@ public class SelectionViewModel extends ViewModel {
         selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
     }
 
+    /**
+     * Vérifie si une saveur est sélectionnée.
+     * @param flavorKey La clé de la saveur.
+     * @return true si la saveur est sélectionnée, false sinon.
+     */
     public boolean isFlavorSelected(String flavorKey) {
         if (flavorKey.equalsIgnoreCase("Rouge") || flavorKey.equalsIgnoreCase("red") ||
                 flavorKey.equalsIgnoreCase("Blanc") || flavorKey.equalsIgnoreCase("white") ||
@@ -77,21 +109,46 @@ public class SelectionViewModel extends ViewModel {
         return selectedFlavors.contains(flavorKey);
     }
 
+    /**
+     * Efface toutes les sélections.
+     */
     public void clearSelections() {
         selectedFlavors.clear();
         selectedColor.setValue(null);
         selectedFlavorsLiveData.setValue(new HashSet<>());
     }
 
+    /**
+     * Retourne la couleur sélectionnée.
+     * @return La couleur sélectionnée.
+     */
     public LiveData<String> getSelectedColor() { return selectedColor; }
 
+    /**
+     * Définit la couleur sélectionnée.
+     * @param color La couleur à définir.
+     */
     public void setSelectedColor(String color) {
         selectedColor.setValue(color);
         selectedFlavorsLiveData.setValue(new HashSet<>(selectedFlavors));
     }
 
+    /**
+     * Retourne le résultat de la prédiction.
+     * @return Le résultat de la prédiction.
+     */
     public LiveData<UiState<PredictResponse>> getPredictionResult() { return predictionResult; }
+
+    /**
+     * Définit le mode de l'application.
+     * @param mode Le mode à définir.
+     */
     public void setMode(String mode) { this.mode = mode; }
+
+    /**
+     * Retourne le mode de l'application.
+     * @return Le mode de l'application.
+     */
     public String getMode() { return mode; }
 
     // =======================================================
@@ -100,6 +157,7 @@ public class SelectionViewModel extends ViewModel {
 
     /**
      * Récupère les suggestions de repas (TRADUIT)
+     * @return Une liste de repas suggérés, avec traduction des champs textuels.
      */
     public LiveData<UiState<MealFilterResponse>> getMealSuggestions() {
         return getMealSuggestionsTranslated("Beef");
@@ -107,6 +165,8 @@ public class SelectionViewModel extends ViewModel {
 
     /**
      * Récupère les détails complets d'une recette par son ID (TRADUIT)
+     * @param mealId L'ID du repas à récupérer  
+     * @return Les détails du repas demandé, avec traduction des champs textuels.
      */
     public LiveData<UiState<MealFilterResponse>> getMealDetails(String mealId) {
         return getMealDetailsTranslated(mealId);
@@ -118,6 +178,8 @@ public class SelectionViewModel extends ViewModel {
 
     /**
      * Récupère et traduit les détails d'un repas
+     * @param mealId L'ID du repas à récupérer
+     * @return Les détails du repas demandé, avec traduction des champs textuels.
      */
     private LiveData<UiState<MealFilterResponse>> getMealDetailsTranslated(String mealId) {
         MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
@@ -158,8 +220,10 @@ public class SelectionViewModel extends ViewModel {
         return result;
     }
 
-    /**
+/**
  * Récupère 5 recettes aléatoires et les traduit
+ * @param category La catégorie de repas à filtrer
+ * @return Une liste de repas suggérés, avec traduction des champs textuels.
  */
 private LiveData<UiState<MealFilterResponse>> getMealSuggestionsTranslated(String category) {
     MutableLiveData<UiState<MealFilterResponse>> result = new MutableLiveData<>();
@@ -214,6 +278,9 @@ private LiveData<UiState<MealFilterResponse>> getMealSuggestionsTranslated(Strin
 
 /**
  * Sélectionne N recettes aléatoires depuis une liste
+ * @param meals La liste de recettes disponibles
+ * @param count Le nombre de recettes à sélectionner
+ * @return Une liste de recettes aléatoires, de taille maximale N.
  */
 private List<MealDto> getRandomMeals(List<MealDto> meals, int count) {
     if (meals == null || meals.isEmpty()) {
@@ -235,6 +302,10 @@ private List<MealDto> getRandomMeals(List<MealDto> meals, int count) {
     //  MAPPING INTELLIGENT AVEC GESTION DE LA COULEUR OPTIONNELLE
     // =======================================================
 
+    /**
+     * Prédit les goûts d'un repas en fonction de ses saveurs
+     * @param mealTastes Les saveurs du repas
+     */
     public void predictFromMeal(Set<String> mealTastes) {
         clearSelections();
 
@@ -303,6 +374,9 @@ private List<MealDto> getRandomMeals(List<MealDto> meals, int count) {
         predict();
     }
 
+    /**
+     * Lance la prédiction auprès de l'API
+     */
     public void predict() {
         android.util.Log.d("API_TEST", "Lancement de la préparation de la requête...");
         predictionResult.setValue(UiState.loading());

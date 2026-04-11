@@ -24,14 +24,16 @@ public final class ApiClient {
     private static volatile ApiClient instance;
     private final Retrofit retrofit;
 
-    // On retire "private String authToken = null;" car le SessionManager gère déjà ça !
 
+    /**
+     * Constructeur privé.
+     * @param context Le contexte de l'application.
+     */
     private ApiClient(Context context) {
         // Logging
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        // Auth interceptor : Va chercher le token dynamiquement à chaque requête !
         Interceptor authInterceptor = chain -> {
             Request original = chain.request();
             Request.Builder builder = original.newBuilder()
@@ -70,6 +72,10 @@ public final class ApiClient {
                 .build();
     }
 
+    /**
+     * Initialise le singleton ApiClient. Doit être appelé avant d'utiliser getInstance().
+     * @param context Le contexte de l'application
+     */
     public static void init(Context context) {
         if (instance == null) {
             synchronized (ApiClient.class) {
@@ -80,6 +86,11 @@ public final class ApiClient {
         }
     }
 
+    /**
+     * Récupère l'instance singleton de ApiClient. Assurez-vous d'appeler init() avant d'appeler cette méthode.
+     * @return L'instance du ApiClient
+     * @throws IllegalStateException si init() n'a pas été appelé avant
+      */
     public static ApiClient getInstance() {
         if (instance == null) {
             throw new IllegalStateException("ApiClient not initialized. Call init() first.");
@@ -91,6 +102,10 @@ public final class ApiClient {
         return retrofit.create(AuthApi.class);
     }
 
+    /**
+     * Récupère une instance de MealApi pour effectuer des appels liés aux repas.
+     * @return Une instance de WineApi pour les opérations liées aux vins
+      */
     public WineApi getWineApi() {
         return retrofit.create(WineApi.class);
     }

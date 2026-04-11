@@ -35,6 +35,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
 
     private FavoritesAdapter adapter;
 
+    /**
+     * Crée la vue du fragment.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,6 +46,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
+    /**
+     * Initialise les vues et configure les écouteurs.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,6 +66,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
         viewModel.loadFavorites();
     }
 
+    /**
+     * Lie les vues du layout aux variables de la classe.
+     */
     private void bindViews(View view) {
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
         rvFavorites = view.findViewById(R.id.rvFavorites);
@@ -67,6 +76,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
         shimmerFavorites = view.findViewById(R.id.shimmerFavorites);
     }
 
+    /**
+     * Configure le RecyclerView pour afficher les favoris.
+     */
     private void setupRecyclerView() {
         adapter = new FavoritesAdapter();
         adapter.setOnFavoriteClickListener(this);
@@ -74,11 +86,17 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
         rvFavorites.setAdapter(adapter);
     }
 
+    /**
+     * Configure le SwipeRefreshLayout.
+     */
     private void setupSwipeRefresh() {
         swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary);
         swipeRefresh.setOnRefreshListener(() -> viewModel.refresh());
     }
 
+    /**
+     * Configure le swipe pour supprimer les favoris.
+     */
     private void setupSwipeToDelete() {
         ItemTouchHelper.SimpleCallback swipeCallback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -101,6 +119,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
         new ItemTouchHelper(swipeCallback).attachToRecyclerView(rvFavorites);
     }
 
+    /**
+     * Observe les LiveData du ViewModel pour mettre à jour l'interface utilisateur.
+     */
     private void observeViewModel() {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             swipeRefresh.setRefreshing(false);
@@ -116,6 +137,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
                 favorites -> adapter.submitList(favorites));
     }
 
+    /**
+     * Affiche une Snackbar pour annuler la suppression d'un favori.
+     */
     private void showUndoSnackbar() {
         if (getView() == null) return;
         Snackbar.make(getView(), R.string.favorites_removed_snackbar, Snackbar.LENGTH_LONG)
@@ -124,6 +148,9 @@ public class FavoritesFragment extends Fragment implements FavoritesAdapter.OnFa
                 .show();
     }
 
+    /**
+     * Gère le clic sur un favori.
+     */
     @Override
     public void onFavoriteClick(WineDto wine, int position) {
         resultViewModel.setCurrentWine(wine);

@@ -34,11 +34,17 @@ public class RandomWinesFragment extends Fragment implements SuggestionAdapter.O
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_random_wines, container, false);
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -58,6 +64,9 @@ public class RandomWinesFragment extends Fragment implements SuggestionAdapter.O
         randomViewModel.loadRandomWines();
     }
 
+    /**
+     * Configure le RecyclerView pour afficher les vins aléatoires.
+     */
     private void setupRecyclerView() {
         adapter = new SuggestionAdapter();
         adapter.setOnSuggestionClickListener(this);
@@ -65,6 +74,9 @@ public class RandomWinesFragment extends Fragment implements SuggestionAdapter.O
         rvRandomWines.setAdapter(adapter);
     }
 
+    /**
+     * Surveille les changements dans le ViewModel.
+     */
     private void observeViewModel() {
         randomViewModel.getRandomWinesState().observe(getViewLifecycleOwner(), state -> {
             if (state == null) return;
@@ -84,7 +96,6 @@ public class RandomWinesFragment extends Fragment implements SuggestionAdapter.O
             else if (state.isError()) {
                 progressRandom.setVisibility(View.GONE);
 
-                // CORRECTION : On vérifie que l'écran est toujours ouvert avant de Toast !
                 if (getContext() != null && isAdded()) {
                     Toast.makeText(getContext(), getString(R.string.error_title) + " " + state.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -93,6 +104,10 @@ public class RandomWinesFragment extends Fragment implements SuggestionAdapter.O
     }
 
     @Override
+    /**
+     * Appelé lorsqu'un utilisateur clique sur une suggestion de vin.
+     * @param wine Le vin sélectionné.
+     */
     public void onSuggestionClick(WineDto wine) {
         resultViewModel.setCurrentWine(wine);
         navController.navigate(R.id.action_random_to_detail);

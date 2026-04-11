@@ -19,15 +19,25 @@ public class RandomViewModel extends ViewModel {
 
     private final MutableLiveData<UiState<List<WineDto>>> randomWinesState = new MutableLiveData<>();
 
+    /**
+     * Retourne les données en direct pour les vins aléatoires.
+     */
     public LiveData<UiState<List<WineDto>>> getRandomWinesState() {
         return randomWinesState;
     }
 
+    /**
+     * Charge les vins aléatoires depuis l'API.
+     */
     public void loadRandomWines() {
         randomWinesState.setValue(UiState.loading());
 
         ApiClient.getInstance().getWineApi().getRandomWines().enqueue(new Callback<List<WineDto>>() {
-            @Override
+            @Override   
+            /**
+             * Appelé lorsque la réponse est reçue du serveur.
+             * @param call L'appel Retrofit.
+             */
             public void onResponse(Call<List<WineDto>> call, Response<List<WineDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
@@ -42,6 +52,11 @@ public class RandomViewModel extends ViewModel {
             }
 
             @Override
+            /**
+             * Appelé en cas d'échec de la requête.
+             * @param call L'appel Retrofit.
+             * @param t L'exception levée.
+             */
             public void onFailure(Call<List<WineDto>> call, Throwable t) {
                 randomWinesState.postValue(UiState.error("Erreur de connexion : " + t.getMessage()));
             }

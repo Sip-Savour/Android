@@ -19,26 +19,45 @@ public class AuthViewModel extends ViewModel {
     private static final MutableLiveData<Boolean> loginSuccess = new MutableLiveData<>();
     private final MutableLiveData<Boolean> registerSuccess = new MutableLiveData<>();
 
+    /**
+     * Récupère l'état de chargement.
+     * @return LiveData contenant l'état de chargement
+     */
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
+    /**
+     * Récupère le message d'erreur.
+     * @return LiveData contenant le message d'erreur
+     */
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Récupère l'état de succès du login.
+     * @return LiveData contenant l'état de succès du login
+     */
     public LiveData<Boolean> getLoginSuccess() {
         return loginSuccess;
     }
 
+    /**
+     * Récupère l'état de succès de l'enregistrement.
+     * @return LiveData contenant l'état de succès de l'enregistrement
+     */
     public LiveData<Boolean> getRegisterSuccess() {
         return registerSuccess;
     }
 
+    /**
+     * Effectue la connexion de l'utilisateur.
+     * @param email L'adresse email de l'utilisateur
+     * @param password Le mot de passe de l'utilisateur
+     */
     public void login(String email, String password) {
-        // TODO: Valider les champs
-        // TODO: Mettre à jour isLoading, errorMessage, loginSuccess
-
+    
         isLoading.setValue(true);
         Repository rep = Repository.getInstance();
         LiveData<UiState<AuthResponse>> source = Repository.login(email, password);
@@ -65,6 +84,13 @@ public class AuthViewModel extends ViewModel {
 
     }
 
+    /**
+     * Effectue l'enregistrement de l'utilisateur.
+     * @param name Le nom de l'utilisateur
+     * @param email L'adresse email de l'utilisateur
+     * @param password Le mot de passe de l'utilisateur
+     * @param dob La date de naissance de l'utilisateur
+     */
     public void register(String name, String email, String password, String dob) {
         isLoading.setValue(true);
         clearError();
@@ -90,10 +116,16 @@ public class AuthViewModel extends ViewModel {
         });
     }
 
+    /**
+     * Efface le message d'erreur.
+     */
     public void clearError() {
         errorMessage.setValue(null);
     }
 
+    /**
+     * Déconnecte l'utilisateur.
+     */
     public static void logout() {
         loginSuccess.setValue(false);
     }

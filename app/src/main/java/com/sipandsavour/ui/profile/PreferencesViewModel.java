@@ -14,10 +14,16 @@ public class PreferencesViewModel extends ViewModel {
     private final MutableLiveData<String> selectedColor = new MutableLiveData<>();
     private final MutableLiveData<Set<String>> selectedFeatures = new MutableLiveData<>();
 
+    /**
+     * Constructeur du ViewModel.
+     */
     public PreferencesViewModel() {
         loadPreferences();
     }
 
+    /**
+     * Charge les préférences de l'utilisateur.
+     */
     private void loadPreferences() {
         // Chargement de la couleur
         selectedColor.setValue(SessionManager.getInstance().getPreferredColor());
@@ -30,13 +36,22 @@ public class PreferencesViewModel extends ViewModel {
         selectedFeatures.setValue(new HashSet<>(features)); // On fait une copie
     }
 
+    /**
+     * Retourne les préférences de couleur sélectionnées.
+     */
     public LiveData<String> getSelectedColor() { return selectedColor; }
     public LiveData<Set<String>> getSelectedFeatures() { return selectedFeatures; }
 
+    /**
+     * Définit la couleur sélectionnée.
+     */
     public void setColor(String color) {
         selectedColor.setValue(color);
     }
 
+    /**
+     * Bascule l'état d'une fonctionnalité sélectionnée.
+     */
     public void toggleFeature(String feature) {
         Set<String> current = selectedFeatures.getValue();
         if (current == null) current = new HashSet<>();
@@ -50,6 +65,9 @@ public class PreferencesViewModel extends ViewModel {
         selectedFeatures.setValue(updated);
     }
 
+    /**
+     * Enregistre les préférences de l'utilisateur.
+     */
     public void save() {
         SessionManager.getInstance().setPreferredColor(selectedColor.getValue());
         SessionManager.getInstance().setPreferredFeatures(selectedFeatures.getValue());

@@ -50,6 +50,9 @@ public class RegisterFragment extends Fragment {
     private final SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
     private String apiDob = ""; // La date formatée pour l'API
 
+    /**
+     * Crée la vue du fragment.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,6 +61,9 @@ public class RegisterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
+    /**
+     * Initialise les vues et configure les écouteurs.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -70,6 +76,9 @@ public class RegisterFragment extends Fragment {
         observeViewModel();
     }
 
+    /**
+     * Lie les vues de l'interface utilisateur aux variables correspondantes.
+     */
     private void bindViews(View view) {
         tilName = view.findViewById(R.id.tilName);
         etName = view.findViewById(R.id.etName);
@@ -85,6 +94,9 @@ public class RegisterFragment extends Fragment {
         btnGoToLogin = view.findViewById(R.id.btnGoToLogin);
     }
 
+    /**
+     * Configure les écouteurs pour les interactions utilisateur.
+     */
     private void setupListeners() {
         btnRegister.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
@@ -103,6 +115,9 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    /**
+     * Observe les LiveData du ViewModel pour mettre à jour l'interface utilisateur en conséquence.
+     */
     private void observeViewModel() {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             btnRegister.setEnabled(!isLoading);
@@ -125,6 +140,9 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    /**
+     * Affiche le sélecteur de date pour choisir la date de naissance.
+     */
     private void showDatePicker() {
         DatePickerDialog picker = new DatePickerDialog(
                 requireContext(),
@@ -145,6 +163,9 @@ public class RegisterFragment extends Fragment {
         picker.show();
     }
 
+    /**
+     * Gère le clic sur le bouton d'enregistrement.
+     */
     private void onRegisterClicked() {
         String name = etName.getText() != null ? etName.getText().toString().trim() : "";
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
@@ -191,6 +212,9 @@ public class RegisterFragment extends Fragment {
         viewModel.register(name, email, password, dob);
     }
 
+    /**
+     * Navigue vers l'écran d'accueil après un enregistrement réussi.
+     */
     private void navigateToHome() {
         navController.navigate(R.id.action_register_to_home);
     }

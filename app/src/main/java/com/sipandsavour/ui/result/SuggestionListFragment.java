@@ -43,6 +43,9 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
 
     @Nullable
     @Override
+    /** 
+     * Inflate the layout for this fragment
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -50,6 +53,9 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
     }
 
     @Override
+    /**
+     * Initialize views, set up RecyclerView, observe ViewModel data, and attach slide-back gesture
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -64,11 +70,18 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         SlideBackUtil.attach(() -> navController.popBackStack(), view, rvSuggestions);
     }
 
+    /**
+     * Bind the views to the fragment.
+     * @param view The root view of the fragment.
+     */
     private void bindViews(View view) {
         rvSuggestions = view.findViewById(R.id.rvSuggestions);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
     }
 
+    /**
+     * Set up the RecyclerView for displaying suggestions.
+     */
     private void setupRecyclerView() {
         adapter = new SuggestionAdapter();
         adapter.setOnSuggestionClickListener(this);
@@ -76,6 +89,9 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         rvSuggestions.setAdapter(adapter);
     }
 
+    /**
+     * Observe the prediction result from the SelectionViewModel.
+     */
     private void observePrediction() {
         selectionViewModel.getPredictionResult().observe(getViewLifecycleOwner(), state -> {
             if (state == null) return;
@@ -103,6 +119,11 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         });
     }
 
+    /**
+     * Map API bottle responses to WineDto objects.
+     * @param apiBottles The list of API bottle responses.
+     * @return The list of WineDto objects.
+     */
     private List<WineDto> mapApiToWineDto(List<BottleResponse> apiBottles) {
         List<WineDto> list = new ArrayList<>();
         if (apiBottles == null) return list;
@@ -121,6 +142,10 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         return list;
     }
 
+    /**
+     * Display the list of suggestions in the RecyclerView.
+     * @param suggestions The list of suggestions to display.
+     */
     private void displaySuggestions(List<WineDto> suggestions) {
         if (suggestions == null || suggestions.isEmpty()) {
             rvSuggestions.setVisibility(View.GONE);
@@ -133,6 +158,9 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
         }
     }
 
+    /**
+     * Trigger a short vibration to indicate successful loading of suggestions.
+     */
     private void triggerSuccessVibration() {
         Vibrator vibrator = (Vibrator) requireContext().getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator != null && vibrator.hasVibrator()) {
@@ -145,6 +173,10 @@ public class SuggestionListFragment extends Fragment implements SuggestionAdapte
     }
 
     @Override
+    /**
+     * Handle the click event on a suggestion.
+     * @param wine The selected wine.
+     */
     public void onSuggestionClick(WineDto wine) {
         resultViewModel.setCurrentWine(wine);
         navController.navigate(R.id.action_suggestion_to_detail);

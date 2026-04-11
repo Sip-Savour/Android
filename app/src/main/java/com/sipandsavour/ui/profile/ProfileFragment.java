@@ -39,6 +39,9 @@ public class ProfileFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -46,6 +49,9 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -60,6 +66,9 @@ public class ProfileFragment extends Fragment {
         viewModel.loadUserData();
     }
 
+    /**
+     * Lie les vues du layout à leurs références Java.
+     */
     private void bindViews(View view) {
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
@@ -72,6 +81,9 @@ public class ProfileFragment extends Fragment {
         fabLogout = view.findViewById(R.id.fabLogout);
     }
 
+    /**
+     * Vérifie si l'utilisateur a sélectionné le thème secret et applique l'avatar correspondant.
+     */
     private void checkAndApplySecretAvatar() {
         int currentThemeCode = SessionManager.getInstance().getTheme();
 
@@ -83,6 +95,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Configure les écouteurs d'événements pour les vues.
+     */
     private void setupListeners() {
         fabEdit.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);
@@ -106,6 +121,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Observe les LiveData du ViewModel pour mettre à jour l'interface utilisateur en conséquence.
+     */
     private void observeViewModel() {
         viewModel.getUserName().observe(getViewLifecycleOwner(), name -> tvProfileName.setText(name != null ? name : "-"));
         viewModel.getUserEmail().observe(getViewLifecycleOwner(), email -> tvProfileEmail.setText(email != null ? email : "-"));
@@ -113,27 +131,39 @@ public class ProfileFragment extends Fragment {
     }
 
     private void onEditClicked() {
-        // TODO: Naviguer vers l'écran d'édition de profil
+        //Amélioration possible : ajouter une animation de transition vers l'écran d'édition du profil
     }
 
+    /**
+     * Navigue vers l'écran des préférences de l'utilisateur.
+     */
     private void onPreferencesClicked() {
         if (navController != null) {
             navController.navigate(R.id.action_profile_to_preferences);
         }
     }
 
+    /**
+     * Navigue vers l'écran de l'historique des commandes de l'utilisateur.
+     */
     private void onHistoryClicked() {
         if (navController != null) {
             navController.navigate(R.id.action_profile_to_history);
         }
     }
 
+    /**
+     * Navigue vers l'écran des paramètres de l'utilisateur.
+     */
     private void onSettingsClicked() {
         if (navController != null) {
             navController.navigate(R.id.action_profile_to_settings);
         }
     }
 
+    /**
+     * Gère le clic sur le bouton de déconnexion.
+     */
     private void onLogoutClicked() {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.profile_logout_confirm_title)

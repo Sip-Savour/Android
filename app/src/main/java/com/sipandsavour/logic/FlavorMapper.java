@@ -83,6 +83,13 @@ public final class FlavorMapper {
     /**
      * Retourne les 5 groupes de l'UI accordéon.
      * Gère dynamiquement la traduction selon le SessionManager.
+     * Chaque groupe contient une liste de sous-groupes (keys de KEYWORD_GROUPS)
+      * qui seront affichés dans l'accordéon.
+      * Les sous-groupes sont eux-mêmes traduits dynamiquement via getGroupDisplayName().
+      * Le groupe "Color" est un cas spécial qui contient les couleurs de vin (Rou
+      * ge, Blanc, Rosé) et n'est pas lié à des mots-clefs de l'API, mais est traité à part dans la logique de prédiction.
+      * @param flavor
+      * @return List<AccordionCategory> avec les titres traduits et les sous-groupes associés.
      */
     public static List<AccordionCategory> getAccordionCategories() {
         List<AccordionCategory> categories = new ArrayList<>();
@@ -127,6 +134,8 @@ public final class FlavorMapper {
     /**
      * Convertit un descripteur de saveur utilisateur (ex: "grillé")
      * en mots-clefs vin pertinents. (Supporte le FR et EN)
+     * @param flavor Le descripteur de saveur sélectionné par l'utilisateur
+     * @return Liste de mots-clefs vin associés à ce descripteur
      */
     public static List<String> mapFlavorToWineKeywords(String flavor) {
         if (flavor == null) return Collections.emptyList();
@@ -203,6 +212,8 @@ public final class FlavorMapper {
     /**
      * Convertit une liste de saveurs sélectionnées
      * en features string pour l'API.
+     * @param selectedFlavors Liste de descripteurs de saveurs sélectionnés par l'utilisateur
+     * @return String de mots-clefs vin séparés par des espaces, à envoyer à
      */
     public static String buildFeaturesFromSelections(List<String> selectedFlavors) {
         Set<String> allKeywords = new LinkedHashSet<>();
@@ -219,6 +230,13 @@ public final class FlavorMapper {
     /**
      * Convertit un texte libre décrivant un plat
      * en features string pour l'API.
+     * @param freeText Texte libre saisi par l'utilisateur décrivant le plat
+     * @return String de mots-clefs vin séparés par des espaces, à envoyer à l'API.
+      * La fonction tente de faire correspondre chaque mot du texte libre
+      * à des mots-clefs vin pertinents via mapFlavorToWineKeywords().
+      * Les mots-clefs résultants sont dédupliqués et concaténés en une string.
+      * Ex: "Poulet rôti au thym et citron" → "roasted thyme citrus herb herbal"
+      * Supporte le français et l'anglais.
      */
     public static String buildFeaturesFromText(String freeText) {
         if (freeText == null || freeText.trim().isEmpty()) return "";
@@ -236,6 +254,9 @@ public final class FlavorMapper {
 
     /**
      * Retourne tous les mots-clefs d'un groupe donné.
+     * Utile pour afficher les descripteurs vin associés à un groupe dans l'UI accordéon.
+      * @param groupName La key du groupe (ex: "red_fruit", "acidity", etc.)
+      * @return Liste de mots-clefs vin associés à ce groupe, ou liste vide si le groupe n'existe pas.
      */
     public static List<String> getKeywordsForGroup(String groupName) {
         List<String> list = KEYWORD_GROUPS.get(groupName);
@@ -245,6 +266,9 @@ public final class FlavorMapper {
     /**
      * Retourne les premiers mots-clefs d'un groupe
      * (pour affichage de preview dans les icônes).
+     * Si le groupe n'existe pas ou est vide, retourne le nom du groupe lui-même.
+      * @param groupName La key du groupe (ex: "red_fruit", "acidity", etc.)
+      * @return Le premier mot-clef du groupe, ou le nom du groupe si aucun mot-clef n'est disponible.
      */
     public static String getGroupPreview(String groupName) {
         List<String> list = KEYWORD_GROUPS.get(groupName);
@@ -254,6 +278,9 @@ public final class FlavorMapper {
 
     /**
      * Nom d'affichage pour un sous-groupe (Géré dynamiquement pour la traduction).
+     * Si le sous-groupe n'est pas reconnu, retourne la key elle-même.
+      * @param groupKey La key du sous-groupe (ex: "red_fruit", "acidity", etc.)
+      * @return Le nom d'affichage traduit du sous-groupe, ou la key si non reconnu.
      */
     public static String getGroupDisplayName(String groupKey) {
         boolean isEn = "en".equals(SessionManager.getInstance().getLanguage());
@@ -303,13 +330,27 @@ public final class FlavorMapper {
         private final List<String> subGroupKeys;
         private boolean expanded;
 
+        /**
+         * Constructeur de la classe interne AccordionCategory.
+         * @param titleKey La key du titre de la catégorie
+         * @param subGroupKeys La liste des keys des sous-groupes
+         */
         public AccordionCategory(String titleKey, List<String> subGroupKeys) {
             this.titleKey = titleKey;
             this.subGroupKeys = subGroupKeys;
             this.expanded = false;
         }
 
-        public String getTitle()               { return getTitleTranslated(); }
+        /** Retourne le titre traduit de la catégorie 
+         * @return Le titre traduit de la catégorie, ou la key si non reconnu.
+        */
+        public String getTitle()               { 
+            return getTitleTranslated(); 
+            }
+
+        /** Retourne le titre traduit de la catégorie
+         * @return Le titre traduit de la catégorie, ou la key si non reconnu.
+         */
         public String getTitleTranslated() {
             // Retourne le titre traduit dynamiquement selon la langue actuelle
             boolean isEn = "en".equals(SessionManager.getInstance().getLanguage());
@@ -323,12 +364,18 @@ public final class FlavorMapper {
                 default: return titleKey;
             }
         }
+
+        /** Retourne les keys des sous-groupes de cette catégorie 
+         * @return Liste des keys des sous-groupes de cette catégorie
+        */
         public List<String> getSubGroupKeys()  { return subGroupKeys; }
         public boolean isExpanded()             { return expanded; }
         public void setExpanded(boolean expanded) { this.expanded = expanded; }
         public void toggleExpanded()            { this.expanded = !expanded; }
 
-        /** Retourne les noms d'affichage des sous-groupes */
+        /** Retourne les noms d'affichage des sous-groupes
+         * @return Liste des noms d'affichage traduits des sous-groupes, ou les keys si non reconnues.
+         */
         public List<String> getSubGroupDisplayNames() {
             List<String> names = new ArrayList<>();
             for (String key : subGroupKeys) {

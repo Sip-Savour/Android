@@ -28,11 +28,17 @@ public class HistoryFragment extends Fragment implements FavoritesAdapter.OnFavo
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -62,6 +68,9 @@ public class HistoryFragment extends Fragment implements FavoritesAdapter.OnFavo
     }
 
     @Override
+    /**
+     * Gère le clic sur un vin dans l'historique.
+     */
     public void onFavoriteClick(WineDto wine, int position) {
         // Redirige vers la page du vin quand on clique dessus
         resultViewModel.setCurrentWine(wine);

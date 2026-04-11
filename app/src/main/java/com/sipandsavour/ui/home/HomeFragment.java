@@ -53,6 +53,9 @@ public class HomeFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -60,6 +63,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -78,12 +84,12 @@ public class HomeFragment extends Fragment {
         setupListeners();
         setupShakeDetection();
 
-        // 🆕 Afficher le popup de shake si jamais montré
+        // Afficher le popup de shake si jamais montré
         showShakeHintIfNeeded();
     }
 
     /**
-     * 🆕 Affiche le popup d'onboarding pour le shake
+     *  Affiche le popup d'onboarding pour le shake
      */
     private void showShakeHintIfNeeded() {
         // Vérifier si déjà montré
@@ -142,7 +148,7 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * 🆕 Marque le popup comme déjà affiché
+     * Marque le popup comme déjà affiché
      */
     private void markShakeHintAsShown() {
         requireContext()
@@ -152,6 +158,9 @@ public class HomeFragment extends Fragment {
                 .apply();
     }
 
+    /**
+     * Configure le détecteur de shake pour naviguer vers l'écran aléatoire.
+     */
     private void setupShakeDetection() {
         mSensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager != null) {
@@ -176,6 +185,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Enregistrer le détecteur de shake lorsque le fragment est visible, et lancer les animations.
+     */
     public void onResume() {
         super.onResume();
         // Activer le capteur uniquement quand l'écran est affiché
@@ -187,6 +199,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Désenregistrer le détecteur de shake et arrêter les animations pour économiser la batterie.
+     */
     public void onPause() {
         // Désactiver le détecteur quand on change d'écran
         if (mSensorManager != null) {
@@ -197,6 +212,9 @@ public class HomeFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Lie les vues du layout au fragment.
+     */
     private void bindViews(View view) {
         swipeRefresh    = view.findViewById(R.id.swipeRefresh);
         cardWeekly      = view.findViewById(R.id.cardWeekly);
@@ -208,11 +226,17 @@ public class HomeFragment extends Fragment {
         imgSearchIcon  = view.findViewById(R.id.imgSearchIcon);
     }
 
+    /**
+     * Charge les animations pour les vues animées.
+     */
     private void loadAnimations() {
         pulseIconAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse_icon);
         pulseHaloAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse_halo);
     }
 
+    /**
+     * Démarre les animations pour la carte de recherche.
+     */
     private void startSearchCardAnimations() {
         if (imgSearchIcon != null && pulseIconAnim != null) {
             imgSearchIcon.startAnimation(pulseIconAnim);
@@ -222,6 +246,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * Arrête les animations pour la carte de recherche.
+     */
     private void stopSearchCardAnimations() {
         if (imgSearchIcon != null) {
             imgSearchIcon.clearAnimation();
@@ -231,6 +258,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * Configure les écouteurs d'événements pour les vues.
+     */
     private void setupListeners() {
         swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary);
         swipeRefresh.setOnRefreshListener(this::onRefresh);
@@ -245,6 +275,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Gère le rafraîchissement des données.
+     */
     private void onRefresh() {
         swipeRefresh.postDelayed(() -> {
             if (isAdded()) {
@@ -253,10 +286,16 @@ public class HomeFragment extends Fragment {
         }, 1000);
     }
 
+    /**
+     * Navigue vers l'écran de choix hebdomadaire.
+     */
     private void navigateToWeeklyChoice() {
         navController.navigate(R.id.action_home_to_weekly);
     }
 
+    /**
+     * Navigue vers l'écran de sélection de saveurs.
+     */
     private void navigateToFlavorSelection() {
         navController.navigate(R.id.action_home_to_flavor);
     }

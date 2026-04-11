@@ -47,6 +47,9 @@ public class WeeklyChoiceFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -54,6 +57,9 @@ public class WeeklyChoiceFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Initialize views and set up the fragment
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -70,6 +76,10 @@ public class WeeklyChoiceFragment extends Fragment {
         SlideBackUtil.attach(() -> navController.popBackStack(), view, scrollView);
     }
 
+    /**
+     * Bind the views to the fragment.
+     * @param view The root view of the fragment.
+     */
     private void bindViews(View view) {
         cardWine = view.findViewById(R.id.cardWine);
         tvCepage = view.findViewById(R.id.tvCepage);
@@ -81,6 +91,9 @@ public class WeeklyChoiceFragment extends Fragment {
         tvIngredients = view.findViewById(R.id.tvIngredients);
     }
 
+    /**
+     * Set up the click listeners for the views.
+     */
     private void setupListeners() {
         // Clic sur la carte du vin
         if (cardWine != null) {
@@ -99,6 +112,9 @@ public class WeeklyChoiceFragment extends Fragment {
         }
     }
 
+    /**
+     * Open the details for the selected wine.
+     */
     private void openWineDetails() {
         if (currentWine == null) {
             Toast.makeText(requireContext(), getString(R.string.loading), Toast.LENGTH_SHORT).show();
@@ -109,6 +125,9 @@ public class WeeklyChoiceFragment extends Fragment {
         bottomSheet.show(getParentFragmentManager(), "WineDetails");
     }
 
+    /**
+     * Open the details for the selected meal.
+     */
     private void openMealDetails() {
         if (currentMeal == null) {
             Toast.makeText(requireContext(), getString(R.string.loading), Toast.LENGTH_SHORT).show();
@@ -119,6 +138,9 @@ public class WeeklyChoiceFragment extends Fragment {
         bottomSheet.show(getParentFragmentManager(), "MealDetails");
     }
 
+    /**
+     * Observe the ViewModel for updates.
+     */
     private void observeViewModel() {
         // Observer le résultat principal
         viewModel.getPairingState().observe(getViewLifecycleOwner(), state -> {
@@ -144,6 +166,9 @@ public class WeeklyChoiceFragment extends Fragment {
         });
     }
 
+    /**
+     * Show the loading state.
+     */
     private void showLoading() {
         if (tvCepage != null) tvCepage.setText(getString(R.string.weekly_loading_title));
         if (tvDescription != null) tvDescription.setText(getString(R.string.weekly_loading_desc));
@@ -152,12 +177,20 @@ public class WeeklyChoiceFragment extends Fragment {
         if (tvIngredients != null) tvIngredients.setText("");
     }
 
+    /**
+     * Show an error message.
+     * @param message The error message to display.
+     */
     private void showError(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
         if (tvCepage != null) tvCepage.setText(getString(R.string.error_title));
         if (tvDescription != null) tvDescription.setText(message);
     }
 
+    /**
+     * Display the details for the selected wine.
+     * @param wine The wine to display.
+     */
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
@@ -175,6 +208,10 @@ public class WeeklyChoiceFragment extends Fragment {
         }
     }
 
+    /**
+     * Display the details for the selected meal.
+     * @param meal The meal to display.
+     */
     private void displayMeal(MealDto meal) {
         if (meal == null) {
             if (tvMealName != null) tvMealName.setText(getString(R.string.weekly_no_meal));
@@ -189,6 +226,10 @@ public class WeeklyChoiceFragment extends Fragment {
         displayIngredients(meal);
     }
 
+    /**
+     * Display the translated details for the selected meal.
+     * @param meal The meal to display.
+     */
     private void displayMealTranslated(MealDto meal) {
         if (meal == null) return;
 
@@ -199,6 +240,10 @@ public class WeeklyChoiceFragment extends Fragment {
         displayIngredients(meal);
     }
 
+    /**
+     * Display the ingredients for the selected meal.
+     * @param meal The meal to display.
+     */
     private void displayIngredients(MealDto meal) {
         if (tvIngredients == null) return;
 
