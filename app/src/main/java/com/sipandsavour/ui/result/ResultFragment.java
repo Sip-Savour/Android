@@ -8,6 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+// Nouveaux imports nécessaires pour le swipe fiable
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import androidx.core.view.GestureDetectorCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +29,6 @@ import com.sipandsavour.data.dto.meal.MealDto;
 import com.sipandsavour.ui.selection.MealDetailsBottomSheetFragment;
 import com.sipandsavour.util.HapticUtil;
 import com.sipandsavour.util.MealTranslationManager;
-import com.sipandsavour.util.SlideBackUtil;
 import com.sipandsavour.util.WineFoodPairingUtil;
 
 import java.util.List;
@@ -45,25 +50,17 @@ public class ResultFragment extends Fragment {
     private TextView tvMealPairingName;
     private TextView tvMealPairingIngredients;
 
-    // Données actuelles
     private MealDto currentPairedMeal;
+    private GestureDetectorCompat gestureDetector;
 
     @Nullable
     @Override
-    /**
-     * Inflate le layout du fragment et initialise les vues. Les données du vin sont chargées via le ViewModel, qui peut être mis à jour par d'autres fragments (ex: en sélectionnant un vin différent). Le fragment observe également les changements de favoris pour mettre à jour l'icône en conséquence.
-     */
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_result, container, false);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    /**
-     * Initialise les vues et configure les écouteurs d'événements.
-     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = NavHostFragment.findNavController(this);
@@ -74,59 +71,51 @@ public class ResultFragment extends Fragment {
         observeViewModel();
         handleArguments();
 
-        // On utilise le bon ID du XML (scrollView)
         View scrollView = view.findViewById(R.id.scrollView);
 
-        // Détecteur local spécifique au carrousel des résultats
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            private float startX = 0;
-            private float startY = 0;
-            private boolean isSwiping = false;
+        // CORRECTION MAJEURE : On utilise l'outil officiel d'Android pour détecter les gestes secs (Fling)
+        gestureDetector = new GestureDetectorCompat(requireContext(), new GestureDetector.SimpleOnGestureListener() {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
             @Override
-            public boolean onTouch(View v, android.view.MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case android.view.MotionEvent.ACTION_DOWN:
-                        startX = event.getRawX();
-                        startY = event.getRawY();
-                        isSwiping = false;
-                        break;
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (e1 == null || e2 == null) return false;
 
-                    case android.view.MotionEvent.ACTION_MOVE:
-                        float diffX = event.getRawX() - startX;
-                        float diffY = event.getRawY() - startY;
-                        if (!isSwiping && Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
-                            isSwiping = true;
-                            if (v.getParent() != null) v.getParent().requestDisallowInterceptTouchEvent(true);
-                        }
-                        if (isSwiping) return true;
-                        break;
+                float diffY = e2.getRawY() - e1.getRawY();
+                float diffX = e2.getRawX() - e1.getRawX();
 
-                    case android.view.MotionEvent.ACTION_UP:
-                        if (isSwiping) {
-                            float finalDiffX = event.getRawX() - startX;
-                            if (finalDiffX > 120) {
-                                // Slide vers la DROITE : Retour à l'écran précédent
-                                navController.popBackStack();
-                            } else if (finalDiffX < -120) {
-                                // Slide vers la GAUCHE : Vin suivant
-                                if (viewModel.nextWine()) {
-                                    HapticUtil.playConfirm(requireView());
-                                }
+                // On vérifie que c'est bien un mouvement horizontal
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            // Swipe vers la DROITE : Retour en arrière
+                            navController.popBackStack();
+                        } else {
+                            // Swipe vers la GAUCHE : Vin suivant
+                            if (viewModel.nextWine()) {
+                                HapticUtil.playConfirm(requireView());
+                            } else {
+                                // Petit retour visuel si on arrive à la fin de la liste !
+                                Toast.makeText(requireContext(), "Dernier vin atteint", Toast.LENGTH_SHORT).show();
                             }
-                            isSwiping = false;
-                            return true;
                         }
-                        break;
+                        return true;
+                    }
                 }
                 return false;
             }
         });
+
+        // On n'attache l'écouteur qu'au ScrollView pour éviter les conflits
+        if (scrollView != null) {
+            scrollView.setOnTouchListener((v, event) -> {
+                gestureDetector.onTouchEvent(event);
+                return false; // Très important : False permet au ScrollView de continuer à défiler de haut en bas !
+            });
+        }
     }
 
-    /**
-     * Initialise les vues.
-     */
     private void initViews(View view) {
         tvTitle = view.findViewById(R.id.tvTitle);
         tvCepage = view.findViewById(R.id.tvCepage);
@@ -134,15 +123,11 @@ public class ResultFragment extends Fragment {
         tvType = view.findViewById(R.id.tvType);
         fabFavorite = view.findViewById(R.id.fabFavorite);
 
-        // Meal pairing
         layoutMealPairing = view.findViewById(R.id.layoutMealPairing);
         tvMealPairingName = view.findViewById(R.id.tvMealPairingName);
         tvMealPairingIngredients = view.findViewById(R.id.tvMealPairingIngredients);
     }
 
-    /**
-     * Configure les écouteurs d'événements.
-     */
     private void setupListeners() {
         if (fabFavorite != null) {
             fabFavorite.setOnClickListener(v -> {
@@ -152,7 +137,6 @@ public class ResultFragment extends Fragment {
             });
         }
 
-        // Clic sur la section plat
         if (layoutMealPairing != null) {
             layoutMealPairing.setOnClickListener(v -> {
                 HapticUtil.playLightClick(v);
@@ -161,19 +145,12 @@ public class ResultFragment extends Fragment {
         }
     }
 
-    /**
-     * Ouvre les détails du plat.
-     */
     private void openMealDetails() {
         if (currentPairedMeal == null) return;
-
         MealDetailsBottomSheetFragment bottomSheet = MealDetailsBottomSheetFragment.newInstance(currentPairedMeal);
         bottomSheet.show(getParentFragmentManager(), "MealDetails");
     }
 
-    /**
-     * Observe les changements du ViewModel.
-     */
     private void observeViewModel() {
         viewModel.getCurrentWine().observe(getViewLifecycleOwner(), wine -> {
             if (wine != null) {
@@ -187,9 +164,6 @@ public class ResultFragment extends Fragment {
         });
     }
 
-    /**
-     * Gère les arguments passés au fragment.
-     */
     private void handleArguments() {
         if (getArguments() != null) {
             WineDto wine = (WineDto) getArguments().getSerializable("wine");
@@ -199,40 +173,29 @@ public class ResultFragment extends Fragment {
         }
     }
 
-    /**
-     * Charge un plat accordé avec le vin
-     */
     private void loadPairedMeal(WineDto wine) {
         if (layoutMealPairing == null) return;
 
-        // Afficher le loading
         if (tvMealPairingName != null) tvMealPairingName.setText(getString(R.string.loading));
         if (tvMealPairingIngredients != null) tvMealPairingIngredients.setText("");
         layoutMealPairing.setVisibility(View.VISIBLE);
 
-        // Trouver la catégorie compatible
         String category = WineFoodPairingUtil.getWeeklyCategory(wine);
 
-        // Charger les plats de cette catégorie
         Repository.getInstance().getMealsByCategory(category).observe(getViewLifecycleOwner(), state -> {
             if (state.isSuccess() && state.getData() != null &&
-                state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
+                    state.getData().getMeals() != null && !state.getData().getMeals().isEmpty()) {
 
                 List<MealDto> meals = state.getData().getMeals();
-
-                // Choisir un plat aléatoire basé sur l'ID du vin
                 Random random = new Random(wine.getId());
                 int index = random.nextInt(meals.size());
                 MealDto selectedMeal = meals.get(index);
 
-                // Charger les détails du plat
                 Repository.getInstance().getMealDetails(selectedMeal.getIdMeal()).observe(getViewLifecycleOwner(), detailState -> {
                     if (detailState.isSuccess() && detailState.getData() != null &&
-                        detailState.getData().getMeals() != null && !detailState.getData().getMeals().isEmpty()) {
+                            detailState.getData().getMeals() != null && !detailState.getData().getMeals().isEmpty()) {
 
                         MealDto fullMeal = detailState.getData().getMeals().get(0);
-
-                        // Traduire le plat
                         MealTranslationManager.getInstance().translateMeal(fullMeal, translatedMeal -> {
                             if (!isAdded()) return;
                             currentPairedMeal = translatedMeal;
@@ -240,7 +203,6 @@ public class ResultFragment extends Fragment {
                         });
 
                     } else {
-                        // Utiliser le plat sans détails
                         currentPairedMeal = selectedMeal;
                         displayPairedMeal(selectedMeal);
                     }
@@ -252,9 +214,6 @@ public class ResultFragment extends Fragment {
         });
     }
 
-    /**
-     * Affiche les informations du plat accordé.
-     */
     private void displayPairedMeal(MealDto meal) {
         if (meal == null || layoutMealPairing == null) return;
 
@@ -297,9 +256,6 @@ public class ResultFragment extends Fragment {
         }
     }
 
-    /**
-     * Affiche les informations du vin.
-     */
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
@@ -318,26 +274,22 @@ public class ResultFragment extends Fragment {
         if (tvType != null) {
             tvType.setText(wine.getColorDisplayName());
         }
-
     }
 
-    /**
-     * Met à jour l'icône de favori.
-     */
     private void updateFavoriteIcon(boolean isFavorite) {
         if (fabFavorite != null && isAdded()) {
             fabFavorite.setImageResource(isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
+
             if (isFavorite) {
-                fabFavorite.setImageTintList(null);
+                // CORRECTION : On force un rose vif absolu garanti (Hexadécimal #E91E63)
+                fabFavorite.setImageTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#E91E63")));
             } else {
+                // Reste gris/pêche
                 fabFavorite.setImageTintList(androidx.core.content.ContextCompat.getColorStateList(requireContext(), R.color.secondary));
             }
         }
     }
 
-    /**
-     * Anime le bouton de favori.
-     */
     private void animateFavoriteButton() {
         if (fabFavorite != null) {
             fabFavorite.animate()
@@ -349,9 +301,6 @@ public class ResultFragment extends Fragment {
     }
 
     @Override
-    /**
-     * Nettoie les ressources lorsque la vue est détruite.
-     */
     public void onDestroyView() {
         super.onDestroyView();
         tvTitle = null;

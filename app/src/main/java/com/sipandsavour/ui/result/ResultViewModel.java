@@ -15,35 +15,20 @@ import java.util.List;
 
 public class ResultViewModel extends ViewModel {
 
-    // Le vin actuel 
     private final MutableLiveData<WineDto> currentWine = new MutableLiveData<>();
-    /// L'état de favori pour le vin actuel
     private final MutableLiveData<Boolean> isFavorite = new MutableLiveData<>(false);
 
-    // La liste des vins pour la navigation et l'index du vin actuel dans cette liste
     private List<WineDto> wineList;
     private int currentIndex = -1;
 
-    /**
-     * Retourne le vin actuel.
-     * @return Le vin actuel.
-     */
     public LiveData<WineDto> getCurrentWine() {
         return currentWine;
     }
 
-    /**
-     * Définit la liste des vins.
-     * @param list La liste des vins.
-     */
     public void setWineList(List<WineDto> list) {
         this.wineList = list;
     }
 
-    /**
-     * Définit le vin actuel.
-     * @param wine Le vin à définir.
-     */
     public void setCurrentWine(WineDto wine) {
         isFavorite.setValue(false);
 
@@ -52,14 +37,21 @@ public class ResultViewModel extends ViewModel {
             checkIfFavorite(wine);
 
             if (wineList != null) {
-                currentIndex = -1;
+                int tempIndex = -1;
                 for (int i = 0; i < wineList.size(); i++) {
-                    if (wineList.get(i).getId() == wine.getId() ||
-                            (wineList.get(i).getTitle() != null &&
-                                    wineList.get(i).getTitle().equals(wine.getTitle()))) {
-                        currentIndex = i;
+                    WineDto listWine = wineList.get(i);
+                    if (listWine.getId() != 0 && listWine.getId() == wine.getId()) {
+                        tempIndex = i;
+                        break;
+                    } else if (listWine.getTitle() != null && listWine.getTitle().equals(wine.getTitle())) {
+                        tempIndex = i;
                         break;
                     }
+                }
+                // CORRECTION : On ne met à jour l'index que si on l'a vraiment trouvé,
+                // sinon on garde l'ancien pour ne pas bloquer le Swipe !
+                if (tempIndex != -1) {
+                    currentIndex = tempIndex;
                 }
             }
 
@@ -71,9 +63,6 @@ public class ResultViewModel extends ViewModel {
         }
     }
 
-    /**
-     * Vérifie si le vin est dans les favoris.
-     */
     private void checkIfFavorite(WineDto wine) {
         LiveData<UiState<List<WineDto>>> source = Repository.getInstance().getFavorites();
         source.observeForever(new Observer<UiState<List<WineDto>>>() {
@@ -96,29 +85,27 @@ public class ResultViewModel extends ViewModel {
         });
     }
 
-    /**
-     * Passe au vin suivant dans la liste.
-     * @return true si le vin a été changé, false sinon.
-     */
     public boolean nextWine() {
-        if (wineList != null && currentIndex >= 0 && currentIndex < wineList.size() - 1) {
-            currentIndex++;
-            setCurrentWine(wineList.get(currentIndex));
-            return true;
+        if (wineList != null && !wineList.isEmpty()) {
+            // CORRECTION : Si on a perdu l'index pour une raison X ou Y, on repart du premier vin
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            }
+
+            // Si on n'est pas au bout de la liste, on avance
+            if (currentIndex < wineList.size() - 1) {
+                currentIndex++;
+                setCurrentWine(wineList.get(currentIndex));
+                return true;
+            }
         }
-        return false;
+        return false; // Fin de la liste
     }
 
-    /**
-     * Retourne l'état de favori pour le vin actuel.
-     */
     public LiveData<Boolean> getIsFavorite() {
         return isFavorite;
     }
 
-    /**
-     * Bascule l'état de favori pour le vin actuel.
-     */
     public void toggleFavorite() {
         WineDto wine = currentWine.getValue();
         if (wine == null) return;
@@ -134,5 +121,4 @@ public class ResultViewModel extends ViewModel {
             Repository.getInstance().addFavorite(wine.getId());
         }
     }
-
 }
