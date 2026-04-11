@@ -27,6 +27,10 @@ public class TranslationManager {
         downloadModelIfNeeded();
     }
 
+    /**
+     * Retourne l'instance singleton de TranslationManager.
+     * @return L'instance singleton.
+     */
     public static synchronized TranslationManager getInstance() {
         if (instance == null) {
             instance = new TranslationManager();
@@ -60,6 +64,8 @@ public class TranslationManager {
     /**
      * Traduit un vin complet si l'application est en Français.
      * Sinon, renvoie le vin original.
+     * @param wine Le vin à traduire.
+     * @param callback Le callback à appeler une fois la traduction terminée.
      */
     public void translateWineIfNeeded(WineDto wine, TranslationCallback callback) {
         if (wine == null) {
@@ -99,6 +105,7 @@ public class TranslationManager {
 
     /**
      * Interface pour le retour asynchrone d'une liste
+     * @param translatedWines La liste de vins traduits une fois la traduction terminée.
      */
     public interface TranslationListCallback {
         void onTranslationComplete(java.util.List<WineDto> translatedWines);
@@ -106,6 +113,8 @@ public class TranslationManager {
 
     /**
      * Traduit une liste de vins complète.
+     * @param wines La liste de vins à traduire.
+     * @param callback Le callback à appeler une fois la traduction de tous les vins terminée
      */
     public void translateWineListIfNeeded(java.util.List<WineDto> wines, TranslationListCallback callback) {
         if (wines == null || wines.isEmpty()) {

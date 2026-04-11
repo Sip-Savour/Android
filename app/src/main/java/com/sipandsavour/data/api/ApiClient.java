@@ -24,6 +24,10 @@ public final class ApiClient {
     private final Retrofit retrofit;
     private String authToken = null;
 
+    /**
+     * Constructeur privé.
+     * @param context Le contexte de l'application.
+     */
     private ApiClient(Context context) {
         // Logging
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -64,6 +68,10 @@ public final class ApiClient {
                 .build();
     }
 
+    /**
+     * Initialise le singleton ApiClient. Doit être appelé avant d'utiliser getInstance().
+     * @param context Le contexte de l'application
+     */
     public static void init(Context context) {
         if (instance == null) {
             synchronized (ApiClient.class) {
@@ -74,6 +82,11 @@ public final class ApiClient {
         }
     }
 
+    /**
+     * Récupère l'instance singleton de ApiClient. Assurez-vous d'appeler init() avant d'appeler cette méthode.
+     * @return L'instance du ApiClient
+     * @throws IllegalStateException si init() n'a pas été appelé avant
+      */
     public static ApiClient getInstance() {
         if (instance == null) {
             throw new IllegalStateException("ApiClient not initialized. Call init() first.");
@@ -81,18 +94,34 @@ public final class ApiClient {
         return instance;
     }
 
+    /**
+     * Définit le token d'authentification à utiliser pour les requêtes API.
+     * @param token Le token d'authentification à utiliser pour les requêtes
+      */
     public void setAuthToken(String token) {
         this.authToken = token;
     }
 
+    /**
+     * Efface le token d'authentification (ex: lors de la déconnexion)
+     * @param token Le token d'authentification à effacer
+     */
     public void clearAuthToken() {
         this.authToken = null;
     }
-
+ 
+    /**
+     * Récupère une instance de MealApi pour effectuer des appels liés aux repas.
+     * @return Une instance de AuthApi pour les opérations d'authentification
+      */
     public AuthApi getAuthApi() {
         return retrofit.create(AuthApi.class);
     }
 
+    /**
+     * Récupère une instance de MealApi pour effectuer des appels liés aux repas.
+     * @return Une instance de WineApi pour les opérations liées aux vins
+      */
     public WineApi getWineApi() {
         return retrofit.create(WineApi.class);
     }

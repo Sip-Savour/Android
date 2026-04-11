@@ -10,12 +10,18 @@ import com.sipandsavour.util.Constants;
 
 /**
  * Application principale Sip & Savour.
+ * Gère l'initialisation des composants globaux tels que SessionManager, ApiClient et MealApiClient.
+ * Assure que ApiClient n'est initialisé que si BASE_URL est définie, et gère les exceptions potentielles lors de l'initialisation.
  */
 public class SipSavourApp extends Application {
 
     private static final String TAG = "SipSavourApp";
     private static SipSavourApp instance;
 
+    /**
+     * Appelé lorsque l'application est créée.
+     * @param savedInstanceState État sauvegardé de l'application (non utilisé ici).
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,6 +53,9 @@ public class SipSavourApp extends Application {
         }
     }
 
+    /** Fournit une instance de SipSavourApp.
+     * @return L'instance de SipSavourApp.
+     */
     public static SipSavourApp getInstance() {
         return instance;
     }

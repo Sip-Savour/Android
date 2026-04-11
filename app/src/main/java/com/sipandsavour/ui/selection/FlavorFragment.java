@@ -41,6 +41,9 @@ public class FlavorFragment extends Fragment implements
     private String mode = "match";
 
     @Override
+    /** Initialize the fragment.
+     * @param savedInstanceState The saved instance state.
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -50,6 +53,12 @@ public class FlavorFragment extends Fragment implements
 
     @Nullable
     @Override
+    /** Create the view for the fragment.
+     * @param inflater The layout inflater.
+     * @param container The parent view group.
+     * @param savedInstanceState The saved instance state.
+     * @return The created view.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -57,6 +66,10 @@ public class FlavorFragment extends Fragment implements
     }
 
     @Override
+    /** Initialize the view for the fragment.
+     * @param view The created view.
+     * @param savedInstanceState The saved instance state.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -76,6 +89,8 @@ public class FlavorFragment extends Fragment implements
         observeViewModel();
     }
 
+    /** Set up the header UI.
+     */
     private void setupHeader() {
         if (tvHeaderTitle != null) {
             tvHeaderTitle.setText(mode.equals("match")
@@ -84,6 +99,8 @@ public class FlavorFragment extends Fragment implements
         }
     }
 
+    /** Set up the RecyclerView for the fragment.
+     */
     private void setupRecyclerView() {
         categoryAdapter = new CategoryAdapter();
         categoryAdapter.setOnFlavorSelectionListener(this);
@@ -112,6 +129,8 @@ public class FlavorFragment extends Fragment implements
         loadMealSuggestions();
     }
 
+    /** Set up the match button for the fragment.
+     */
     private void setupButton() {
         btnMatch.setText(mode.equals("match")
                 ? R.string.search_match_button
@@ -123,6 +142,8 @@ public class FlavorFragment extends Fragment implements
         });
     }
 
+    /** Observe the ViewModel for data changes.
+     */
     private void observeViewModel() {
         viewModel.getCategories().observe(getViewLifecycleOwner(),
                 categories -> categoryAdapter.setCategories(categories));
@@ -135,6 +156,9 @@ public class FlavorFragment extends Fragment implements
         });
     }
 
+    /**
+     * Handle the click event for the match button.
+     */
     private void onMatchClicked() {
         if (!viewModel.hasSelection()) {
             showSnackbar(getString(R.string.error_unknown));
@@ -156,6 +180,10 @@ public class FlavorFragment extends Fragment implements
         }
     }
 
+    /**
+     * Show a snackbar with the given message.
+     * @param message The message to display.
+     */
     private void showSnackbar(String message) {
         if (getView() != null) {
             Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
@@ -163,22 +191,32 @@ public class FlavorFragment extends Fragment implements
     }
 
     @Override
+    /** Handle the toggle event for a flavor.
+     * @param flavorKey The key of the flavor to toggle.
+     */
     public void onFlavorToggled(String flavorKey) {
         viewModel.toggleFlavor(flavorKey);
     }
 
     @Override
+    /** Check if a flavor is selected.
+     * @param flavorKey The key of the flavor to check.
+     * @return True if the flavor is selected, false otherwise.
+     */
     public boolean isFlavorSelected(String flavorKey) {
         return viewModel.isFlavorSelected(flavorKey);
     }
 
     @Override
+    /** Handle the toggle event for a category.
+     * @param position The position of the category to toggle.
+     */
     public void onCategoryToggled(int position) {
         viewModel.toggleCategory(position);
     }
 
     /**
-     * Charge les suggestions de repas depuis l'API et les traduit
+     * Charge les suggestions de repas depuis l'API et les traduit avant de les afficher dans l'adapter
      */
     private void loadMealSuggestions() {
         viewModel.getMealSuggestions().observe(getViewLifecycleOwner(), state -> {
@@ -192,7 +230,8 @@ public class FlavorFragment extends Fragment implements
     }
 
     /**
-     * Traduit les recettes puis les affiche dans l'adapter
+     * Traduit les recettes puis les affiche dans l'adapter 
+     * @param meals La liste des recettes à traduire et afficher
      */
     private void translateAndDisplayMeals(List<MealDto> meals) {
         if (meals.isEmpty()) {
@@ -217,6 +256,7 @@ public class FlavorFragment extends Fragment implements
 
     /**
      * Affiche les détails complets d'une recette dans un bottom sheet
+     * @param meal La recette dont afficher les détails
      */
     private void showMealDetailsBottomSheet(MealDto meal) {
         // Récupérer les détails complets de la recette (avec ingrédients et instructions)

@@ -26,14 +26,23 @@ public class FavoritesAdapter extends ListAdapter<WineDto, FavoritesAdapter.Favo
 
     private OnFavoriteClickListener listener;
 
+    /**
+     * Constructeur de l'adapter.
+     */
     public FavoritesAdapter() {
         super(DIFF_CALLBACK);
     }
 
+    /**
+     * Définit le listener pour les clics sur les favoris.
+     */
     public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Callback pour calculer les différences entre les éléments de la liste.
+     */
     private static final DiffUtil.ItemCallback<WineDto> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<WineDto>() {
                 @Override
@@ -48,6 +57,9 @@ public class FavoritesAdapter extends ListAdapter<WineDto, FavoritesAdapter.Favo
                 }
             };
 
+    /**
+     * Crée la vue du ViewHolder.
+     */
     @NonNull
     @Override
     public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,6 +68,9 @@ public class FavoritesAdapter extends ListAdapter<WineDto, FavoritesAdapter.Favo
         return new FavoriteViewHolder(view);
     }
 
+    /**
+     * Lie les données du vin à la vue du ViewHolder.
+     */
     @Override
     public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
         WineDto wine = getItem(position);
@@ -71,12 +86,18 @@ public class FavoritesAdapter extends ListAdapter<WineDto, FavoritesAdapter.Favo
         private final ImageView ivWineImage;
         private final TextView tvWineName;
 
+        /**
+         * Constructeur du ViewHolder.
+         */
         FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
             ivWineImage = itemView.findViewById(R.id.ivFavoriteWine);
             tvWineName = itemView.findViewById(R.id.tvFavoriteName);
         }
 
+        /**
+         * Lie les données du vin à la vue du ViewHolder.
+         */
         void bind(WineDto wine, int position) {
             tvWineName.setText(wine.getTitle() != null ? wine.getTitle() : wine.getVariety());
 
@@ -98,6 +119,9 @@ public class FavoritesAdapter extends ListAdapter<WineDto, FavoritesAdapter.Favo
             });
         }
 
+        /**
+         * Retourne la ressource d'image appropriée en fonction de la couleur du vin.
+         */
         private int getWineImageRes(String color) {
             if (color == null) return R.drawable.ic_wine_red;
 

@@ -46,6 +46,9 @@ public class ResultFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate le layout du fragment et initialise les vues. Les données du vin sont chargées via le ViewModel, qui peut être mis à jour par d'autres fragments (ex: en sélectionnant un vin différent). Le fragment observe également les changements de favoris pour mettre à jour l'icône en conséquence.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class ResultFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Initialise les vues et configure les écouteurs d'événements.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -64,6 +70,9 @@ public class ResultFragment extends Fragment {
         handleArguments();
     }
 
+    /**
+     * Initialise les vues.
+     */
     private void initViews(View view) {
         tvTitle = view.findViewById(R.id.tvTitle);
         tvCepage = view.findViewById(R.id.tvCepage);
@@ -77,6 +86,9 @@ public class ResultFragment extends Fragment {
         tvMealPairingIngredients = view.findViewById(R.id.tvMealPairingIngredients);
     }
 
+    /**
+     * Configure les écouteurs d'événements.
+     */
     private void setupListeners() {
         if (fabFavorite != null) {
             fabFavorite.setOnClickListener(v -> {
@@ -95,6 +107,9 @@ public class ResultFragment extends Fragment {
         }
     }
 
+    /**
+     * Ouvre les détails du plat.
+     */
     private void openMealDetails() {
         if (currentPairedMeal == null) return;
 
@@ -102,6 +117,9 @@ public class ResultFragment extends Fragment {
         bottomSheet.show(getParentFragmentManager(), "MealDetails");
     }
 
+    /**
+     * Observe les changements du ViewModel.
+     */
     private void observeViewModel() {
         viewModel.getCurrentWine().observe(getViewLifecycleOwner(), wine -> {
             if (wine != null) {
@@ -115,6 +133,9 @@ public class ResultFragment extends Fragment {
         });
     }
 
+    /**
+     * Gère les arguments passés au fragment.
+     */
     private void handleArguments() {
         if (getArguments() != null) {
             WineDto wine = (WineDto) getArguments().getSerializable("wine");
@@ -177,6 +198,9 @@ public class ResultFragment extends Fragment {
         });
     }
 
+    /**
+     * Affiche les informations du plat accordé.
+     */
     private void displayPairedMeal(MealDto meal) {
         if (meal == null || layoutMealPairing == null) return;
 
@@ -219,6 +243,9 @@ public class ResultFragment extends Fragment {
         }
     }
 
+    /**
+     * Affiche les informations du vin.
+     */
     private void displayWine(WineDto wine) {
         if (wine == null) return;
 
@@ -241,12 +268,18 @@ public class ResultFragment extends Fragment {
         // Le style reste le même pour tous les vins (défini dans le XML)
     }
 
+    /**
+     * Met à jour l'icône de favori.
+     */
     private void updateFavoriteIcon(boolean isFavorite) {
         if (fabFavorite != null) {
             fabFavorite.setImageResource(isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
         }
     }
 
+    /**
+     * Anime le bouton de favori.
+     */
     private void animateFavoriteButton() {
         if (fabFavorite != null) {
             fabFavorite.animate()
@@ -258,6 +291,9 @@ public class ResultFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Nettoie les ressources lorsque la vue est détruite.
+     */
     public void onDestroyView() {
         super.onDestroyView();
         tvTitle = null;

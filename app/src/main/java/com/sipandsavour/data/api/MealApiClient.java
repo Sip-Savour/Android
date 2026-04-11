@@ -45,6 +45,10 @@ public final class MealApiClient {
                 .build();
     }
 
+    /**
+     * Initialise le singleton MealApiClient. Doit être appelé avant d'utiliser getInstance().
+     * @param context Le contexte de l'application, utilisé pour configurer le cache HTTP.
+     */
     public static void init(Context context) {
         if (instance == null) {
             synchronized (MealApiClient.class) {
@@ -55,6 +59,11 @@ public final class MealApiClient {
         }
     }
 
+    /**
+     * Récupère l'instance singleton de MealApiClient. Assurez-vous d'appeler init() avant d'appeler cette méthode.
+     * @return L'instance singleton de MealApiClient.
+     * @throws IllegalStateException Si init() n'a pas été appelé avant d'appeler cette méthode.
+     */
     public static MealApiClient getInstance() {
         if (instance == null) {
             throw new IllegalStateException("MealApiClient not initialized. Call init() first.");
@@ -62,6 +71,10 @@ public final class MealApiClient {
         return instance;
     }
 
+    /**
+     * Récupère l'instance de MealApi pour effectuer des appels API.
+     * @return L'instance de MealApi créée par Retrofit.
+     */
     public MealApi getMealApi() {
         return retrofit.create(MealApi.class);
     }

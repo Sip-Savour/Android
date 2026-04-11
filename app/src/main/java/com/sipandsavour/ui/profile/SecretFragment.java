@@ -25,11 +25,17 @@ public class SecretFragment extends Fragment {
 
     @Nullable 
     @Override 
+    /**
+     * Inflate le layout du fragment et prépare les vues.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) { 
         return inflater.inflate(R.layout.fragment_secret, container, false); 
     }
 
     @Override 
+    /**
+     * Appelé après que la vue du fragment soit créée.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) { 
         super.onViewCreated(view, savedInstanceState); 
 
@@ -60,14 +66,23 @@ public class SecretFragment extends Fragment {
         // === EFFET "SLIDE TO ACTIVATE" AVEC RESSORT ===
         slideButtonJinx.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { 
             @Override 
+            /**
+             * Appelé lorsque la progression du curseur change.
+             */
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { 
             } 
 
             @Override 
+            /**
+             * Appelé lorsque l'utilisateur commence à faire glisser le curseur.
+             */
             public void onStartTrackingTouch(SeekBar seekBar) { 
             } 
 
             @Override 
+            /**
+             * Appelé lorsque l'utilisateur arrête de faire glisser le curseur.
+             */
             public void onStopTrackingTouch(SeekBar seekBar) { 
                 int progress = seekBar.getProgress(); 
                 boolean currentlyActive = SessionManager.getInstance().getTheme() == THEME_JINX_CODE; 
@@ -91,12 +106,18 @@ public class SecretFragment extends Fragment {
         }); 
     }
 
+    /**
+     * Active le thème Jinx.
+     */
     private void activateJinx(View view) { 
         HapticUtil.playConfirm(view); 
         SessionManager.getInstance().setTheme(THEME_JINX_CODE); 
         requireActivity().recreate(); 
     } 
 
+    /**
+     * Désactive le thème Jinx.
+     */
     private void deactivateJinx(View view) { 
         HapticUtil.playConfirm(view); 
         SessionManager.getInstance().setTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM); 
@@ -104,6 +125,9 @@ public class SecretFragment extends Fragment {
     } 
 
     @Override 
+    /**
+     * Appelé lorsque la vue du fragment est détruite.
+     */
     public void onDestroyView() { 
         super.onDestroyView(); 
 

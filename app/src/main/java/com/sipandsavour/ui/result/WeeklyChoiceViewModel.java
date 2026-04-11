@@ -16,14 +16,25 @@ public class WeeklyChoiceViewModel extends ViewModel {
     private final MutableLiveData<UiState<Repository.WeeklyPairingResult>> pairingState = new MutableLiveData<>();
     private final MutableLiveData<MealDto> translatedMeal = new MutableLiveData<>();
 
+    /**
+     * Get the state of the weekly pairing.
+     * @return The LiveData for the weekly pairing state.
+     */
     public LiveData<UiState<Repository.WeeklyPairingResult>> getPairingState() {
         return pairingState;
     }
 
+    /**
+     * Get the translated meal.
+     * @return The LiveData for the translated meal.
+     */
     public LiveData<MealDto> getTranslatedMeal() {
         return translatedMeal;
     }
 
+    /**
+     * Load the weekly recommendation.
+     */
     public void loadRecommendation() {
         pairingState.setValue(UiState.loading());
 

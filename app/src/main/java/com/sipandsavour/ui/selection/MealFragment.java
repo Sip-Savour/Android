@@ -43,17 +43,28 @@ public class MealFragment extends Fragment {
     // Dictionnaire pour faire correspondre le nom traduit (UI) avec la clé technique (API)
     private final Map<String, String> displayToApiMap = new HashMap<>();
 
-    // Classe interne pour lier l'option traduite à sa valeur technique
+    /**
+     * Classe interne pour représenter une option de repas avec son nom affiché et sa valeur API
+     */
     private static class MealOption {
         String displayName;
         String apiValue;
 
+        /**
+         * Constructeur de la classe MealOption.
+         * @param displayName Le nom à afficher pour l'option.
+         * @param apiValue La valeur technique pour l'option.
+         */
         MealOption(String displayName, String apiValue) {
             this.displayName = displayName;
             this.apiValue = apiValue;
         }
     }
 
+    /**
+     * Retourne la liste des options de base pour les repas.
+     * @return La liste des noms à afficher pour les options de base.
+     */
     private List<String> getBaseOptions() {
         List<MealOption> options = Arrays.asList(
                 new MealOption(getString(R.string.meal_base_red_meat), "Viande Rouge"),
@@ -67,6 +78,10 @@ public class MealFragment extends Fragment {
         return extractDisplayNames(options);
     }
 
+    /**
+     * Retourne la liste des options de saveur pour les repas.
+     * @return La liste des noms à afficher pour les options de saveur.
+     */
     private List<String> getTasteOptions() {
         List<MealOption> options = Arrays.asList(
                 new MealOption(getString(R.string.meal_taste_fatty), "Gras"),
@@ -81,6 +96,11 @@ public class MealFragment extends Fragment {
         return extractDisplayNames(options);
     }
 
+    /**
+     * Retourne la liste des options de couleur pour les repas.
+     * @return La liste des noms à afficher pour les options de couleur.
+     */
+
     private List<String> getColorOptions() {
         List<MealOption> options = Arrays.asList(
                 new MealOption(getString(R.string.meal_color_red), "Vin Rouge"),
@@ -90,7 +110,11 @@ public class MealFragment extends Fragment {
         return extractDisplayNames(options);
     }
 
-    // Remplit le dictionnaire de traduction et retourne la liste des noms à afficher
+    /**
+     * Remplit le dictionnaire de traduction et retourne la liste des noms à afficher.
+     * @param options La liste des options de repas.
+     * @return La liste des noms à afficher.
+     */
     private List<String> extractDisplayNames(List<MealOption> options) {
         List<String> displayNames = new ArrayList<>();
         for (MealOption opt : options) {
@@ -102,6 +126,12 @@ public class MealFragment extends Fragment {
 
     @Nullable
     @Override
+    /** Called to create the view for the fragment.
+     * @param inflater The layout inflater.
+     * @param container The parent view group.
+     * @param savedInstanceState The saved instance state.
+     * @return The created view.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -109,6 +139,10 @@ public class MealFragment extends Fragment {
     }
 
     @Override
+    /** Called after the view for the fragment has been created.
+     * @param view The view for the fragment.
+     * @param savedInstanceState The saved instance state.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -124,6 +158,9 @@ public class MealFragment extends Fragment {
         setupButton();
     }
 
+    /**
+     * Configure les RecyclerViews pour afficher les options de repas.
+     */
     private void setupRecyclerViews() {
         baseAdapter = new MealCardAdapter(getBaseOptions(), true, selectedItems -> {
             checkIfCanFindWine();
@@ -144,11 +181,17 @@ public class MealFragment extends Fragment {
         rvColorOptions.setAdapter(colorAdapter);
     }
 
+    /**
+     * Vérifie si les options de base sont sélectionnées et active/désactive le bouton de recherche.
+     */
     private void checkIfCanFindWine() {
         boolean hasBase = !baseAdapter.getSelectedItems().isEmpty();
         btnFindWine.setEnabled(hasBase);
     }
 
+    /**
+     * Configure le bouton de recherche.
+     */
     private void setupButton() {
         btnFindWine.setOnClickListener(v -> {
             HapticUtil.playConfirm(v);

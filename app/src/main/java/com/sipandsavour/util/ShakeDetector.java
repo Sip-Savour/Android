@@ -25,6 +25,10 @@ public class ShakeDetector implements SensorEventListener {
         void onShake(int count);
     }
 
+    /**
+     * Définit le listener pour l'événement de secousse.
+     * @param listener Le listener à définir.
+     */
     public void setOnShakeListener(OnShakeListener listener) {
         this.mListener = listener;
     }
@@ -35,6 +39,10 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     @Override
+    /**
+     * Traite les données du capteur pour détecter les secousses. Si une secousse est détectée, elle vérifie le temps écoulé depuis la dernière secousse pour éviter les faux positifs, puis elle incrémente le compteur de secousses et appelle le listener.
+     * @param event Les données du capteur.
+     */
     public void onSensorChanged(SensorEvent event) {
 
         if (mListener != null) {

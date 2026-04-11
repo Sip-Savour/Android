@@ -42,6 +42,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     @Override
+    /**
+     * Initialize the fragment.
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -51,6 +54,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
+    /**
+     * Inflate the layout for the fragment.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -58,6 +64,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     @Override
+    /**
+     * Set up the views and display the wine details.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
@@ -65,6 +74,10 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         setupListeners();
     }
 
+    /**
+     * Initialize the views.
+     * @param view The root view of the fragment.
+     */
     private void initViews(View view) {
         tvWineTitle = view.findViewById(R.id.tvWineTitle);
         tvWineType = view.findViewById(R.id.tvWineType);
@@ -74,6 +87,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         btnCloseWine = view.findViewById(R.id.btnCloseWine);
     }
 
+    /**
+     * Display the wine details.
+     */
     private void displayWineDetails() {
         if (wine == null) {
             dismiss();
@@ -97,6 +113,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Set up the click listeners for the views.
+     */
     private void setupListeners() {
         if (btnCloseWine != null) {
             btnCloseWine.setOnClickListener(v -> dismiss());
@@ -110,6 +129,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Toggle the favorite status of the wine.
+     */
     private void toggleFavorite() {
         if (wine == null) return;
 
@@ -136,6 +158,9 @@ public class WineDetailsBottomSheetFragment extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Update the favorite button based on the favorite status.
+     */
     private void updateFavoriteButton() {
         if (btnAddToFavorites == null) return;
 

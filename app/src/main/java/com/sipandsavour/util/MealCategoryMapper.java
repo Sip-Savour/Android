@@ -7,7 +7,8 @@ public final class MealCategoryMapper {
 
     /**
      * Mappe une sous-catégorie de l'app à une catégorie MealDB.
-     * Retourne null si pas de mapping.
+     * @param appSubcategory La sous-catégorie de l'app (ex: "Bœuf", "Agneau", "Poisson blanc", "Légumes grillés", "Fromage doux")
+     * @return La catégorie MealDB correspondante (ex: "Beef", "Seafood", "Vegetarian", "Miscellaneous") ou null si pas de mapping
      */
     public static String mapToMealDBCategory(String appSubcategory) {
         if (appSubcategory == null) return null;
@@ -45,6 +46,8 @@ public final class MealCategoryMapper {
 
     /**
      * Mappe une catégorie principale de l'app à une catégorie MealDB par défaut.
+     * @param appCategory La catégorie principale de l'app (ex: "Viande", "Poisson", "Végétarien", "Fromage", "Fruits")
+     * @return La catégorie MealDB correspondante (ex: "Beef", "Seafood", "Vegetarian", "Miscellaneous", "Dessert") ou null si pas de mapping
      */
     public static String mapMainCategoryToMealDB(String appCategory) {
         if (appCategory == null) return null;
